@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#e8a33d"/>
+<rect x="130" y="55" width="68" height="68" transform="rotate(45 164 89)" fill="#000" opacity="0.10"/><circle cx="230" cy="33" r="65" fill="#fff" opacity="0.12"/><rect x="189" y="177" width="46" height="46" transform="rotate(45 212 200)" fill="#000" opacity="0.10"/><circle cx="235" cy="179" r="31" fill="#fff" opacity="0.12"/><rect x="104" y="58" width="40" height="40" transform="rotate(45 124 78)" fill="#000" opacity="0.10"/><circle cx="4" cy="5" r="46" fill="#fff" opacity="0.12"/><rect x="266" y="35" width="68" height="68" transform="rotate(45 300 69)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="283" text-anchor="middle">Остров</text><text x="150" y="317" text-anchor="middle">сокровищ</text></g>
+</svg>

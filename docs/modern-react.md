@@ -4,7 +4,7 @@ React и экосистема сильно изменились в 2022–2026 �
 
 Правило: любое утверждение об API проверяется по `.d.ts` (`@types/react`, типы библиотек) и коду (`node_modules/react-dom/cjs/react-dom-client.development.js` и т. п.) **установленной версии**, а поведение — запуском в превью. Новое проверенное — добавлять в таблицу «Проверено» с источником.
 
-> **Состояние (2026-10-06):** таблица «Проверено» пуста — пакеты ещё не установлены. Раздел «Ожидается (из памяти модели) — проверить» — черновик, его нельзя использовать в уроках без проверки.
+> **Состояние (2026-10-06):** в таблице «Проверено» — факты из `npm view` и спайка `spikes/esm-preview/`. Раздел «Ожидается (из памяти модели) — проверить» — черновик, его нельзя использовать в уроках без проверки.
 
 ## Проверено
 
@@ -15,6 +15,19 @@ React и экосистема сильно изменились в 2022–2026 �
 | `react-router@8.4.0`: `peerDependencies` `react >=19.2.7`, `react-dom >=19.2.7`; `engines.node >=22.22.0` | `npm view` |
 | `antd@6.6.5`: `peerDependencies` `react >=18.0.0` | `npm view` |
 | `next@16.3.8`: peer `react ^18.2.0 \|\| ^19.0.0`, опционально `babel-plugin-react-compiler` | `npm view` |
+| `react-dom@19.3.0` экспортирует: `createPortal`, `flushSync`, `preconnect`, `prefetchDNS`, `preinit`, `preinitModule`, `preload`, `preloadModule`, `requestFormReset`, `unstable_batchedUpdates`, `useFormState`, `useFormStatus`, `version` (+ внутренний `__DOM_INTERNALS…`); у `react` — 46 ключей. Подпути `react-dom`: `client`, `server*`, `static*`, `profiling`, `test-utils` | `Object.keys(require(…))`, `package.json` |
+| Пакеты: `react`, `react-dom`, `dayjs` — только CJS; `react-router` 8, `@tanstack/react-query` 5 — ESM (`type: module`); `zustand` 5 — `exports` с ESM; `antd` 6 и `@ant-design/icons` 6 — CJS с ESM в поле `module` (`es/`), у `antd` нет `exports` | `package.json`, спайк |
+| **StrictMode** (dev): при монтировании компонент рендерится дважды; на каждый клик с обновлением состояния — два рендера. Если рендер бросает ошибку, React повторяет рендер (лог: 2 клика → рендеры 3–6, клик с ошибкой → 7–10) | спайк, лог `render Counter N` |
+| Предупреждение про `key`: `Each child in a list should have a unique "key" prop.` + `Check the render method of \`Counter\`. See https://react.dev/link/warning-keys for more information.` — в `console.error` шаблоном `%s%s`; стека компонентов в тексте нет, `captureOwnerStack()` в перехвате `console.error` возвращает стек владельцев | спайк |
+| React Router 8 (data mode): `createBrowserRouter` из `react-router`, `RouterProvider` из `react-router/dom`; `loader`, `lazy: async () => ({ Component })`, `useLoaderData`, `useParams`, `Link` работают; ошибка рендера без `errorElement` → встроенная граница «Unexpected Application Error!» (+ `console.error` «React Router caught the following error during render»), при этом вызывается `onCaughtError` у `createRoot`. Первый заход на маршрут с `loader` без `HydrateFallback` → `console.warn` «No \`HydrateFallback\` element provided to render during initial hydration» | спайк |
+| antd 6.6.5 работает с React 19.3 без патча; `ConfigProvider` (`locale={ruRU}`, `theme.token.colorPrimary`), `App.useApp().message`, `Table`, `DatePicker` + `dayjs.locale('ru')` («6 октября 2026»), пагинация «Назад»/«Вперед»; стили — `<style>` в `<head>` (cssinjs) | спайк |
+| `.d.ts` antd 6.6.5 (через `@rc-component/image`, `@rc-component/picker`) не проходят `tsc` без `skipLibCheck` (TS2430) ни в 5.9, ни в 6.0 | `tsc -p spikes/esm-preview` |
+| **Экспорты `react@19.3.0`** (development): `Activity`, `Children`, `Component`, `Fragment`, `Profiler`, `PureComponent`, `StrictMode`, `Suspense`, **`ViewTransition`**, `act`, **`addTransitionType`**, `cache`, `cacheSignal`, `captureOwnerStack`, `cloneElement`, `createContext`, `createElement`, `createRef`, `forwardRef`, `isValidElement`, `lazy`, `memo`, `startTransition`, `unstable_useCacheRefresh`, `use`, `useActionState`, `useCallback`, `useContext`, `useDebugValue`, `useDeferredValue`, `useEffect`, `useEffectEvent`, `useId`, `useImperativeHandle`, `useInsertionEffect`, `useLayoutEffect`, `useMemo`, `useOptimistic`, `useReducer`, `useRef`, `useState`, `useSyncExternalStore`, `useTransition`, `version` | `Object.keys(require('react'))` |
+| **`ViewTransition`, `addTransitionType`, `Activity`, `useEffectEvent`, `cacheSignal`, `captureOwnerStack` — стабильные** в 19.3: объявлены в `@types/react@19.3.0/index.d.ts`, в `canary.d.ts`/`experimental.d.ts` их нет. `forwardRef` в типах **не** помечен `@deprecated` (в курсе всё равно не используем: `ref` — обычный проп) | `grep` по `@types/react` |
+| `<title>` внутри компонента React 19 переносит в `<head>`: заголовок вкладки превью меняется при смене страницы («Каталог — Ход конём» → «Остров сокровищ — Ход конём») | `checks/platform.mjs` |
+| **StrictMode + `useQuery` с `signal`**: первый запрос при монтировании отменяется (StrictMode монтирует, размонтирует и снова монтирует компонент; Query отменяет запрос без наблюдателей) — во вкладке «Сеть» первая строка `/api/games?q=` «отменён», вторая — 200. Хороший эксперимент для глав 6 и 11 | `checks/platform.mjs`, скриншот |
+| Ошибка рендера: React 19 пишет `console.error` шаблоном `%o\n\n%s\n\n%s\n` — ошибка, «The above error occurred in the <NotFound> component.», «React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary.» (граница роутера) | `checks/preview.mjs` |
+| В development React пишет в консоль `console.info` «Download the React DevTools for a better development experience: https://react.dev/link/react-devtools» — превью его не показывает (расширение не видит iframe) | превью |
 
 ## Запрещено в коде курса (только во врезке «Вы встретите в старом коде»)
 
@@ -54,7 +67,7 @@ React и экосистема сильно изменились в 2022–2026 �
 - 19.1: owner stack (`captureOwnerStack`), улучшения Suspense.
 - 19.2: `<Activity mode="visible|hidden">`, `useEffectEvent` (стабильный), `cacheSignal` (RSC), Performance Tracks в Chrome DevTools, частичный пререндеринг (`prerender`/`resume`), пакетирование раскрытия Suspense при SSR.
 - 19.3: **неизвестно** — прочитать CHANGELOG (`node_modules/react/…` нет changelog — смотреть github.com/facebook/react/releases) и блог react.dev.
-- `<ViewTransition>`, `addTransitionType` — статус (canary/experimental или стабильный в 19.3?) — проверить.
+- ✅ `<ViewTransition>`, `addTransitionType` — стабильные в 19.3 (см. «Проверено»); поведение — проверить запуском перед главой 12.
 - StrictMode в разработке: двойной вызов рендера, инициализаторов `useState`/`useMemo`/`useReducer`, двойной цикл эффектов (mount → unmount → mount), двойной вызов колбэк-ref; в React 19 при двойном рендере повторно используется результат `useMemo`/`useCallback` первого рендера (проверить).
 - Автоматическое пакетирование (batching) обновлений везде (с React 18), `flushSync`.
 - `useId` — формат идентификаторов (в 19.x поменялся — проверить).

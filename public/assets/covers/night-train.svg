@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#1f3a5f"/>
+<rect x="-9" y="165" width="50" height="50" transform="rotate(45 16 190)" fill="#000" opacity="0.10"/><circle cx="181" cy="82" r="45" fill="#fff" opacity="0.12"/><rect x="66.5" y="25.5" width="43" height="43" transform="rotate(45 88 47)" fill="#000" opacity="0.10"/><circle cx="160" cy="191" r="67" fill="#fff" opacity="0.12"/><rect x="205" y="86" width="36" height="36" transform="rotate(45 223 104)" fill="#000" opacity="0.10"/><circle cx="103" cy="153" r="22" fill="#fff" opacity="0.12"/><rect x="200.5" y="164.5" width="45" height="45" transform="rotate(45 223 187)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="283" text-anchor="middle">Ночной</text><text x="150" y="317" text-anchor="middle">экспресс</text></g>
+</svg>

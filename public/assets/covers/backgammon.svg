@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#8b4513"/>
+<rect x="-11" y="99" width="64" height="64" transform="rotate(45 21 131)" fill="#000" opacity="0.10"/><circle cx="85" cy="181" r="53" fill="#fff" opacity="0.12"/><rect x="121" y="241" width="38" height="38" transform="rotate(45 140 260)" fill="#000" opacity="0.10"/><circle cx="11" cy="215" r="39" fill="#fff" opacity="0.12"/><rect x="109.5" y="142.5" width="27" height="27" transform="rotate(45 123 156)" fill="#000" opacity="0.10"/><circle cx="0" cy="189" r="24" fill="#fff" opacity="0.12"/><rect x="44" y="139" width="50" height="50" transform="rotate(45 69 164)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="300" text-anchor="middle">Нарды</text></g>
+</svg>

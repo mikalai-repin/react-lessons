@@ -1,0 +1,233 @@
+[
+  {
+    "id": 1,
+    "slug": "treasure-island",
+    "title": "Остров сокровищ",
+    "cover": "/assets/covers/treasure-island.svg",
+    "price": 1990,
+    "category": "family",
+    "players": {
+      "min": 2,
+      "max": 5
+    },
+    "playTime": 45,
+    "age": 8,
+    "rating": 4.6,
+    "inStock": 12,
+    "description": "Команды пиратов ищут клад на острове, который меняется каждую партию: карта собирается из квадратных тайлов.",
+    "tags": ["пираты", "карты"],
+    "color": "#e8a33d",
+    "oldPrice": 2490
+  },
+  {
+    "id": 2,
+    "slug": "dragon-post",
+    "title": "Драконья почта",
+    "cover": "/assets/covers/dragon-post.svg",
+    "price": 1290,
+    "category": "family",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 30,
+    "age": 7,
+    "rating": 4.3,
+    "inStock": 25,
+    "description": "Вы — почтовые драконы. Доставляйте посылки по горному королевству быстрее соперников и не уроните ни одной.",
+    "tags": ["драконы", "доставка"],
+    "color": "#d9534f"
+  },
+  {
+    "id": 3,
+    "slug": "potion-masters",
+    "title": "Зельевары",
+    "cover": "/assets/covers/potion-masters.svg",
+    "price": 2490,
+    "category": "strategy",
+    "players": {
+      "min": 1,
+      "max": 4
+    },
+    "playTime": 60,
+    "age": 12,
+    "rating": 4.7,
+    "inStock": 6,
+    "description": "Собирайте ингредиенты, варите зелья и улучшайте лабораторию. Каждое зелье даёт новое умение.",
+    "tags": ["магия", "движок"],
+    "color": "#6f42c1"
+  },
+  {
+    "id": 4,
+    "slug": "night-train",
+    "title": "Ночной экспресс",
+    "cover": "/assets/covers/night-train.svg",
+    "price": 3190,
+    "category": "strategy",
+    "players": {
+      "min": 2,
+      "max": 5
+    },
+    "playTime": 90,
+    "age": 12,
+    "rating": 4.8,
+    "inStock": 3,
+    "description": "Стройте железные дороги через континент и выполняйте тайные контракты, пока не погасли огни на станциях.",
+    "tags": ["поезда", "маршруты"],
+    "color": "#1f3a5f",
+    "oldPrice": 3590
+  },
+  {
+    "id": 5,
+    "slug": "mushroom-hunt",
+    "title": "Тихая охота",
+    "cover": "/assets/covers/mushroom-hunt.svg",
+    "price": 890,
+    "category": "kids",
+    "players": {
+      "min": 2,
+      "max": 6
+    },
+    "playTime": 20,
+    "age": 5,
+    "rating": 4.1,
+    "inStock": 40,
+    "description": "Игра на память: найдите в лесу пары одинаковых грибов и не перепутайте съедобные с мухоморами.",
+    "tags": ["лес", "память"],
+    "color": "#5cb85c"
+  },
+  {
+    "id": 6,
+    "slug": "word-storm",
+    "title": "Словесная буря",
+    "cover": "/assets/covers/word-storm.svg",
+    "price": 1490,
+    "category": "party",
+    "players": {
+      "min": 4,
+      "max": 10
+    },
+    "playTime": 30,
+    "age": 10,
+    "rating": 4.4,
+    "inStock": 18,
+    "description": "Объясняйте слова, не называя запретных, пока песок в часах не закончился.",
+    "tags": ["слова", "команды"],
+    "color": "#f0ad4e"
+  },
+  {
+    "id": 7,
+    "slug": "lighthouse",
+    "title": "Маяк",
+    "cover": "/assets/covers/lighthouse.svg",
+    "price": 2190,
+    "category": "cooperative",
+    "players": {
+      "min": 1,
+      "max": 4
+    },
+    "playTime": 50,
+    "age": 10,
+    "rating": 4.5,
+    "inStock": 0,
+    "description": "Смотрители маяка вместе спасают корабли от шторма. Выигрывают или проигрывают все вместе.",
+    "tags": ["море", "кооператив"],
+    "color": "#2a9d8f"
+  },
+  {
+    "id": 8,
+    "slug": "chess-classic",
+    "title": "Шахматы «Классика»",
+    "cover": "/assets/covers/chess-classic.svg",
+    "price": 2990,
+    "category": "strategy",
+    "players": {
+      "min": 2,
+      "max": 2
+    },
+    "playTime": 60,
+    "age": 6,
+    "rating": 4.9,
+    "inStock": 9,
+    "description": "Деревянные шахматы с утяжелёнными фигурами и складной доской.",
+    "tags": ["классика", "абстрактная"],
+    "color": "#3d3d3d"
+  },
+  {
+    "id": 9,
+    "slug": "go-board",
+    "title": "Го",
+    "cover": "/assets/covers/go-board.svg",
+    "price": 3490,
+    "category": "strategy",
+    "players": {
+      "min": 2,
+      "max": 2
+    },
+    "playTime": 90,
+    "age": 8,
+    "rating": 4.8,
+    "inStock": 4,
+    "description": "Древняя игра на доске 19 × 19 с камнями из стекла.",
+    "tags": ["классика", "абстрактная"],
+    "color": "#c49a6c"
+  },
+  {
+    "id": 10,
+    "slug": "backgammon",
+    "title": "Нарды",
+    "cover": "/assets/covers/backgammon.svg",
+    "price": 2590,
+    "category": "family",
+    "players": {
+      "min": 2,
+      "max": 2
+    },
+    "playTime": 30,
+    "age": 8,
+    "rating": 4.6,
+    "inStock": 7,
+    "description": "Нарды ручной работы в деревянном кейсе.",
+    "tags": ["классика", "кости"],
+    "color": "#8b4513",
+    "oldPrice": 2990
+  },
+  {
+    "id": 11,
+    "slug": "space-cats",
+    "title": "Космические коты",
+    "cover": "/assets/covers/space-cats.svg",
+    "price": 1690,
+    "category": "party",
+    "players": {
+      "min": 3,
+      "max": 8
+    },
+    "playTime": 20,
+    "age": 8,
+    "rating": 4.2,
+    "inStock": 30,
+    "description": "Коты-астронавты блефуют, кто из них съел запасы корма на станции.",
+    "tags": ["коты", "блеф"],
+    "color": "#264653"
+  },
+  {
+    "id": 12,
+    "slug": "castle-builders",
+    "title": "Строители замков",
+    "cover": "/assets/covers/castle-builders.svg",
+    "price": 2790,
+    "category": "cooperative",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 70,
+    "age": 10,
+    "rating": 4.4,
+    "inStock": 5,
+    "description": "Достройте замок до прихода зимы: делите ресурсы и закрывайте бреши в стенах вместе.",
+    "tags": ["замки", "кооператив"],
+    "color": "#7a5c99"
+  }
+]

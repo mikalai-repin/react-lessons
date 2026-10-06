@@ -1,0 +1,22 @@
+[
+  {
+    "id": "family",
+    "title": "Семейные"
+  },
+  {
+    "id": "strategy",
+    "title": "Стратегии"
+  },
+  {
+    "id": "party",
+    "title": "Для вечеринок"
+  },
+  {
+    "id": "cooperative",
+    "title": "Кооперативные"
+  },
+  {
+    "id": "kids",
+    "title": "Детские"
+  }
+]

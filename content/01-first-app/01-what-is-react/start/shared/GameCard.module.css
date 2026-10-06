@@ -1,0 +1,17 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.cover {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 6px;
+  display: block;
+}
+.title {
+  font-weight: 600;
+}

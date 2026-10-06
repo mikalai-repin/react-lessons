@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#d9534f"/>
+<rect x="100" y="22" width="28" height="28" transform="rotate(45 114 36)" fill="#000" opacity="0.10"/><circle cx="214" cy="49" r="42" fill="#fff" opacity="0.12"/><rect x="147.5" y="126.5" width="45" height="45" transform="rotate(45 170 149)" fill="#000" opacity="0.10"/><circle cx="110" cy="183" r="59" fill="#fff" opacity="0.12"/><rect x="129" y="232" width="56" height="56" transform="rotate(45 157 260)" fill="#000" opacity="0.10"/><circle cx="137" cy="228" r="54" fill="#fff" opacity="0.12"/><rect x="160.5" y="181.5" width="27" height="27" transform="rotate(45 174 195)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="283" text-anchor="middle">Драконья</text><text x="150" y="317" text-anchor="middle">почта</text></g>
+</svg>

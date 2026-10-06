@@ -1,0 +1,11 @@
+[
+  {
+    "code": "KNIGHT10",
+    "percent": 10
+  },
+  {
+    "code": "CHESS500",
+    "amount": 500,
+    "minTotal": 3000
+  }
+]

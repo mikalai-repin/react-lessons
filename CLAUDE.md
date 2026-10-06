@@ -44,38 +44,43 @@
 - **Чего нет в превью** (Vite-проект, ESLint, сборка, SSR, React Server Components, Next.js, Playwright) — изучается в части 3 на машине ученика. Node 22+ (сейчас у автора Node 20 — Next 16 и react-router 8 требуют 22+).
 - **Тексты** — на русском, идентификаторы — на английском, комментарии в коде — на русском, интерфейс магазина — на русском.
 
-## Структура репозитория (целевая, после этапа 1)
+## Структура репозитория
 
 ```
 CLAUDE.md
 docs/                 — документация проекта (этот контекст)
 content/              — уроки курса (см. lesson-format.md)
-src/                  — код платформы (Vite + React + TS), перенос из ../angular-learn/src
+src/                  — код платформы (Vite + React + TS), перенесён из ../angular-learn/src
   compiler/ editor/ preview/ lesson/ app/ content/ progress/
 shared/step-chain.js  — сборка полного кода шага из изменений (из angular-learn без изменений)
-shared/compile-core.js — компиляция шага: TSX → JS, CSS Modules (новое)
+shared/compile-core.js — компиляция шага: TSX → JS, CSS и CSS Modules → модули (браузер, e2e, валидатор)
 public/preview-runtime.js — среда выполнения кода ученика в iframe
 public/backend/       — учебный бэкенд (копия из angular-learn)
 public/assets/        — обложки игр (копия из angular-learn)
-scripts/              — copy-vendor (сборка ESM-бандлов React и библиотек), validate-content, step-files
+scripts/              — copy-vendor (ESM-модули React и библиотек + import map; PREVIEW_MODULES), validate-content, step-files, build-covers
 tools/e2e/            — проверки в headless Chrome (перенос из angular-learn)
 tools/authoring/      — генераторы шагов глав (chNN-gen.py) и steps.py (из angular-learn)
-spikes/               — прототипы (этап 0)
+spikes/esm-preview/   — прототип этапа 0: React и библиотеки в iframe без сборщика (README — результаты и решения)
 ```
 
-Сейчас в репозитории **только документация** (этап 0). Кода платформы ещё нет.
+Глава в `content/` пока одна — `01-first-app` с демо-магазином шага 1.1 (на нём работают проверки платформы).
 
-## Команды (после этапа 1; повторяют angular-learn)
+## Команды
 
 - `npm run dev` — платформа на **http://localhost:5190** (5173/5174 — PixiJS, 5180 — Angular)
 - `npm run validate` — структура уроков, цепочка шагов, сборка и типы кода каждого шага
 - `npm run step <…/шаг/solution>` — выгрузить полный код шага
 - `npm run build` — проверка типов и продакшен-сборка
-- `node tools/e2e/run-dir.mjs <папка шага> [адрес]`, `run-chapter.mjs`, `exp.mjs`, `checks/*.mjs` — как в angular-learn
+- `npx prettier --check .` — форматирование (код уроков — как кнопка «Формат»: `shared/lesson-prettier.json`, ширина 64)
+- `node tools/e2e/run-dir.mjs <папка шага> [адрес] [мс]` — код шага в чистом превью: консоль, запросы, адрес, текст, скриншот в `tools/e2e/out/`
+- `node tools/e2e/run-chapter.mjs <папка главы>`, `node tools/e2e/exp.mjs <папка> <сценарий.mjs> [адрес]` — как в angular-learn
+- `node tools/e2e/checks/preview.mjs` и `checks/platform.mjs` — проверки среды превью и интерфейса на демо-магазине шага 1.1 (после любых правок в `src/`, `public/`, `shared/`, `scripts/copy-vendor.mjs`)
+- Проверки требуют запущенного `npm run dev` и Chrome (`CHROME_PATH`, по умолчанию путь macOS). Другой адрес — `BASE_URL=http://localhost:5191`
+- Новая библиотека для превью: `PREVIEW_MODULES` в `scripts/copy-vendor.mjs` + точная версия в `package.json` + `.d.ts` в `src/editor/monaco.ts` (`typeFiles`, при необходимости `typedPackages`)
 
 ## Текущий статус
 
-**Этап 0: документация и план готовы, кода нет.** Следующий шаг — этап 0 «Прототип» и этап 1 «Платформа» по `docs/roadmap.md` (раздел «Следующий шаг» в конце файла).
+**Этапы 0 и 1 готовы** (2026-10-06): документация и план; спайк `spikes/esm-preview/`; платформа перенесена из angular-learn и работает на React 19.3 + react-router 8 + TanStack Query + Zustand, все проверки проходят в dev и на продакшен-сборке. **Следующий шаг — этап 2, глава 1 «Первое приложение»**: пошагово в `docs/roadmap.md`, раздел «Следующий шаг». Технический долг платформы — там же, «Технический долг этапа 1».
 
 ## Пользователь и тон работы
 

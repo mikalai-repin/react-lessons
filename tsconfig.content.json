@@ -1,0 +1,24 @@
+{
+  // Настройки проверки типов кода уроков — как в tsconfig.app.json, который создаёт `npm create vite` (шаблон react-ts).
+  // Проверяется не content/ (там шаги хранят только изменения), а полный код шагов, который npm run validate
+  // выгружает в .content-check/ (.content-check/tsconfig.json наследует эти настройки). Шаги с brokenStart
+  // (намеренно сломанный старт) валидатор туда не выгружает.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    // В .d.ts зависимостей бывают ошибки (у antd 6 — TS2430), а нам важен только код уроков
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "types": []
+  }
+}

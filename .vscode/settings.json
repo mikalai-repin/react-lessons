@@ -1,0 +1,11 @@
+{
+  // Пользовательская настройка prettier.configPath (например, ".prettierrc") заставляет расширение Prettier
+  // искать чужой файл и форматировать по глобальным настройкам (табы, ширина 80). Конфиг проекта — prettier.config.mjs:
+  // код уроков в нём форматируется так же, как кнопка «Формат» платформы (shared/lesson-prettier.json)
+  "prettier.configPath": "prettier.config.mjs",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Markdown не форматируем (см. .prettierignore)
+  "[markdown]": {
+    "editor.formatOnSave": false
+  }
+}

@@ -4,30 +4,40 @@
 
 Правило передачи работы: агент, закончивший этап или главу, **обновляет статусы здесь, раздел «Следующий шаг» в конце и «Текущий статус» в `CLAUDE.md`**. Следующий агент начинает с чтения `CLAUDE.md` и раздела «Следующий шаг».
 
-## Этап 0. Контекст и прототип — 🟨
+## Этап 0. Контекст и прототип — ✅
 
 - ✅ Изучен курс `../angular-learn`: платформа, формат уроков, процесс, ловушки (2026-10-06)
 - ✅ Документация: `CLAUDE.md`, `docs/course-plan.md`, `docs/libraries.md`, `docs/architecture.md` (план), `docs/project-app.md`, `docs/modern-react.md` (черновик), `docs/lesson-format.md`, `docs/writing-guide.md`, `docs/authoring-process.md`, `docs/glossary.md`
-- ⬜ **Спайк `spikes/esm-preview/`**: доказать, что React 19 + библиотеки работают в iframe без сборщика (см. «Следующий шаг»)
-- ⬜ Сверить с установленными пакетами и заполнить `docs/modern-react.md` (раздел «Проверить»)
-- ⬜ Решить по итогам спайка: `react-jsx` или `react-jsxdev`; CSS Modules — `postcss-modules` или свой трансформ; `basename` роутера под `/app/`; MSW или учебный бэкенд в тестах
+- ✅ Спайк `spikes/esm-preview/` (2026-10-06): React 19.3 + react-router 8 (data mode, `loader`, `lazy`) + TanStack Query + Zustand (`persist`) + antd 6 (`ConfigProvider` `ru_RU`, тема, `App.useApp`, `Table`, `DatePicker`) работают в iframe без сборщика с одним экземпляром React; компиляция 8 файлов — 32 мс (повторно 6 мс); первый рендер ~200 мс. Подробно — README спайка
+- ✅ Решено: vendor — один запуск esbuild со `splitting` + обёртки CJS; `react-jsxdev`; CSS Modules — свой трансформ; роутер без `basename` (приложение в корне адреса iframe) + перехват «голых» ссылок; owner stack — `captureOwnerStack()`; `skipLibCheck: true`
+- ✅ Проверенные факты — в `docs/modern-react.md` (таблица «Проверено»)
+- ⬜ Перенесено на свои этапы: Monaco с типами antd (этап 1), React Compiler в воркере (до главы 16), тест-раннер и MSW (до главы 17)
 
-Критерий готовности: в спайке в iframe работают `createRoot` + `useState` + `react-router` (data mode, `loader`) + `@tanstack/react-query` + `zustand` + `antd` (`ConfigProvider` с `ru_RU`, `Button`, `Table`) с одним экземпляром React; компиляция TSX в воркере < 100 мс на 5 файлов.
+Критерий готовности достигнут: в iframe работают `createRoot` + `useState` + `react-router` (data mode, `loader`) + `@tanstack/react-query` + `zustand` + `antd` с одним экземпляром React; компиляция TSX в воркере < 100 мс.
 
-## Этап 1. Платформа — ⬜
+## Этап 1. Платформа — ✅
 
-- ⬜ Перенос платформы из `../angular-learn` (`src/`, `shared/step-chain.js`, `scripts/step-files.mjs`, `scripts/validate-content.mjs`, `tools/e2e/`, `tools/authoring/steps.py`, `prettier.config.mjs`, `vite.config.ts`, `index.html`): переименовать `angular-course` → `react-course`, порт 5190, удалить Angular-специфику
-- ⬜ `package.json`: `react`/`react-dom` и библиотеки превью — точные версии; `typescript@6.0.x`; `monaco-editor@0.57.0`
-- ⬜ `scripts/copy-vendor.mjs`: ESM-бандлы React и библиотек с общим React, ESM-обёртки CJS, `preview.html` с import map по `exports`
-- ⬜ `shared/compile-core.js`: TSX → JS, CSS Modules, глобальный CSS
-- ⬜ `public/preview-runtime.js`: `#root`, консоль (React-элементы, owner stack, ссылки на react.dev/errors), роутер под `/app/`
-- ⬜ Monaco: типы `@types/react`, `@types/react-dom` и библиотек; Prettier для `.tsx`; Shiki `tsx`
-- ⬜ Учебный бэкенд и обложки — копия из angular-learn
-- ⬜ Демо-магазин шага 1.1 (готовое приложение на React: каталог, игра, корзина — 3 маршрута + 404) — на нём `checks/platform.mjs` и `checks/preview.mjs`
-- ⬜ `npm run validate`: структура, цепочка, сборка, `tsc` по `.content-check/`
-- ⬜ Проверено в headless Chrome: dev, продакшен-сборка, мобильный вид
+- ✅ Перенос платформы из `../angular-learn` (2026-10-06): `src/`, `shared/step-chain.js`, `scripts/`, `tools/e2e/`, `tools/authoring/steps.py` и `format-content.py`, конфиги; `react-course`, порт 5190, Angular-специфика удалена (`angular-html.ts`, JIT-трансформ, `NG0xxx`, `legacy_dir`, `@angular/*`, `rxjs`)
+- ✅ `package.json`: точные версии; библиотеки превью (`@tanstack/react-query`, `zustand`) — в `devDependencies`; `react`, `react-dom`, `react-router` — в `dependencies` (их использует и сама платформа)
+- ✅ `scripts/copy-vendor.mjs`: `PREVIEW_MODULES`, один запуск esbuild со splitting, автоопределение CJS, `ts-react.mjs` с меткой версии, `preview.html`; `VENDOR_MINIFY=1` в `prebuild`
+- ✅ `shared/compile-core.js`: TSX → JS (`react-jsxdev`), CSS и CSS Modules → модули, `sources`
+- ✅ `public/preview-runtime.js`: приложение в корне адреса, `#root`, printf-шаблоны, стек владельцев (`captureOwnerStack`), свёртка фреймов библиотек, React-элементы в консоли, перехват обычных ссылок → `restart`
+- ✅ Monaco: типы React, react-router, query, zustand, CSS Modules; Prettier без `angular`; Shiki `tsx`; значок `TSX`; порядок вкладок `main.tsx`, `App.tsx`, `X.tsx` + `X.module.css`
+- ✅ Учебный бэкенд и обложки — копия из angular-learn
+- ✅ Демо-магазин шага 1.1 (`content/01-first-app/01-what-is-react/start/`): каталог (`useQuery` + `signal`), игра (`loader`, `HydrateFallback`), корзина (Zustand + `persist`), 404, CSS Modules, `<title>` в компонентах. `lesson.md` — черновик-заглушка
+- ✅ `npm run validate` (сборка + `tsc` по `.content-check/` с настройками шаблона Vite `react-ts`, `env.d.ts` для CSS), `npx prettier --check .`, `npm run build`
+- ✅ `checks/preview.mjs` (21 проверка) и `checks/platform.mjs` (23 проверки) проходят в dev и на продакшен-сборке (`vite preview`); мобильный вид — вкладки «Урок / Код / Результат»
 
-Критерий готовности: демо-магазин работает в превью, ошибки в `.tsx` (синтаксис, типы, исключение при рендере, предупреждение про `key`) понятно видны в консоли; все проверки платформы проходят.
+Критерий готовности достигнут: демо-магазин работает в превью; синтаксическая ошибка («Сборка»), ошибка типов («TS»), исключение при рендере (стек со строкой `.tsx`) и предупреждение про `key` (со стеком владельцев и ссылкой) понятно видны в консоли.
+
+### Технический долг этапа 1
+
+- Синтаксическая ошибка показывается дважды: «Сборка» (воркер компиляции) и «TS» (Monaco). Было и в angular-learn. Можно не показывать синтаксические диагностики Monaco, если есть ошибка сборки в том же файле и строке.
+- Подсветка JSX в Monaco слабая (встроенная Monarch-грамматика `typescript`): теги и атрибуты не выделяются. Вариант — своя Monarch-грамматика TSX или семантическая подсветка TS-воркера.
+- Бандл платформы ~6,8 МБ (1,6 МБ gzip): Monaco + TypeScript Monaco + типы. Как и в angular-learn — ленивая загрузка Monaco.
+- `lesson.md` шага 1.1 — заглушка; текст — вместе с главой 1.
+- Учебный бэкенд — копия: доработки (~40 игр, `page`/`size`, refresh-токен) делать в обоих курсах.
+- Нет `check.ts` (этап 3), тест-раннера (этап 4), вкладки «Скомпилировано» (этап 5).
 
 ## Этап 2. Пилот: главы 1–3 — ⬜
 
@@ -83,8 +93,8 @@
 
 | Риск | Что делаем |
 |---|---|
-| React и часть библиотек — только CJS, import map требует ESM | ESM-обёртки с именованными экспортами (спайк этапа 0) |
-| Два экземпляра React в превью | Все бандлы — с внешним `react`; проверка в `checks/preview.mjs` |
+| React и часть библиотек — только CJS, import map требует ESM | ✅ Снят спайком: ESM-обёртки с именованными экспортами |
+| Два экземпляра React в превью | ✅ Снят спайком: один запуск esbuild со `splitting`; проверка в `checks/preview.mjs` |
 | `antd` тяжёлый и рисует стили в рантайме | Отдельный бандл, грузится только при импорте; проверить cssinjs в iframe |
 | Мажорные версии вышли недавно (react-router 8, antd 6, TanStack Table 9, Jotai 3, Zod 4, MSW 3, Vitest 5) — память модели их не знает | Сверять API по `node_modules` перед каждой главой; факты — в `modern-react.md` |
 | React Compiler меняет «правила мемоизации» | Глава 16: сначала ручная мемоизация и её механизм, потом компилятор; не утверждать, что `useMemo` устарел |
@@ -93,10 +103,10 @@
 
 ## Следующий шаг
 
-**Этап 0: спайк `spikes/esm-preview/`** — минимальный прототип без платформы, только чтобы снять технические риски. По образцу `../angular-learn/spikes/jit-preview/` (прочитать его README).
+**Этап 2: глава 1 «Первое приложение»** по `docs/course-plan.md` (шаги 1.1–1.6 + «Под капотом») и процессу `docs/authoring-process.md` (и `../angular-learn/docs/authoring-process.md` — он подробнее).
 
-1. `npm init` в `spikes/esm-preview/`, установить точно: `react@19.3.0 react-dom@19.3.0 @types/react @types/react-dom typescript@6.0 esbuild react-router@8.4.0 @tanstack/react-query zustand antd @ant-design/icons dayjs`.
-2. Скрипт `build-vendor.mjs`: ESM-обёртки для `react`, `react/jsx-runtime`, `react/jsx-dev-runtime`, `react-dom`, `react-dom/client` (именованные экспорты из `Object.keys(require(…))`, `NODE_ENV=development`); esbuild-бандлы остальных библиотек с `external` на React; import map по полю `exports`.
-3. `index.html` + воркер: TypeScript 6 `transpileModule` (`jsx: react-jsxdev`) для 3–5 файлов `.tsx`, переписывание относительных импортов на blob-URL (взять код из `../angular-learn/public/preview-runtime.js`), запуск в iframe.
-4. Проверить и записать в README спайка (с цифрами): `useState`, `createBrowserRouter` + `loader` под `/app/`, `useQuery`, `zustand`, `antd` (`ConfigProvider locale={ruRU}`, `Button`, `Table`, `App.useApp().message`), один экземпляр React (контекст через границу бандлов), StrictMode, текст ошибок React в консоли (dev-сборка, owner stack), размер бандлов, время компиляции.
-5. По результатам: обновить `docs/architecture.md` (решения вместо «проверить»), `docs/modern-react.md` (проверенные факты), этот файл (статусы и следующий шаг — этап 1 «Платформа»).
+1. Прочитать `CLAUDE.md`, `docs/writing-guide.md`, `docs/glossary.md`, `docs/modern-react.md` (таблица «Проверено» — там факты про StrictMode, предупреждения, `<title>`, стабильность `ViewTransition`/`Activity`), пример главы `../angular-learn/content/01-first-app/` и её генератор `../angular-learn/tools/authoring/ch01-gen.py`.
+2. Шаг 1.1 «Что такое React» (`startFrom: custom`, `noSolution`): старт — уже готовый демо-магазин; заменить заглушку `lesson.md` настоящим текстом (React — библиотека, сравнение с Angular; что React не делает и экосистема курса — `docs/libraries.md`).
+3. Шаги 1.2–1.6: от пустого `main.tsx` + `App.tsx` до заголовка «Ход конём» со стилями: первый компонент, `createRoot`, `StrictMode` (эксперимент с логом рендера — два вызова), стили (`styles.css` готовым файлом + CSS Modules), отладка (шаг с `brokenStart`: синтаксис, типы, исключение при рендере, `key`). «Под капотом»: JSX → `jsxDEV()`, React-элемент — объект (`$$typeof`, `type`, `props`, `key`), показать скомпилированный код (до вкладки «Скомпилировано» — через `console.log(<App />)` или `compile-core` в тексте).
+4. Генератор `tools/authoring/ch01-gen.py` по образцу angular-learn (`write_steps` из `steps.py`); после — `npm run validate`, `npx prettier --check .`, `run-dir` для каждого шага и эксперимента, `run-chapter`, своя проверка `tools/e2e/checks/ch01-first-app.mjs`.
+5. Обновить «Фактическое состояние» в `docs/authoring-process.md`, этот файл и `CLAUDE.md`.

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#5cb85c"/>
+<rect x="236.5" y="105.5" width="61" height="61" transform="rotate(45 267 136)" fill="#000" opacity="0.10"/><circle cx="165" cy="99" r="21" fill="#fff" opacity="0.12"/><rect x="25" y="235" width="42" height="42" transform="rotate(45 46 256)" fill="#000" opacity="0.10"/><circle cx="35" cy="195" r="45" fill="#fff" opacity="0.12"/><rect x="231.5" y="0.5" width="51" height="51" transform="rotate(45 257 26)" fill="#000" opacity="0.10"/><circle cx="236" cy="116" r="31" fill="#fff" opacity="0.12"/><rect x="70" y="26" width="54" height="54" transform="rotate(45 97 53)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="300" text-anchor="middle">Тихая охота</text></g>
+</svg>

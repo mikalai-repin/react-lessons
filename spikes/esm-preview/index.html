@@ -1,0 +1,28 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Спайк: React без сборщика</title>
+<p>Компиляция: <span id="ms">…</span></p>
+<iframe id="preview" style="width: 520px; height: 640px; border: 1px solid #ccc"></iframe>
+<script type="module">
+  const FILES = ['main.tsx', 'routes.tsx', 'cartStore.ts', 'Counter.tsx', 'Catalog.tsx', 'Catalog.module.css', 'styles.css', 'admin/Admin.tsx'];
+  const files = Object.fromEntries(await Promise.all(FILES.map(async (f) => [f, await (await fetch(`/app/${f}`)).text()])));
+  const url = new URLSearchParams(location.search).get('url') || '/';
+
+  const worker = new Worker('/worker.js', { type: 'module' });
+  const t0 = performance.now();
+  await new Promise((r) => worker.addEventListener('message', function on(e) { if (e.data.ready) { worker.removeEventListener('message', on); r(); } }));
+  const tLoad = Math.round(performance.now() - t0);
+  const compile = () => new Promise((r) => { worker.onmessage = (e) => r(e.data); worker.postMessage({ files }); });
+  const first = await compile();
+  const second = await compile();
+  document.getElementById('ms').textContent = `загрузка TS ${tLoad} мс, первая ${first.ms} мс, повторная ${second.ms} мс`;
+  console.log('[host] compile', document.getElementById('ms').textContent, 'errors', JSON.stringify(first.errors));
+
+  window.addEventListener('message', (e) => {
+    const d = e.data;
+    if (d?.source !== 'react-spike') return;
+    if (d.type === 'ready') e.source.postMessage({ type: 'run', files: first.files, entry: 'main.js', url, t0: performance.now() }, '*');
+    else console.log(`[preview:${d.type}]`, d.level ?? '', d.text ?? d.url ?? '');
+  });
+  document.getElementById('preview').src = '/preview.html';
+</script>

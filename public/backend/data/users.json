@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "email": "user@example.com",
+    "password": "user",
+    "name": "Пользователь",
+    "role": "user",
+    "token": "token-user"
+  },
+  {
+    "id": 2,
+    "email": "admin@example.com",
+    "password": "admin",
+    "name": "Администратор",
+    "role": "admin",
+    "token": "token-admin"
+  }
+]
