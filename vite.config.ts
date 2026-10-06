@@ -15,8 +15,6 @@ export default defineConfig({
       'shiki/core',
       'shiki/engine/javascript',
       '@shikijs/monaco',
-      'shiki/themes/github-light.mjs',
-      'shiki/themes/github-dark.mjs',
       'shiki/langs/tsx.mjs',
       'shiki/langs/typescript.mjs',
       'shiki/langs/html.mjs',

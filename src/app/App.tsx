@@ -2,6 +2,8 @@ import { lazy, Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router';
 import { allSteps, course, stepPath } from '../content/course';
 import { progress } from '../progress/storage';
+import { Loader, ReactLogo } from './Loader';
+import { Appearance } from './Appearance';
 // Страница шага тянет Monaco, TypeScript-воркер и Prettier — грузим её отдельным чанком: шапка и оглавление
 // появляются сразу
 const StepPage = lazy(() => import('./StepPage').then((module) => ({ default: module.StepPage })));
@@ -51,10 +53,12 @@ export function App() {
       <div className="app">
         <header className="topbar">
           <Link to="/" className="brand">
+            <ReactLogo size={26} />
             {course.title}
           </Link>
           <TableOfContents />
           <span className="topbar-version">React v{course.reactVersion}</span>
+          <Appearance />
         </header>
         <main className="app-main">
           <Routes>
@@ -62,7 +66,7 @@ export function App() {
             <Route
               path="/:chapter/:step"
               element={
-                <Suspense fallback={<p className="page-loading">Загружаем редактор…</p>}>
+                <Suspense fallback={<Loader label="Загружаем редактор…" />}>
                   <StepPage />
                 </Suspense>
               }

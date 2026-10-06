@@ -1,4 +1,41 @@
+/* Цветовые палитры платформы. Выбор — в шапке (src/app/Appearance.tsx), хранится в localStorage,
+   атрибуты data-palette и data-theme ставит на <html> скрипт в index.html ещё до запуска приложения. Без атрибута — «React»
+   (палитра по умолчанию, поэтому её блок — первый и с :root: иначе :root перебил бы выбранную палитру).
+   Переменные заданы и для любого элемента с data-palette: образцы в меню выбора показывают свои цвета.
+   Цвета магазина «Ход конём» (красный) — в коде уроков, это приложение ученика, а не платформа. */
 :root {
+  --radius: 10px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* React — по умолчанию */
+:root,
+[data-palette='react'] {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #eef1f5;
+  --border: #e4e7ec;
+  --text: #23272f;
+  --text-muted: #5e687e;
+  --accent: #087ea4;
+  --accent-text: #ffffff;
+  --accent-soft: #e6f7ff;
+  --react: #149eca;
+  --code-bg: #f6f7f9;
+  --tip: #2f8a5b;
+  --tip-soft: #e7f6ee;
+  --warning: #b86e00;
+  --warning-soft: #fff4e0;
+  --task: #6d4fc2;
+  --task-soft: #f0ecfd;
+  --error: #d1293d;
+  --hl-line: rgba(8, 126, 164, 0.09);
+  color-scheme: light;
+}
+
+/* Малиновая */
+[data-palette='crimson'] {
   --bg: #f6f5f9;
   --surface: #ffffff;
   --surface-2: #f1eff6;
@@ -8,6 +45,7 @@
   --accent: #c3002f;
   --accent-text: #ffffff;
   --accent-soft: #fde6ea;
+  --react: #c3002f;
   --code-bg: #f6f4fa;
   --tip: #2f9e6e;
   --tip-soft: #e7f6ee;
@@ -17,34 +55,154 @@
   --task-soft: #eeebff;
   --error: #d9363e;
   --hl-line: rgba(195, 0, 47, 0.08);
-  --radius: 10px;
-  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #14121b;
-    --surface: #1c1a25;
-    --surface-2: #24212f;
-    --border: #322e3f;
-    --text: #ebe8f2;
-    --text-muted: #9c96ab;
-    --accent: #ff5c7a;
-    --accent-text: #1a0610;
-    --accent-soft: #3a1726;
-    --code-bg: #191722;
-    --tip: #51cf8f;
-    --tip-soft: #15291f;
-    --warning: #ffb547;
-    --warning-soft: #2e2311;
-    --task: #9d91ff;
-    --task-soft: #221e3d;
-    --error: #ff6b72;
-    --hl-line: rgba(255, 92, 122, 0.14);
-    color-scheme: dark;
-  }
+/* Фиолетовая */
+[data-palette='violet'] {
+  --bg: #f7f6fb;
+  --surface: #ffffff;
+  --surface-2: #f0eef8;
+  --border: #e4e1ef;
+  --text: #1f1b2e;
+  --text-muted: #686379;
+  --accent: #6d4fc2;
+  --accent-text: #ffffff;
+  --accent-soft: #efeafd;
+  --react: #6d4fc2;
+  --code-bg: #f7f6fb;
+  --tip: #2f8a5b;
+  --tip-soft: #e7f6ee;
+  --warning: #b86e00;
+  --warning-soft: #fff4e0;
+  --task: #087ea4;
+  --task-soft: #e6f7ff;
+  --error: #d1293d;
+  --hl-line: rgba(109, 79, 194, 0.09);
+  color-scheme: light;
+}
+
+/* Изумрудная */
+[data-palette='emerald'] {
+  --bg: #f5f8f6;
+  --surface: #ffffff;
+  --surface-2: #ecf2ee;
+  --border: #dfe8e2;
+  --text: #1c2620;
+  --text-muted: #5f6d64;
+  --accent: #0f7a55;
+  --accent-text: #ffffff;
+  --accent-soft: #e3f5ec;
+  --react: #0f7a55;
+  --code-bg: #f5f8f6;
+  --tip: #087ea4;
+  --tip-soft: #e6f7ff;
+  --warning: #b86e00;
+  --warning-soft: #fff4e0;
+  --task: #6d4fc2;
+  --task-soft: #f0ecfd;
+  --error: #d1293d;
+  --hl-line: rgba(15, 122, 85, 0.09);
+  color-scheme: light;
+}
+
+/* Тёмная тема: data-theme="dark" на <html> ставят скрипт в index.html и src/app/theme.ts (по умолчанию — тёмная). Палитра на <html> и образцы палитр в меню — по data-palette */
+
+:root[data-theme='dark'][data-palette='crimson'],
+[data-theme='dark'] [data-palette='crimson'] {
+  --bg: #14121b;
+  --surface: #1c1a25;
+  --surface-2: #24212f;
+  --border: #322e3f;
+  --text: #ebe8f2;
+  --text-muted: #9c96ab;
+  --accent: #ff5c7a;
+  --accent-text: #1a0610;
+  --accent-soft: #3a1726;
+  --react: #ff5c7a;
+  --code-bg: #191722;
+  --tip: #51cf8f;
+  --tip-soft: #15291f;
+  --warning: #ffb547;
+  --warning-soft: #2e2311;
+  --task: #9d91ff;
+  --task-soft: #221e3d;
+  --error: #ff6b72;
+  --hl-line: rgba(255, 92, 122, 0.14);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'],
+:root[data-theme='dark'][data-palette='react'],
+[data-theme='dark'] [data-palette='react'] {
+  --bg: #16181d;
+  --surface: #23272f;
+  --surface-2: #2b313b;
+  --border: #343a46;
+  --text: #f6f7f9;
+  --text-muted: #99a1b3;
+  --accent: #58c4dc;
+  --accent-text: #16181d;
+  --accent-soft: #1d3a44;
+  --react: #58c4dc;
+  --code-bg: #1d2027;
+  --tip: #5fd39a;
+  --tip-soft: #17302a;
+  --warning: #ffb547;
+  --warning-soft: #33280f;
+  --task: #a996ff;
+  --task-soft: #28234a;
+  --error: #ff6b72;
+  --hl-line: rgba(88, 196, 220, 0.13);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'][data-palette='violet'],
+[data-theme='dark'] [data-palette='violet'] {
+  --bg: #15131c;
+  --surface: #1e1b28;
+  --surface-2: #272333;
+  --border: #343046;
+  --text: #ece9f5;
+  --text-muted: #9d97b0;
+  --accent: #a996ff;
+  --accent-text: #15131c;
+  --accent-soft: #2c2550;
+  --react: #a996ff;
+  --code-bg: #1a1823;
+  --tip: #5fd39a;
+  --tip-soft: #17302a;
+  --warning: #ffb547;
+  --warning-soft: #33280f;
+  --task: #58c4dc;
+  --task-soft: #17323a;
+  --error: #ff6b72;
+  --hl-line: rgba(169, 150, 255, 0.14);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'][data-palette='emerald'],
+[data-theme='dark'] [data-palette='emerald'] {
+  --bg: #121815;
+  --surface: #1a221e;
+  --surface-2: #222c27;
+  --border: #2f3b35;
+  --text: #e8efea;
+  --text-muted: #94a59b;
+  --accent: #4fd1a1;
+  --accent-text: #0d1411;
+  --accent-soft: #173a2d;
+  --react: #4fd1a1;
+  --code-bg: #161d1a;
+  --tip: #58c4dc;
+  --tip-soft: #17323a;
+  --warning: #ffb547;
+  --warning-soft: #33280f;
+  --task: #a996ff;
+  --task-soft: #28234a;
+  --error: #ff6b72;
+  --hl-line: rgba(79, 209, 161, 0.13);
+  color-scheme: dark;
 }
 
 * {
@@ -92,8 +250,11 @@ button {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--text);
   text-decoration: none;
   white-space: nowrap;
 }
@@ -254,17 +415,32 @@ button {
 }
 
 .lesson-scroll {
+  --lesson-pad-x: 32px;
+  --lesson-pad-top: 28px;
   flex: 1;
   overflow: auto;
-  padding: 28px 32px 40px;
+  padding: var(--lesson-pad-top) var(--lesson-pad-x) 40px;
 }
 
 .lesson-chapter-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  /* Липкая строка: глава и «Свернуть» остаются вверху панели при прокрутке урока. Фон — на всю ширину панели
+     (отрицательные поля съедают отступы .lesson-scroll), иначе текст просвечивал бы по бокам */
+  position: sticky;
+  /* top: 0 отсчитывается от края содержимого (под верхним отступом панели) — сдвигаем к самому краю панели */
+  top: calc(-1 * var(--lesson-pad-top));
+  z-index: 2;
   /* Кнопка не должна сдвигать шапку урока вниз */
-  margin: -4px 0;
+  margin: -4px calc(-1 * var(--lesson-pad-x));
+  padding: 4px var(--lesson-pad-x);
+  background: var(--surface);
+  transition: box-shadow 0.15s;
+}
+
+.lesson-scroll.scrolled .lesson-chapter-row {
+  box-shadow: 0 1px 0 var(--border);
 }
 
 .lesson-chapter {
@@ -420,10 +596,8 @@ button {
   color: var(--shiki-light);
 }
 
-@media (prefers-color-scheme: dark) {
-  .shiki span {
-    color: var(--shiki-dark);
-  }
+[data-theme='dark'] .shiki span {
+  color: var(--shiki-dark);
 }
 
 /* Врезки */
@@ -889,14 +1063,14 @@ button {
   display: grid;
   place-items: center;
   height: 100%;
-  color: #9c96ab;
+  color: var(--text-muted);
   font-size: 14px;
 }
 
 /* Сборка не прошла: приложение не запускаем (как оверлей ошибки Vite) */
 .preview-build-failed {
   padding: 24px;
-  color: #c3002f;
+  color: var(--error);
   text-align: center;
 }
 
@@ -1164,7 +1338,9 @@ button {
 
 @media (max-width: 900px) {
   .lesson-scroll {
-    padding: 20px 16px 32px;
+    --lesson-pad-x: 16px;
+    --lesson-pad-top: 20px;
+    padding: var(--lesson-pad-top) var(--lesson-pad-x) 32px;
   }
 
   .lesson-title-row h1 {
@@ -1181,8 +1357,189 @@ button {
   color: var(--text-muted);
 }
 
-/* Пока грузится чанк страницы шага (редактор) */
-.page-loading {
-  padding: 24px;
+/* ---------- Оформление в шапке: кнопка темы и палитра (src/app/Appearance.tsx) ---------- */
+
+.theme-toggle {
   color: var(--text-muted);
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+}
+
+.palette {
+  position: relative;
+}
+
+.palette summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  list-style: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.palette summary::-webkit-details-marker {
+  display: none;
+}
+
+.palette summary:hover,
+.palette[open] summary {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.palette-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 200px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+.palette-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.palette-option:hover {
+  background: var(--surface-2);
+}
+
+.palette-option.current {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Образец: фон и поверхность палитры, точка — акцент (переменные берутся из data-palette самого образца) */
+.palette-swatch {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--bg) 50%, var(--surface-2) 50%);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.palette-swatch-accent {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+@media (max-width: 700px) {
+  .palette-label {
+    display: none;
+  }
+}
+
+/* ---------- Логотип и загрузчик (та же разметка и стили — в index.html) ---------- */
+
+.react-logo-nucleus {
+  fill: var(--react);
+}
+
+.react-logo-orbit {
+  fill: none;
+  stroke: var(--react);
+  stroke-width: 1;
+}
+
+.react-logo-electron {
+  fill: var(--react);
+}
+
+.react-logo-animated {
+  animation: react-logo-spin 12s linear infinite;
+}
+
+.react-logo-animated .react-logo-orbit {
+  opacity: 0.55;
+}
+
+.react-logo-animated .react-logo-nucleus {
+  animation: react-logo-pulse 1.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes react-logo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes react-logo-pulse {
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .react-logo-animated,
+  .react-logo-animated .react-logo-nucleus {
+    animation: none;
+  }
+
+  .react-logo-electron {
+    display: none;
+  }
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 100%;
+  min-height: 240px;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.loader-compact {
+  min-height: 0;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.loader-label {
+  animation: loader-fade 1.8s ease-in-out infinite;
+}
+
+@keyframes loader-fade {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-label {
+    animation: none;
+  }
 }

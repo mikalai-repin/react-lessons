@@ -8,6 +8,7 @@ import lessonPrettier from '../../shared/lesson-prettier.json';
 // Ядро Shiki всё равно в чанке страницы шага (им подсвечивается текст урока, src/lesson/markdown.ts)
 import { createHighlighterCore } from 'shiki/core';
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
+import { courseDark, courseLight } from './course-themes';
 
 // ---------- Типы библиотек для подсказок и проверки TypeScript ----------
 //
@@ -136,33 +137,35 @@ for (const language of ['typescript', 'css']) {
 // ---------- Подсветка: Shiki (грамматики VS Code) ----------
 //
 // Встроенная Monarch-грамматика typescript в Monaco не знает JSX: теги и атрибуты не выделяются. Shiki подсвечивает
-// теми же TextMate-грамматиками, что VS Code, и теми же темами, что код в тексте урока (src/lesson/markdown.ts).
+// теми же TextMate-грамматиками, что VS Code, и темами курса (src/editor/course-themes.ts) — как код в тексте урока.
 // TS-воркер Monaco работает только с языком 'typescript', поэтому грамматика TSX регистрируется под этим именем:
 // .ts и .tsx подсвечиваются одинаково (TSX — надмножество TS, кроме приведения типа `<T>x`, которого в курсе нет).
 
 let highlighted = false;
 
 function applyTheme() {
-  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (highlighted) monaco.editor.setTheme(dark ? 'github-dark' : 'github-light');
+  // Действующую тему ставит на <html> src/app/theme.ts (и скрипт в index.html до запуска)
+  const dark = document.documentElement.dataset.theme === 'dark';
+  if (highlighted) monaco.editor.setTheme(dark ? courseDark.name! : courseLight.name!);
   else monaco.editor.setTheme(dark ? 'vs-dark' : 'vs');
 }
 applyTheme();
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+new MutationObserver(applyTheme).observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ['data-theme'],
+});
 
 async function setupHighlighting() {
-  const [{ shikiToMonaco }, tsx, css, light, dark] = await Promise.all([
+  const [{ shikiToMonaco }, tsx, css] = await Promise.all([
     import('@shikijs/monaco'),
     import('shiki/langs/tsx.mjs'),
     import('shiki/langs/css.mjs'),
-    import('shiki/themes/github-light.mjs'),
-    import('shiki/themes/github-dark.mjs'),
   ]);
   const typescript = tsx.default.map((lang) =>
     lang.name === 'tsx' ? { ...lang, name: 'typescript', aliases: [] } : lang,
   );
   const highlighter = await createHighlighterCore({
-    themes: [light.default, dark.default],
+    themes: [courseLight, courseDark],
     langs: [typescript, css.default],
     engine: createJavaScriptRegexEngine(),
   });

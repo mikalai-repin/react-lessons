@@ -38,7 +38,8 @@ await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle0' });
 await page.evaluate(
   (key, route, code) => {
     localStorage.clear();
-    localStorage.setItem(key, JSON.stringify({ steps: { [route]: { code } } }));
+    // Светлая тема: проверка подсветки ниже сверяет цвета светлой темы кода
+    localStorage.setItem(key, JSON.stringify({ steps: { [route]: { code } }, theme: 'light' }));
   },
   STORAGE_KEY,
   ROUTE,
@@ -63,17 +64,27 @@ const tab = await page.evaluateHandle(() =>
 );
 await tab.click();
 await wait(800);
+// Тема курса (src/editor/course-themes.ts, светлая): тег HTML — акцент React, компонент — свой цвет, атрибут — янтарный.
+// Фрагменты одного цвета Monaco склеивает (`<article`), поэтому ищем по вхождению
 const colors = await page.evaluate(() => {
   const spans = [...document.querySelectorAll('.monaco-editor .view-line span span')];
-  const color = (text) => {
-    const span = spans.find((s) => s.textContent === text);
+  // test(текст, предыдущий фрагмент): `Link` в JSX — после `<`, а не `import { Link }`
+  const color = (test) => {
+    const span = spans.find((s, i) => test(s.textContent.trim(), spans[i - 1]?.textContent ?? ''));
     return span ? getComputedStyle(span).color : null;
   };
-  return { tag: color('article'), text: color(' ') ?? color('('), keyword: color('return') };
+  return {
+    tag: color((t) => t === '<article' || t === 'article'),
+    component: color((t, before) => t === 'Link' && before.endsWith('<')),
+    attribute: color((t) => t === 'className'),
+    keyword: color((t) => t === 'return'),
+  };
 });
 expect(
-  Boolean(colors.tag) && colors.tag !== colors.keyword && colors.tag !== colors.text,
-  `теги JSX подсвечены (Shiki): ${JSON.stringify(colors)}`,
+  colors.tag === 'rgb(8, 126, 164)' &&
+    colors.component === 'rgb(184, 50, 107)' &&
+    colors.attribute === 'rgb(154, 91, 0)',
+  `подсветка JSX темой курса: тег, компонент, атрибут — разные цвета ${JSON.stringify(colors)}`,
 );
 const keyWarning = consoleLines.find((l) => l.cls.includes('console-error') && l.text.includes('unique "key"'));
 expect(Boolean(keyWarning), 'предупреждение React про key в консоли (printf-шаблон подставлен)');
@@ -182,6 +193,72 @@ expect(
 );
 expect((await frameText()).includes('Не удалось загрузить каталог'), 'приложение показывает ошибку загрузки');
 await page.screenshot({ path: `${OUT}/platform-network.png` });
+
+// Строка главы с «Свернуть» прилипает к верху панели урока при прокрутке
+await page.$eval('.lesson-scroll', (e) => e.scrollTo(0, 600));
+await wait(300);
+const stuck = await page.$eval('.lesson-chapter-row', (e) => ({
+  top: Math.round(e.getBoundingClientRect().top - e.parentElement.getBoundingClientRect().top),
+  scrolled: e.parentElement.classList.contains('scrolled'),
+}));
+expect(stuck.top === 0 && stuck.scrolled, `строка главы прилипла к верху урока при прокрутке ${JSON.stringify(stuck)}`);
+await page.$eval('.lesson-scroll', (e) => e.scrollTo(0, 0));
+
+// Оформление по умолчанию (localStorage очищен выше): тёмная тема и палитра «React»
+const look = () =>
+  page.evaluate(() => {
+    const style = getComputedStyle(document.documentElement);
+    return {
+      theme: document.documentElement.dataset.theme,
+      palette: document.documentElement.dataset.palette ?? null,
+      accent: style.getPropertyValue('--accent').trim(),
+      bg: style.getPropertyValue('--bg').trim(),
+      editor: getComputedStyle(document.querySelector('.monaco-editor .monaco-editor-background')).backgroundColor,
+    };
+  });
+const defaults = await look();
+expect(
+  defaults.theme === 'dark' && defaults.accent === '#58c4dc' && defaults.bg === '#16181d',
+  `по умолчанию — тёмная тема и «React» ${JSON.stringify(defaults)}`,
+);
+
+// Палитра: выбор в шапке меняет цвета сразу и сохраняется в localStorage (применяется до запуска приложения)
+const choosePalette = async (name) => {
+  await page.click('.palette summary');
+  await page.evaluate(
+    (name) => [...document.querySelectorAll('.palette-option')].find((b) => b.textContent.includes(name)).click(),
+    name,
+  );
+  await wait(200);
+};
+await choosePalette('Малиновая');
+expect((await look()).accent === '#ff5c7a', `выбрана «Малиновая» (тёмная): ${(await look()).accent}`);
+await page.reload({ waitUntil: 'domcontentloaded' });
+const early = await page.evaluate(() => document.documentElement.dataset.palette);
+await wait(2000);
+expect(
+  early === 'crimson' && (await look()).accent === '#ff5c7a',
+  `палитра сохранилась после перезагрузки и применена до запуска (${early})`,
+);
+await page.screenshot({ path: `${OUT}/platform-palette.png` });
+await choosePalette('React');
+expect((await look()).accent === '#58c4dc', 'обратно на «React»');
+
+// Тема: кнопка ☀/☾ в шапке переключает светлую и тёмную, вместе с редактором; выбор сохраняется
+await page.click('.theme-toggle');
+await wait(300);
+const lightLook = await look();
+expect(
+  lightLook.theme === 'light' && lightLook.bg === '#f6f7f9' && lightLook.editor !== defaults.editor,
+  `кнопка темы: тёмная → светлая, редактор тоже ${JSON.stringify(lightLook)}`,
+);
+await page.reload({ waitUntil: 'domcontentloaded' });
+const lightEarly = await page.evaluate(() => document.documentElement.dataset.theme);
+await wait(2500);
+expect(lightEarly === 'light', `светлая тема сохранилась и применена до запуска (${lightEarly})`);
+await page.click('.theme-toggle');
+await wait(300);
+expect((await look()).theme === 'dark', 'обратно на тёмную');
 
 // Кнопка «Формат» не меняет файлы уроков: на диске код в том же формате (shared/lesson-prettier.json, npm run chapter export)
 const formatCases = [[ROUTE, DEMO, ['catalog/Catalog.tsx', 'shared/GameCard.module.css', 'styles.css']]];

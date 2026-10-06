@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
 import type { BackendConfig, FileMap } from '../content/course';
+import { Loader } from '../app/Loader';
 import type { Diagnostic } from '../editor/monaco';
 
 export interface ConsoleEntry {
@@ -250,7 +251,9 @@ export function Preview({ run, initialUrl, backend, actions }: Props) {
         ) : run && frame ? (
           <iframe key={frame.key} ref={iframeRef} src="/preview.html" title="Результат" />
         ) : (
-          <div className="preview-empty">Компилируем…</div>
+          <div className="preview-empty">
+            <Loader label="Компилируем…" compact />
+          </div>
         )}
       </div>
       <div className="console">
