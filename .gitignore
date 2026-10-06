@@ -6,3 +6,5 @@ reference/
 public/vendor/
 public/preview.html
 .content-check/
+# Рабочие папки глав (git worktree веток chapter/*, см. scripts/chapter.mjs)
+authoring/

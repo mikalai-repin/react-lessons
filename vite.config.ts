@@ -14,6 +14,7 @@ export default defineConfig({
       'monaco-editor',
       'shiki/core',
       'shiki/engine/javascript',
+      '@shikijs/monaco',
       'shiki/themes/github-light.mjs',
       'shiki/themes/github-dark.mjs',
       'shiki/langs/tsx.mjs',

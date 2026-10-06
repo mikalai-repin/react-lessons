@@ -14,8 +14,10 @@
 |---|---|
 | Вкладки файлов | `.tsx`, `.ts`, `.css`, `.module.css`; порядок без `files`: `main.tsx`, `App.tsx`, затем по папкам; `X.tsx` и `X.module.css` рядом |
 | Консоль | Ссылки на `https://react.dev/errors/<код>` (минифицированные ошибки) и owner stack из предупреждений React. Значения: React-элементы — `<GameCard />`, хуки — как есть |
-| Подсветка | Monaco — встроенная грамматика `typescript` (JSX-теги подсвечиваются слабо — технический долг), темы `vs`/`vs-dark`. Shiki в тексте урока — `tsx`, `typescript`, `css`, `html`, `json`, `bash` (`ts` → `typescript`, `jsx` → `tsx`) |
+| Подсветка | Shiki и в редакторе, и в тексте урока: одинаковые грамматики VS Code и темы `github-light`/`github-dark`. В Monaco — `@shikijs/monaco`; грамматика TSX зарегистрирована под языком `typescript` (TS-воркер Monaco знает только его), до неё — ожидание встроенных ленивых грамматик (`monaco.editor.colorize`), иначе они перекрыли бы Shiki. В тексте урока — `tsx`, `typescript`, `css`, `html`, `json`, `bash` (`ts` → `typescript`, `jsx` → `tsx`) |
 | Дерево файлов | Значок `TSX` для `.tsx` |
+| Консоль: метка «TS» | Только ошибки типов (семантические диагностики TS-воркера); синтаксические — один раз, с меткой «Сборка» от компиляции |
+| Загрузка | Начальный чанк 374 КБ (119 КБ gzip): страница шага (`StepPage`, Monaco, Prettier, Shiki) — ленивый чанк ~1,6 МБ; `.d.ts` библиотек — отдельный чанк `src/editor/library-types.ts` (~2,1 МБ), грузится параллельно, диагностика его ждёт |
 | Типы в Monaco | `.d.ts` по настоящим путям `file:///node_modules/…` (`@types/react`, `@types/react-dom`, `csstype`, `react-router/dist/production`, `@tanstack/{react-query,query-core}/build/modern`, `zustand`) + заглушки `<подпуть>/index.d.ts` по полю `exports` (`typesOf` ищет условие `types` во вложенных условиях); `jsx: ReactJSX`, `skipLibCheck: true`; `declare module '*.module.css'` / `'*.css'` — как `vite/client` |
 | Вкладка «Тесты» | Этап 4 (глава 17): раннер с API Vitest + Testing Library |
 | Вкладка «Скомпилировано» | Этап 5: JS после TS для выбранного файла; с переключателем «React Compiler» — после Babel-плагина компилятора (главы 1, 16, 21) |
@@ -95,7 +97,7 @@
 
 ## Структура исходников (целевая)
 
-Совпадает с angular-learn (`src/app`, `src/lesson`, `src/editor`, `src/compiler`, `src/preview`, `src/content`, `src/progress`, `shared/`, `public/`, `scripts/`, `tools/e2e/`, `tools/authoring/`). Удаляется: `src/editor/angular-html.ts`, JIT-трансформ, `@angular/*` в `devDependencies`, Angular-специфичные пункты консоли (`NG0xxx`).
+Совпадает с angular-learn (`src/app`, `src/lesson`, `src/editor`, `src/compiler`, `src/preview`, `src/content`, `src/progress`, `shared/`, `public/`, `scripts/`, `tools/e2e/`). Удаляется: `src/editor/angular-html.ts`, JIT-трансформ, `@angular/*` в `devDependencies`, Angular-специфичные пункты консоли (`NG0xxx`).
 
 ## Подводные камни (известные заранее)
 

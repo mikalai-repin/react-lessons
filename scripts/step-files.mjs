@@ -2,8 +2,8 @@
 // (только у startFrom: custom; у первого шага главы — поверх результата шага прошлой главы из `base`),
 // solution/ — поверх старта, удаления — во frontmatter. Собирает шаги
 // shared/step-chain.js — тот же модуль, что у платформы (src/content/course.ts).
-// Используют валидатор (scripts/validate-content.mjs), браузерные проверки (tools/e2e/lib.mjs) и генераторы глав
-// (tools/authoring/steps.py → step_dir).
+// Используют валидатор (scripts/validate-content.mjs), браузерные проверки (tools/e2e/lib.mjs) и экспорт глав
+// (scripts/chapter.mjs).
 //
 // Выгрузить полный код шага в папку, чтобы посмотреть или прочитать его целиком:
 //   npm run step content/06-lifecycle/05-content-children/solution [папка=tools/e2e/out/step]
@@ -68,7 +68,7 @@ export function resolveChapterDir(chapterPath) {
   return result;
 }
 
-/** Хеш набора файлов — им frontmatter `baseHash` фиксирует базу первого шага главы (тот же алгоритм в steps.py) */
+/** Хеш набора файлов — им frontmatter `baseHash` фиксирует базу первого шага главы (пишет scripts/chapter.mjs export) */
 export function filesHash(files) {
   const hash = createHash('sha1');
   for (const name of Object.keys(files).sort()) hash.update(`${name}\0${files[name]}\0`);

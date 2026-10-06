@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router';
 import { allSteps, course, stepPath } from '../content/course';
 import { progress } from '../progress/storage';
-import { StepPage } from './StepPage';
+// Страница шага тянет Monaco, TypeScript-воркер и Prettier — грузим её отдельным чанком: шапка и оглавление
+// появляются сразу
+const StepPage = lazy(() => import('./StepPage').then((module) => ({ default: module.StepPage })));
 
 function Home() {
   const last = allSteps.find((step) => step.id === progress.getLastStep()) ?? allSteps[0];
@@ -57,7 +59,14 @@ export function App() {
         <main className="app-main">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/:chapter/:step" element={<StepPage />} />
+            <Route
+              path="/:chapter/:step"
+              element={
+                <Suspense fallback={<p className="page-loading">Загружаем редактор…</p>}>
+                  <StepPage />
+                </Suspense>
+              }
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

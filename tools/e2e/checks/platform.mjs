@@ -33,8 +33,6 @@ files['shared/GameCard.tsx'] = files['shared/GameCard.tsx'].replace(
   'const soldOut',
   "console.log('render GameCard');\n  const soldOut",
 );
-// Синтаксическая ошибка в файле, который приложение импортирует
-files['NotFound.tsx'] = files['NotFound.tsx'].replace('</h1>', '</h2>');
 
 await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle0' });
 await page.evaluate(
@@ -59,7 +57,24 @@ expect(
   missingTypes.length === 0,
   `Monaco находит типы react, react-router, query, zustand, *.module.css ${JSON.stringify(missingTypes.map((l) => l.text))}`,
 );
-expect(has('console-build', 'NotFound.tsx:'), 'синтаксическая ошибка — с меткой «Сборка» и именем файла');
+// Подсветка Shiki (грамматика TSX): у тега <article> в GameCard.tsx — свой цвет, не как у обычного текста
+const tab = await page.evaluateHandle(() =>
+  [...document.querySelectorAll('.tab')].find((t) => t.textContent.trim() === 'shared/GameCard.tsx'),
+);
+await tab.click();
+await wait(800);
+const colors = await page.evaluate(() => {
+  const spans = [...document.querySelectorAll('.monaco-editor .view-line span span')];
+  const color = (text) => {
+    const span = spans.find((s) => s.textContent === text);
+    return span ? getComputedStyle(span).color : null;
+  };
+  return { tag: color('article'), text: color(' ') ?? color('('), keyword: color('return') };
+});
+expect(
+  Boolean(colors.tag) && colors.tag !== colors.keyword && colors.tag !== colors.text,
+  `теги JSX подсвечены (Shiki): ${JSON.stringify(colors)}`,
+);
 const keyWarning = consoleLines.find((l) => l.cls.includes('console-error') && l.text.includes('unique "key"'));
 expect(Boolean(keyWarning), 'предупреждение React про key в консоли (printf-шаблон подставлен)');
 expect(
@@ -81,6 +96,28 @@ expect(
   `повторы схлопнуты в одну строку (×${renderCount}: 12 карточек × 2 рендера StrictMode)`,
 );
 await page.screenshot({ path: `${OUT}/platform-errors.png` });
+
+// Синтаксическая ошибка: как в Vite, приложение не запускается, ошибка — один раз, с меткой «Сборка»
+const broken = readDir(DEMO);
+broken['NotFound.tsx'] = broken['NotFound.tsx'].replace('</h1>', '</h2>');
+await page.evaluate(
+  (key, route, code) => localStorage.setItem(key, JSON.stringify({ steps: { [route]: { code } } })),
+  STORAGE_KEY,
+  ROUTE,
+  broken,
+);
+await page.goto(`${BASE_URL}/${ROUTE}`, { waitUntil: 'networkidle0' });
+await wait(3000);
+consoleLines = await lines();
+expect(has('console-build', 'NotFound.tsx:'), 'синтаксическая ошибка — с меткой «Сборка» и именем файла');
+expect(
+  consoleLines.filter((l) => l.text.includes('Expected corresponding JSX closing tag')).length === 1,
+  'синтаксическая ошибка в консоли один раз (без повтора с меткой TS)',
+);
+expect(
+  (await page.$('.preview iframe')) === null && (await page.$('.preview-build-failed')) !== null,
+  'при ошибке сборки приложение не запущено, в превью — подсказка',
+);
 
 // Тот же шаг без ошибок: адресная строка, заголовок вкладки, ссылки, сеть
 await page.evaluate(() => localStorage.clear());
@@ -146,7 +183,7 @@ expect(
 expect((await frameText()).includes('Не удалось загрузить каталог'), 'приложение показывает ошибку загрузки');
 await page.screenshot({ path: `${OUT}/platform-network.png` });
 
-// Кнопка «Формат» не меняет файлы уроков: на диске код в том же формате (shared/lesson-prettier.json, write_steps)
+// Кнопка «Формат» не меняет файлы уроков: на диске код в том же формате (shared/lesson-prettier.json, npm run chapter export)
 const formatCases = [[ROUTE, DEMO, ['catalog/Catalog.tsx', 'shared/GameCard.module.css', 'styles.css']]];
 for (const [route, dir, names] of formatCases) {
   await page.evaluate(() => localStorage.clear());

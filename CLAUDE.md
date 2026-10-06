@@ -57,9 +57,10 @@ shared/compile-core.js — компиляция шага: TSX → JS, CSS и CSS
 public/preview-runtime.js — среда выполнения кода ученика в iframe
 public/backend/       — учебный бэкенд (копия из angular-learn)
 public/assets/        — обложки игр (копия из angular-learn)
-scripts/              — copy-vendor (ESM-модули React и библиотек + import map; PREVIEW_MODULES), validate-content, step-files, build-covers
+scripts/              — chapter (глава = ветка git → content/), todo-markers (метки @todo), copy-vendor (ESM-модули React
+                        и библиотек + import map; PREVIEW_MODULES), validate-content, step-files, build-covers
 tools/e2e/            — проверки в headless Chrome (перенос из angular-learn)
-tools/authoring/      — генераторы шагов глав (chNN-gen.py) и steps.py (из angular-learn)
+authoring/<глава>/    — рабочие папки глав: git worktree веток chapter/<глава> (не в основной ветке, см. .gitignore)
 spikes/esm-preview/   — прототип этапа 0: React и библиотеки в iframe без сборщика (README — результаты и решения)
 ```
 
@@ -68,6 +69,7 @@ spikes/esm-preview/   — прототип этапа 0: React и библиот
 ## Команды
 
 - `npm run dev` — платформа на **http://localhost:5190** (5173/5174 — PixiJS, 5180 — Angular)
+- `npm run chapter new|open|status|export|fix|sync-base <глава>` — код шагов главы: ветка `chapter/<глава>` и рабочая папка `authoring/<глава>`, один коммит — один шаг; `export` раскладывает коммиты в `content/` (подробно — `docs/authoring-process.md`, раздел 2)
 - `npm run validate` — структура уроков, цепочка шагов, сборка и типы кода каждого шага
 - `npm run step <…/шаг/solution>` — выгрузить полный код шага
 - `npm run build` — проверка типов и продакшен-сборка
@@ -76,11 +78,11 @@ spikes/esm-preview/   — прототип этапа 0: React и библиот
 - `node tools/e2e/run-chapter.mjs <папка главы>`, `node tools/e2e/exp.mjs <папка> <сценарий.mjs> [адрес]` — как в angular-learn
 - `node tools/e2e/checks/preview.mjs` и `checks/platform.mjs` — проверки среды превью и интерфейса на демо-магазине шага 1.1 (после любых правок в `src/`, `public/`, `shared/`, `scripts/copy-vendor.mjs`)
 - Проверки требуют запущенного `npm run dev` и Chrome (`CHROME_PATH`, по умолчанию путь macOS). Другой адрес — `BASE_URL=http://localhost:5191`
-- Новая библиотека для превью: `PREVIEW_MODULES` в `scripts/copy-vendor.mjs` + точная версия в `package.json` + `.d.ts` в `src/editor/monaco.ts` (`typeFiles`, при необходимости `typedPackages`)
+- Новая библиотека для превью: `PREVIEW_MODULES` в `scripts/copy-vendor.mjs` + точная версия в `package.json` + `.d.ts` в `src/editor/library-types.ts` (`typeFiles`, при необходимости `typedPackages`)
 
 ## Текущий статус
 
-**Этапы 0 и 1 готовы** (2026-10-06): документация и план; спайк `spikes/esm-preview/`; платформа перенесена из angular-learn и работает на React 19.3 + react-router 8 + TanStack Query + Zustand, все проверки проходят в dev и на продакшен-сборке. **Следующий шаг — этап 2, глава 1 «Первое приложение»**: пошагово в `docs/roadmap.md`, раздел «Следующий шаг». Технический долг платформы — там же, «Технический долг этапа 1».
+**Этапы 0 и 1 готовы, глава 1 «Первое приложение» написана** (7 шагов, все утверждения проверены запуском — `checks/ch01-first-app.mjs`). Код глав пишется коммитами в ветках `chapter/*` (`scripts/chapter.mjs`). **Следующий шаг — глава 2 «JSX и разметка»**: пошагово в `docs/roadmap.md`, раздел «Следующий шаг».
 
 ## Пользователь и тон работы
 
@@ -92,6 +94,6 @@ spikes/esm-preview/   — прототип этапа 0: React и библиот
 
 1. Найти шаг в `docs/course-plan.md`, проверить, что уже известно ученику.
 2. Писать по `docs/writing-guide.md`; термины — по `docs/glossary.md`.
-3. Шаг хранит только изменения (`startFrom: previous` / `custom`, `base` + `baseHash`) — формат как в angular-learn, см. `docs/lesson-format.md`.
+3. **Код шагов — коммитами в ветке главы** (`authoring/<глава>/`, один коммит — один шаг, заготовки — метками `@todo … @end`), в `content/` его раскладывает `npm run chapter export`. `start/` и `solution/` в `content/` руками не правим; текст — прямо в `content/<глава>/<шаг>/lesson.md`. Процесс — `docs/authoring-process.md`, раздел 2.
 4. **Факты об API — по типам и исходникам установленных версий в `node_modules`, а не по памяти.** В памяти модели и в интернете очень много React 16–18 (классы, `forwardRef`, `useEffect` для данных, CRA, React Router 5/6, antd 4/5, React Query 3/4, Redux без Toolkit). Проверенное — в `docs/modern-react.md`.
 5. Каждое утверждение и эксперимент из текста проверять запуском (`tools/e2e/run-dir.mjs`). Особенно: «сколько раз отрендерится», «в каком порядке сработают эффекты», «отменится ли запрос» — только по логу.

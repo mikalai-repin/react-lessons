@@ -75,6 +75,8 @@ export async function openPreview(
       if (e.data.type === 'url') window.__url = e.data.url;
     });
   }, SOURCE);
+  // Как платформа: с ошибкой сборки (синтаксис) приложение не запускается — ошибка только в logs
+  if (compiled.errors.length > 0) return { page, logs, network };
   await page.evaluate((run) => window.postMessage({ type: 'run', entry: 'main.js', ...run }, '*'), {
     files: compiled.files,
     sources: compiled.sources,

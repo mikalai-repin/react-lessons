@@ -13,6 +13,11 @@
 | props | props (пропсы) | в тексте — «props», мн. ч.: «передать в props», «проп `game`» |
 | children | `children`, дочерние элементы | |
 | root | корень | `createRoot` |
+| entry point | точка входа | `main.tsx` |
+| global styles | глобальные стили | `styles.css`, импорт в `main.tsx` |
+| CSS Modules | CSS Modules (модули CSS) | `X.module.css`, `className={styles.x}` |
+| stack trace | стек вызовов | строки `at …` в ошибке |
+| syntax error / type error / runtime error | синтаксическая ошибка / ошибка типов / ошибка во время выполнения | метки консоли «Сборка» / «TS» / без метки |
 | render | рендер, отрисовка | «рендер» — вызов компонента; «отрисовка» — изменения на экране |
 | re-render | повторный рендер, перерисовка | |
 | commit | фиксация (commit) | фаза, когда React меняет DOM |

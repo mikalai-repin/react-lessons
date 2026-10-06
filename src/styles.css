@@ -893,6 +893,13 @@ button {
   font-size: 14px;
 }
 
+/* Сборка не прошла: приложение не запускаем (как оверлей ошибки Vite) */
+.preview-build-failed {
+  padding: 24px;
+  color: #c3002f;
+  text-align: center;
+}
+
 .console {
   display: flex;
   flex-direction: column;
@@ -1171,5 +1178,11 @@ button {
 
 .empty-course {
   padding: 32px;
+  color: var(--text-muted);
+}
+
+/* Пока грузится чанк страницы шага (редактор) */
+.page-loading {
+  padding: 24px;
   color: var(--text-muted);
 }

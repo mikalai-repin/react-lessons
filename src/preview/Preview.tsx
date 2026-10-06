@@ -241,7 +241,13 @@ export function Preview({ run, initialUrl, backend, actions }: Props) {
         {actions}
       </form>
       <div className="preview-frame">
-        {run && frame ? (
+        {run && frame && run.buildErrors.length > 0 ? (
+          // Как Vite в настоящем проекте: код с синтаксической ошибкой не запускается (TypeScript собрал бы
+          // «что получилось», и на экране было бы непонятно что), ошибка — в консоли с меткой «Сборка»
+          <div className="preview-empty preview-build-failed">
+            Сборка не прошла — приложение не запущено. Исправьте ошибку из консоли (метка «Сборка»).
+          </div>
+        ) : run && frame ? (
           <iframe key={frame.key} ref={iframeRef} src="/preview.html" title="Результат" />
         ) : (
           <div className="preview-empty">Компилируем…</div>

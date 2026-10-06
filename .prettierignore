@@ -9,7 +9,7 @@ reference/
 spikes/
 package-lock.json
 # Markdown не форматируем: Prettier разворачивает списки во frontmatter уроков (files: […]) в многострочный YAML,
-# а tools/authoring/steps.py читает removedInStart/removedInSolution построчно
+# а scripts/chapter.mjs правит поля frontmatter построчно
 *.md
 # Намеренно сломанный старт шага про отладку (brokenStart)
 content/01-first-app/06-debugging/start/
