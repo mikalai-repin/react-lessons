@@ -1,0 +1,10 @@
+{
+  "name": "react-esm-preview-spike",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "vendor": "node build-vendor.mjs",
+    "serve": "python3 -m http.server 8766",
+    "check": "node run.mjs"
+  }
+}
