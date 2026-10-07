@@ -60,6 +60,29 @@ export interface Chapter {
   description: string;
   part: number;
   steps: Step[];
+  /** Квиз по главе (quiz.yaml в папке главы); глава пройдена, когда квиз сдан */
+  quiz?: Quiz;
+}
+
+/** Вопрос квиза: тексты — markdown, первый вариант в options — правильный (на экране варианты перемешиваются) */
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  explanation: string;
+  /** Папка шага главы, к которому относится вопрос: '03-render' */
+  step: string;
+}
+
+export interface Quiz {
+  questions: QuizQuestion[];
+}
+
+/** Доля правильных ответов, с которой квиз сдан */
+export const QUIZ_PASS_RATE = 0.85;
+
+/** Сколько правильных ответов нужно для зачёта: 13 вопросов → 12 */
+export function quizPassScore(total: number): number {
+  return Math.ceil(total * QUIZ_PASS_RATE);
 }
 
 export interface Course {
@@ -183,6 +206,9 @@ function loadCourse(): Course {
     lessons.forEach(({ stepDir, meta }, index) =>
       results.set(`${chapterDir}/${stepDir}`, stepResult(meta, resolved[index])),
     );
+    const quizPath = `${prefix}quiz.yaml`;
+    if (raw[quizPath] !== undefined) chapter.quiz = parseYaml(raw[quizPath]) as Quiz;
+
     chapter.steps = lessons.map(({ stepDir, meta, body }, index): Step => {
       const { start, solution } = resolved[index];
       return {
@@ -223,6 +249,22 @@ export function neighbours(step: Step): { prev?: Step; next?: Step } {
 
 export function stepPath(step: Step): string {
   return `/${step.chapter.slug}/${step.slug}`;
+}
+
+export function quizPath(chapter: Chapter): string {
+  return `/${chapter.slug}/quiz`;
+}
+
+export function findChapter(slug?: string): Chapter | undefined {
+  return course.chapters.find((chapter) => chapter.slug === slug);
+}
+
+/** Куда ведёт «Далее» с шага: после последнего шага главы — на квиз главы, иначе — на следующий шаг */
+export function nextPath(step: Step): string | undefined {
+  const isLast = step.index === step.chapter.steps.length - 1;
+  if (isLast && step.chapter.quiz) return quizPath(step.chapter);
+  const { next } = neighbours(step);
+  return next && stepPath(next);
 }
 
 /** «02-templates/02-property-binding» → шаг; используется для ссылок `step:` в markdown */

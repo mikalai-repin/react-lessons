@@ -12,6 +12,8 @@ import { filesHash, readResult, resolveChapterDir, writeFiles } from './step-fil
 const root = join(import.meta.dirname, '..', 'content');
 const checkDir = join(import.meta.dirname, '..', '.content-check');
 const errors = [];
+const QUIZ_MIN = 10;
+const QUIZ_MAX = 15;
 const warnings = [];
 
 const isDir = (path) => existsSync(path) && statSync(path).isDirectory();
@@ -125,6 +127,42 @@ for (const [chapterIndex, chapterDir] of course.chapters.entries()) {
       writeFiles(join(checkDir, chapterDir, stepDir, kind), files);
     }
     previousResult = meta.noSolution ? start : solution;
+  }
+
+  checkQuiz(chapterDir, chapterPath, new Set(steps.map((step) => step.path.split('/').at(-1))));
+}
+
+// Квиз главы (quiz.yaml): 10–15 вопросов, у каждого 3–5 разных вариантов (первый — правильный), пояснение и шаг главы
+function checkQuiz(chapterDir, chapterPath, stepDirs) {
+  const where = `${chapterDir}/quiz.yaml`;
+  const path = join(chapterPath, 'quiz.yaml');
+  if (!existsSync(path)) {
+    errors.push(`${chapterDir}: нет quiz.yaml — квиза по главе`);
+    return;
+  }
+  let quiz;
+  try {
+    quiz = parseYaml(readFileSync(path, 'utf8'));
+  } catch (error) {
+    errors.push(`${where}: ошибка YAML: ${error.message.split('\n')[0]}`);
+    return;
+  }
+  const questions = Array.isArray(quiz?.questions) ? quiz.questions : [];
+  if (questions.length < QUIZ_MIN || questions.length > QUIZ_MAX)
+    errors.push(`${where}: вопросов ${questions.length}, нужно от ${QUIZ_MIN} до ${QUIZ_MAX}`);
+  const texts = new Set();
+  for (const [index, q] of questions.entries()) {
+    const at = `${where}, вопрос ${index + 1}`;
+    const isText = (value) => typeof value === 'string' && value.trim() !== '';
+    if (!isText(q?.question)) errors.push(`${at}: нет question`);
+    else if (texts.has(q.question.trim())) errors.push(`${at}: такой вопрос уже есть`);
+    else texts.add(q.question.trim());
+    if (!isText(q?.explanation)) errors.push(`${at}: нет explanation`);
+    if (!stepDirs.has(q?.step)) errors.push(`${at}: step ${q?.step} — нет такого шага в главе`);
+    const options = Array.isArray(q?.options) ? q.options : [];
+    if (options.length < 3 || options.length > 5) errors.push(`${at}: вариантов ${options.length}, нужно от 3 до 5`);
+    if (!options.every(isText)) errors.push(`${at}: каждый вариант — непустая строка`);
+    else if (new Set(options.map((o) => o.trim())).size !== options.length) errors.push(`${at}: варианты повторяются`);
   }
 }
 

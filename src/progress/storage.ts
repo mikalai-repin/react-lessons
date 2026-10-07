@@ -10,8 +10,18 @@ interface StepProgress {
   done?: boolean;
 }
 
+/** Лучшая попытка квиза главы */
+export interface QuizResult {
+  correct: number;
+  total: number;
+  /** Сдан ли квиз (≥ 85 %, см. quizPassScore) — тогда глава пройдена */
+  passed: boolean;
+}
+
 interface Progress {
   steps: Record<string, StepProgress>;
+  /** Квизы глав: slug главы → лучший результат */
+  quizzes?: Record<string, QuizResult>;
   lastStep?: string;
   autorun?: boolean;
   /** Открыто ли дерево файлов рядом с редактором */
@@ -60,6 +70,21 @@ export const progress = {
 
   isDone: (stepId: string) => Boolean(state.steps[stepId]?.done),
   setDone: (stepId: string) => updateStep(stepId, { done: true }),
+
+  getQuiz: (chapterSlug: string): QuizResult | undefined => state.quizzes?.[chapterSlug],
+  /** Сохраняет попытку, если она лучше прежней (сданная попытка всегда лучше несданной) */
+  saveQuiz: (chapterSlug: string, result: QuizResult) => {
+    const best = state.quizzes?.[chapterSlug];
+    const isBetter =
+      !best ||
+      (result.passed && !best.passed) ||
+      (result.passed === best.passed && result.correct / result.total > best.correct / best.total);
+    if (!isBetter) return;
+    state.quizzes = { ...state.quizzes, [chapterSlug]: result };
+    write();
+  },
+  /** Глава пройдена, когда сдан её квиз */
+  isChapterDone: (chapterSlug: string) => Boolean(state.quizzes?.[chapterSlug]?.passed),
 
   getLastStep: () => state.lastStep,
   setLastStep: (stepId: string) => {

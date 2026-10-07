@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import { useNavigate } from 'react-router';
-import { stepPath, type Step } from '../content/course';
+import { quizPath, stepPath, type Step } from '../content/course';
 import { renderMarkdown } from './markdown';
 
 interface Props {
   step: Step;
   prev?: Step;
-  next?: Step;
+  /** Куда ведёт «Далее»: следующий шаг или квиз главы (src/content/course.ts, nextPath) */
+  nextPath?: string;
   hasSolution: boolean;
   hasBackup: boolean;
   onShowSolution: () => void;
@@ -20,7 +21,7 @@ interface Props {
 export function LessonPanel({
   step,
   prev,
-  next,
+  nextPath,
   hasSolution,
   hasBackup,
   onShowSolution,
@@ -110,14 +111,14 @@ export function LessonPanel({
         </div>
         <button
           className="button primary"
-          disabled={!next}
+          disabled={!nextPath}
           onClick={() => {
-            if (!next) return;
+            if (!nextPath) return;
             onNext();
-            navigate(stepPath(next));
+            navigate(nextPath);
           }}
         >
-          Далее →
+          {nextPath === quizPath(step.chapter) ? 'Квиз →' : 'Далее →'}
         </button>
       </footer>
     </div>

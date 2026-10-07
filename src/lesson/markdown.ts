@@ -152,3 +152,10 @@ export async function renderMarkdown(source: string): Promise<string> {
   const md = await mdPromise;
   return md.render(source);
 }
+
+/** Строчный markdown без абзаца вокруг — для вариантов ответа квиза */
+export async function renderMarkdownInline(source: string): Promise<string> {
+  mdPromise ??= getHighlighter().then(createMarkdown);
+  const md = await mdPromise;
+  return md.renderInline(source);
+}
