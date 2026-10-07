@@ -45,7 +45,7 @@
 
 - ✅ Оформление платформы: палитры на выбор («React» — по умолчанию, «Малиновая», «Фиолетовая», «Изумрудная»), кнопка светлой/тёмной темы (по умолчанию тёмная), выбор хранится в `localStorage`; липкая строка главы с «Свернуть», загрузчик-атом, своя тема подсветки (2026-10-07; `checks/platform.mjs` проверяет цвета подсветки и выбор палитры с перезагрузкой)
 - ✅ Глава 1. Первое приложение (7 шагов; утверждения и эксперименты проверены запуском и `tsc`; `checks/ch01-first-app.mjs`; найдено и исправлено: превью запускало код с синтаксической ошибкой — теперь нет, как в Vite)
-- ⬜ Глава 2. JSX и разметка
+- ✅ Глава 2. JSX и разметка (8 шагов, 2026-10-07; `checks/ch02-jsx.mjs` — 35 проверок; найдено и исправлено: `chapter export` игнорировал метки `@todo` у шага с коммитом `start`; проверено: React 19 блокирует `javascript:` только в своих атрибутах, `dangerouslySetInnerHTML` HTML не чистит)
 - ⬜ Глава 3. Компоненты и props
 - ⬜ Вычитка: тексты понятны человеку без опыта в React
 
@@ -106,10 +106,10 @@
 
 ## Следующий шаг
 
-**Глава 2 «JSX и разметка»** по `docs/course-plan.md` (2.1–2.6 + практикум «Карточка игры» + «Под капотом: почему key») и процессу `docs/authoring-process.md`.
+**Глава 3 «Компоненты и props»** по `docs/course-plan.md` (3.1–3.6 + практикум `Rating` + «Под капотом: дерево элементов и дерево компонентов») и процессу `docs/authoring-process.md`.
 
-1. Прочитать `CLAUDE.md`, `docs/authoring-process.md` (раздел 2 — ветка главы, «Фактическое состояние» главы 1), `docs/writing-guide.md`, `docs/glossary.md`, `docs/modern-react.md`; главу 1 целиком (`content/01-first-app/*/lesson.md`) — тон и что ученик уже знает; для сравнения — главы 2 и 4 angular-learn.
-2. `npm run chapter new 02-jsx -- --title "JSX и разметка" --description "…"` — база: результат шага `01-first-app/07-jsx` (= решение 1.6).
-3. Первый шаг главы (свой старт): `api/models.ts` (тип `Game` — как в демо шага 1.1 и в `project-app.md`) и данные одной-нескольких игр локальным массивом (`data/games.ts`, обложки `/assets/covers/<slug>.svg` — слаги из `public/backend/data/games.json`). Цены — `formatPrice` (`Intl.NumberFormat('ru-RU')`) в `shared/format.ts`, когда понадобятся.
-4. Ключевые эксперименты для проверки запуском: `{0 && …}` рисует `0`; `undefined`/`null`/`false` не рисуются; `style={{ … }}` и `className`; `dangerouslySetInnerHTML` и что React 19 делает с `javascript:` в `href` (проверить!); предупреждение про `key` и эксперимент с индексом и полем ввода (сверка списков).
-5. После каждого шага — `npm run chapter export 02-jsx`, `npm run validate`; в конце — `run-chapter`, `checks/ch02-jsx.mjs`, `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.
+1. Прочитать `CLAUDE.md`, `docs/authoring-process.md` (раздел 2 и «Фактическое состояние» глав 1–2 — особенно «Опоры для главы 3»), `docs/writing-guide.md`, `docs/modern-react.md`; главу 2 целиком (`content/02-jsx/*/lesson.md`) — что ученик уже знает; для сравнения — глава 5 angular-learn («Компоненты»).
+2. `npm run chapter new 03-components -- --title "Компоненты и props" --description "…"` — база: результат `02-jsx/08-practice`.
+3. 3.1: вынести карточку из `App.tsx` в `shared/GameCard.tsx` + `GameCard.module.css` (классы карточки переезжают из `App.module.css`); 3.2 — props `game`, типизация `type GameCardProps`, деструктуризация, значения по умолчанию; показать, что `key` не попадает в props (проверить текст предупреждения React 19 запуском). Полоска рейтинга → `Rating` (практикум), бейджи → props-элементы (3.4), кнопка-обёртка с `ComponentProps<'button'>` (3.6).
+4. Проверить запуском до текста: чтение `props.key` (предупреждение?), изменение props (`Object.isFrozen(props)` — проверить в dev), `children` разных типов, `React.FC` против функции (в `@types/react` 19.3 — без неявного `children`), что пишет React при передаче функции-компонента без вызова.
+5. После каждого шага — `npm run chapter export 03-components`, `npm run validate`; в конце — `node tools/e2e/run-chapter.mjs 03-components`, `checks/ch03-components.mjs`, `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.

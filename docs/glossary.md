@@ -27,6 +27,12 @@
 | composition | композиция | |
 | one-way data flow | однонаправленный поток данных | |
 | owner stack | стек владельцев | |
+| conditional rendering | условный рендер | `&&`, `? :`, ранний `return` |
+| key | ключ (`key`) | «ключ элемента списка» |
+| Fragment | фрагмент | `<>…</>`, `<Fragment key>` |
+| escaping | экранирование | выражения в JSX вставляются как текст |
+| XSS (cross-site scripting) | XSS (межсайтовый скриптинг) | |
+| sanitization | очистка (санитизация) | React HTML не очищает — DOMPurify |
 
 ## Состояние и хуки
 

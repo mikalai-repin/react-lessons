@@ -237,18 +237,17 @@ function buildSteps({ base, steps }) {
       const tree = readTree(step.solution);
       const parent = readTree(previousCommit);
       solution = mapFiles(tree, toSolution);
-      if (!step.start) {
-        // Новые метки @todo шага → старт с заготовками; без новых меток старт — результат предыдущего шага
-        const derived = {};
-        for (const [file, code] of Object.entries(tree)) {
-          const converted = toStart(code, file, file in parent ? markerKeys(parent[file], file) : new Set());
-          derived[file] = converted.code;
-          todos += converted.todos;
-        }
-        if (todos > 0) {
-          start = derived;
-          custom = true;
-        }
+      // Новые метки @todo шага → старт с заготовками (поверх коммита «start», если он есть); без новых меток
+      // старт — коммит «start» или результат предыдущего шага
+      const derived = {};
+      for (const [file, code] of Object.entries(tree)) {
+        const converted = toStart(code, file, file in parent ? markerKeys(parent[file], file) : new Set());
+        derived[file] = converted.code;
+        todos += converted.todos;
+      }
+      if (todos > 0) {
+        start = derived;
+        custom = true;
       }
       previousCommit = step.solution;
     }

@@ -64,7 +64,7 @@ authoring/<глава>/    — рабочие папки глав: git worktree 
 spikes/esm-preview/   — прототип этапа 0: React и библиотеки в iframe без сборщика (README — результаты и решения)
 ```
 
-Глава в `content/` пока одна — `01-first-app` с демо-магазином шага 1.1 (на нём работают проверки платформы).
+В `content/` главы `01-first-app` (с демо-магазином шага 1.1 — на нём работают проверки платформы) и `02-jsx`.
 
 ## Команды
 
@@ -75,14 +75,14 @@ spikes/esm-preview/   — прототип этапа 0: React и библиот
 - `npm run build` — проверка типов и продакшен-сборка
 - `npx prettier --check .` — форматирование (код уроков — как кнопка «Формат»: `shared/lesson-prettier.json`, ширина 64)
 - `node tools/e2e/run-dir.mjs <папка шага> [адрес] [мс]` — код шага в чистом превью: консоль, запросы, адрес, текст, скриншот в `tools/e2e/out/`
-- `node tools/e2e/run-chapter.mjs <папка главы>`, `node tools/e2e/exp.mjs <папка> <сценарий.mjs> [адрес]` — как в angular-learn
+- `node tools/e2e/run-chapter.mjs <глава>`, `node tools/e2e/exp.mjs <папка> <сценарий.mjs> [адрес]` — как в angular-learn
 - `node tools/e2e/checks/preview.mjs` и `checks/platform.mjs` — проверки среды превью и интерфейса на демо-магазине шага 1.1 (после любых правок в `src/`, `public/`, `shared/`, `scripts/copy-vendor.mjs`)
 - Проверки требуют запущенного `npm run dev` и Chrome (`CHROME_PATH`, по умолчанию путь macOS). Другой адрес — `BASE_URL=http://localhost:5191`
 - Новая библиотека для превью: `PREVIEW_MODULES` в `scripts/copy-vendor.mjs` + точная версия в `package.json` + `.d.ts` в `src/editor/library-types.ts` (`typeFiles`, при необходимости `typedPackages`)
 
 ## Текущий статус
 
-**Этапы 0 и 1 готовы, глава 1 «Первое приложение» написана** (7 шагов, все утверждения проверены запуском — `checks/ch01-first-app.mjs`). Код глав пишется коммитами в ветках `chapter/*` (`scripts/chapter.mjs`). **Следующий шаг — глава 2 «JSX и разметка»**: пошагово в `docs/roadmap.md`, раздел «Следующий шаг».
+**Этапы 0 и 1 готовы, главы 1 «Первое приложение» (7 шагов) и 2 «JSX и разметка» (8 шагов) написаны**; все утверждения проверены запуском — `checks/ch01-first-app.mjs`, `checks/ch02-jsx.mjs`. Код глав пишется коммитами в ветках `chapter/*` (`scripts/chapter.mjs`). **Следующий шаг — глава 3 «Компоненты и props»**: пошагово в `docs/roadmap.md`, раздел «Следующий шаг».
 
 ## Пользователь и тон работы
 
