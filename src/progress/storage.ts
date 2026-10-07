@@ -18,6 +18,10 @@ interface Progress {
   fileTree?: boolean;
   /** Свёрнутые панели рабочей области (урок, код, результат) */
   collapsed?: string[];
+  /** Цветовая палитра платформы (src/app/palettes.ts); её же читает скрипт в index.html до запуска приложения */
+  palette?: string;
+  /** Тема: light | dark (src/app/theme.ts, по умолчанию dark); её же читает скрипт в index.html до запуска */
+  theme?: string;
 }
 
 // localStorage может быть недоступен (приватный режим, запрет сайта) — тогда работаем без сохранения
@@ -78,6 +82,18 @@ export const progress = {
   getCollapsed: () => state.collapsed ?? [],
   setCollapsed: (value: string[]) => {
     state.collapsed = value;
+    write();
+  },
+
+  getPalette: () => state.palette,
+  setPalette: (value: string) => {
+    state.palette = value;
+    write();
+  },
+
+  getTheme: () => state.theme,
+  setTheme: (value: string) => {
+    state.theme = value;
     write();
   },
 

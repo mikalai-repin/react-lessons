@@ -2,7 +2,7 @@
 // shared/step-chain.js) и сборка кода шага тем же модулем, что и превью (ловит синтаксические ошибки).
 // Импорты относительных файлов, которых нет, и неверный регистр имён ловит tsc. Полный код каждого старта и решения выгружает в .content-check/ — там типы проверяет
 // `tsc -p .content-check/tsconfig.json` (второй шаг npm run validate).
-import { existsSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import ts from 'typescript';
 import { parse as parseYaml } from 'yaml';
@@ -82,7 +82,7 @@ for (const [chapterIndex, chapterDir] of course.chapters.entries()) {
         if (String(meta.baseHash) !== actual) {
           errors.push(
             `${where}: база ${meta.base} изменилась (baseHash ${meta.baseHash}, сейчас ${actual}) — ` +
-              `проверьте, что изменения подходят главе, и перезапустите её генератор`,
+              `проверьте, что изменения подходят главе: npm run chapter sync-base ${chapterDir}, затем export`,
           );
         }
       }
@@ -134,10 +134,7 @@ writeFileSync(
   JSON.stringify({ extends: '../tsconfig.content.json', include: ['**/*.ts', '**/*.tsx'] }, null, 2) + '\n',
 );
 // Импорт стилей — как vite/client в настоящем проекте
-writeFileSync(
-  join(checkDir, 'env.d.ts'),
-  "declare module '*.module.css' {\n  const classes: { readonly [key: string]: string };\n  export default classes;\n}\ndeclare module '*.css' {}\n",
-);
+copyFileSync(join(import.meta.dirname, '..', 'shared', 'course-env.d.ts'), join(checkDir, 'env.d.ts'));
 
 for (const warning of warnings) console.warn(`⚠ ${warning}`);
 for (const error of errors) console.error(`✗ ${error}`);

@@ -15,9 +15,11 @@
     "step": "node scripts/step-files.mjs",
     "covers": "node scripts/build-covers.mjs",
     "e2e:dir": "node tools/e2e/run-dir.mjs",
-    "e2e:chapter": "node tools/e2e/run-chapter.mjs"
+    "e2e:chapter": "node tools/e2e/run-chapter.mjs",
+    "chapter": "node scripts/chapter.mjs"
   },
   "dependencies": {
+    "@shikijs/monaco": "4.5.0",
     "es-module-lexer": "3.0.3",
     "markdown-it": "15.0.2",
     "markdown-it-container": "4.0.0",

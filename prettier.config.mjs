@@ -1,6 +1,6 @@
-// Настройки Prettier проекта. Код уроков (content/) форматируется так же, как кнопка «Формат» в редакторе
+// Настройки Prettier проекта. Код уроков (content/ и рабочие папки глав authoring/) форматируется так же, как кнопка «Формат» в редакторе
 // платформы: настройки общие — shared/lesson-prettier.json (их же читают src/editor/monaco.ts и
-// tools/authoring/steps.py). Остальной код проекта — ширина 120.
+// scripts/chapter.mjs). Остальной код проекта — ширина 120.
 import { readFileSync } from 'node:fs';
 
 const lesson = JSON.parse(readFileSync(new URL('./shared/lesson-prettier.json', import.meta.url), 'utf8'));
@@ -9,5 +9,5 @@ export default {
   printWidth: 120,
   singleQuote: true,
   trailingComma: 'all',
-  overrides: [{ files: 'content/**/*.{ts,tsx,css}', options: lesson }],
+  overrides: [{ files: '{content,authoring}/**/*.{ts,tsx,css}', options: lesson }],
 };

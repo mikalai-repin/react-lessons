@@ -14,8 +14,13 @@
 |---|---|
 | Вкладки файлов | `.tsx`, `.ts`, `.css`, `.module.css`; порядок без `files`: `main.tsx`, `App.tsx`, затем по папкам; `X.tsx` и `X.module.css` рядом |
 | Консоль | Ссылки на `https://react.dev/errors/<код>` (минифицированные ошибки) и owner stack из предупреждений React. Значения: React-элементы — `<GameCard />`, хуки — как есть |
-| Подсветка | Monaco — встроенная грамматика `typescript` (JSX-теги подсвечиваются слабо — технический долг), темы `vs`/`vs-dark`. Shiki в тексте урока — `tsx`, `typescript`, `css`, `html`, `json`, `bash` (`ts` → `typescript`, `jsx` → `tsx`) |
+| Подсветка | Shiki и в редакторе, и в тексте урока: одинаковые грамматики VS Code и темы курса `course-light`/`course-dark` (`src/editor/course-themes.ts`: цвета React; тег HTML, компонент, атрибут, тип — разными цветами). В Monaco — `@shikijs/monaco`; грамматика TSX зарегистрирована под языком `typescript` (TS-воркер Monaco знает только его), до неё — ожидание встроенных ленивых грамматик (`monaco.editor.colorize`), иначе они перекрыли бы Shiki. В тексте урока — `tsx`, `typescript`, `css`, `html`, `json`, `bash` (`ts` → `typescript`, `jsx` → `tsx`) |
 | Дерево файлов | Значок `TSX` для `.tsx` |
+| Консоль: метка «TS» | Только ошибки типов (семантические диагностики TS-воркера); синтаксические — один раз, с меткой «Сборка» от компиляции |
+| Оформление | Палитры на выбор (кнопка «Палитра» в шапке, `src/app/Appearance.tsx`): «React» (по умолчанию: блок с `:root` в `src/styles.css` идёт первым, базовые цвета загрузчика в `index.html` — её; цвета react.dev `#087ea4` / `#58c4dc`), «Малиновая» (прежняя), «Фиолетовая», «Изумрудная» — по две схемы, светлая и тёмная (тёмная — `[data-theme='dark'][data-palette='…']`), переменные под `[data-palette='…']` в `src/styles.css` (их получает и любой элемент с атрибутом — так образцы в меню показывают свои цвета). Выбор — `palette` в `localStorage` (`react-course:v1`); скрипт в `index.html` ставит `data-palette` и `data-theme` до запуска приложения, там же цвета загрузчика для каждой палитры. Новая палитра — в трёх местах: `PALETTES`, `src/styles.css`, `index.html`. Логотип-атом (цвет `--react`) в шапке и `favicon.svg`. Загрузчик — атом с электронами (`src/app/Loader.tsx`): в `index.html` до запуска JavaScript, пока грузится редактор (`Suspense`) и пока компилируется превью; при `prefers-reduced-motion` без анимации. Магазин «Ход конём» в коде уроков остаётся красным — это приложение ученика |
+| Тема | Кнопка ☀/☾ в шапке переключает светлую и тёмную (`src/app/theme.ts`, `progress.theme`); **по умолчанию — тёмная**. На `<html>` — `data-theme="light|dark"` (скрипт в `index.html` ставит его до запуска); стили — `[data-theme='dark']`, редактор следит за атрибутом (`MutationObserver` в `monaco.ts`). Системная настройка не учитывается — только выбор кнопкой. Превью приложения ученика всегда светлое |
+| Панель урока | Строка «Глава N…» с кнопкой «Свернуть» — липкая (`position: sticky` прямо в `.lesson-scroll`; `top` с поправкой на верхний отступ панели), при прокрутке под ней появляется граница (класс `scrolled`) |
+| Загрузка | Начальный чанк 374 КБ (119 КБ gzip): страница шага (`StepPage`, Monaco, Prettier, Shiki) — ленивый чанк ~1,6 МБ; `.d.ts` библиотек — отдельный чанк `src/editor/library-types.ts` (~2,1 МБ), грузится параллельно, диагностика его ждёт |
 | Типы в Monaco | `.d.ts` по настоящим путям `file:///node_modules/…` (`@types/react`, `@types/react-dom`, `csstype`, `react-router/dist/production`, `@tanstack/{react-query,query-core}/build/modern`, `zustand`) + заглушки `<подпуть>/index.d.ts` по полю `exports` (`typesOf` ищет условие `types` во вложенных условиях); `jsx: ReactJSX`, `skipLibCheck: true`; `declare module '*.module.css'` / `'*.css'` — как `vite/client` |
 | Вкладка «Тесты» | Этап 4 (глава 17): раннер с API Vitest + Testing Library |
 | Вкладка «Скомпилировано» | Этап 5: JS после TS для выбранного файла; с переключателем «React Compiler» — после Babel-плагина компилятора (главы 1, 16, 21) |
@@ -95,7 +100,7 @@
 
 ## Структура исходников (целевая)
 
-Совпадает с angular-learn (`src/app`, `src/lesson`, `src/editor`, `src/compiler`, `src/preview`, `src/content`, `src/progress`, `shared/`, `public/`, `scripts/`, `tools/e2e/`, `tools/authoring/`). Удаляется: `src/editor/angular-html.ts`, JIT-трансформ, `@angular/*` в `devDependencies`, Angular-специфичные пункты консоли (`NG0xxx`).
+Совпадает с angular-learn (`src/app`, `src/lesson`, `src/editor`, `src/compiler`, `src/preview`, `src/content`, `src/progress`, `shared/`, `public/`, `scripts/`, `tools/e2e/`). Удаляется: `src/editor/angular-html.ts`, JIT-трансформ, `@angular/*` в `devDependencies`, Angular-специфичные пункты консоли (`NG0xxx`).
 
 ## Подводные камни (известные заранее)
 

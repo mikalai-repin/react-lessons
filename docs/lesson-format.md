@@ -1,8 +1,10 @@
 # Формат уроков
 
-Формат **тот же, что в `../angular-learn/docs/lesson-format.md`** — прочитать его целиком: структура `content/`, `course.json`, `chapter.json`, frontmatter, «шаг хранит только изменения» (`startFrom: previous | custom`, `base` + `baseHash`, `removedInStart`/`removedInSolution`), контейнеры markdown (`tip`, `warning`, `deep`, `legacy`, `task`, `hint`), блоки кода с именем файла и подсветкой строк, `check.ts`, тесты в шаге. `shared/step-chain.js`, `scripts/step-files.mjs`, `scripts/validate-content.mjs` и `tools/authoring/steps.py` переносятся без изменений логики.
+Формат **тот же, что в `../angular-learn/docs/lesson-format.md`** — прочитать его целиком: структура `content/`, `course.json`, `chapter.json`, frontmatter, «шаг хранит только изменения» (`startFrom: previous | custom`, `base` + `baseHash`, `removedInStart`/`removedInSolution`), контейнеры markdown (`tip`, `warning`, `deep`, `legacy`, `task`, `hint`), блоки кода с именем файла и подсветкой строк, `check.ts`, тесты в шаге. `shared/step-chain.js`, `scripts/step-files.mjs`, `scripts/validate-content.mjs` перенесены без изменений логики; вместо `tools/authoring/steps.py` и генераторов глав — `scripts/chapter.mjs`.
 
 Ниже — только отличия для React.
+
+**Главное отличие в процессе:** папки `start/` и `solution/` шагов (и поля frontmatter `startFrom`, `noSolution`, `base`, `baseHash`, `removedInStart`, `removedInSolution`) не пишутся руками и не генерируются Python-скриптом — их раскладывает `npm run chapter export` из коммитов ветки главы (`docs/authoring-process.md`, раздел 2). Формат на диске при этом тот же.
 
 ## Файлы шага
 

@@ -3,7 +3,12 @@ import EditorWorker from 'monaco-editor/editor/editor.worker.js?worker';
 import CssWorker from 'monaco-editor/language/css/css.worker.js?worker';
 import TsWorker from 'monaco-editor/language/typescript/ts.worker.js?worker';
 import type { FileMap } from '../content/course';
+import courseEnv from '../../shared/course-env.d.ts?raw';
 import lessonPrettier from '../../shared/lesson-prettier.json';
+// Ядро Shiki всё равно в чанке страницы шага (им подсвечивается текст урока, src/lesson/markdown.ts)
+import { createHighlighterCore } from 'shiki/core';
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
+import { courseDark, courseLight } from './course-themes';
 
 // ---------- Типы библиотек для подсказок и проверки TypeScript ----------
 //
@@ -11,32 +16,7 @@ import lessonPrettier from '../../shared/lesson-prettier.json';
 // Поэтому кладём .d.ts пакетов по их настоящим путям, а для точек входа из `exports`, у которых типы лежат
 // не в `<подпуть>/index.d.ts` (`react-router` → dist/production/index.d.ts), добавляем файл-заглушку
 // `<подпуть>/index.d.ts` с `export * from '<настоящий файл>'`.
-//
-// Библиотека превью, которую добавили в scripts/copy-vendor.mjs (PREVIEW_MODULES), добавляется и сюда.
-// Берём только нужные .d.ts: у react-router есть копии development/production, у query — legacy/modern.
-
-const typeFiles = import.meta.glob(
-  [
-    '../../node_modules/@types/react/**/*.d.ts',
-    '../../node_modules/@types/react-dom/**/*.d.ts',
-    '../../node_modules/csstype/index.d.ts',
-    '../../node_modules/react-router/dist/production/**/*.d.ts',
-    '../../node_modules/@tanstack/react-query/build/modern/**/*.d.ts',
-    '../../node_modules/@tanstack/query-core/build/modern/**/*.d.ts',
-    '../../node_modules/zustand/**/*.d.ts',
-  ],
-  { query: '?raw', import: 'default', eager: true },
-) as Record<string, string>;
-
-/** package.json пакетов, у которых типы точек входа указаны только в `exports` */
-const typedPackages = import.meta.glob(
-  [
-    '../../node_modules/react-router/package.json',
-    '../../node_modules/@tanstack/react-query/package.json',
-    '../../node_modules/@tanstack/query-core/package.json',
-  ],
-  { import: 'default', eager: true },
-) as Record<string, { exports: Record<string, unknown> }>;
+// Сами .d.ts — в src/editor/library-types.ts (отдельный чанк, загружается здесь же динамически).
 
 self.MonacoEnvironment = {
   getWorker(_id, label) {
@@ -77,10 +57,6 @@ ts.typescriptDefaults.setEagerModelSync(true);
 const NODE_MODULES = 'file:///node_modules/';
 const relativeToNodeModules = (path: string) => path.slice(path.indexOf('/node_modules/') + '/node_modules/'.length);
 
-for (const [path, source] of Object.entries(typeFiles)) {
-  ts.typescriptDefaults.addExtraLib(source, NODE_MODULES + relativeToNodeModules(path));
-}
-
 /** Путь к .d.ts из условия `types` в `exports` (условия бывают вложенными: import → types) */
 function typesOf(entry: unknown): string | undefined {
   if (typeof entry === 'string') return entry.endsWith('.d.ts') ? entry : undefined;
@@ -94,34 +70,31 @@ function typesOf(entry: unknown): string | undefined {
   return undefined;
 }
 
-for (const [path, pkg] of Object.entries(typedPackages)) {
-  const name = relativeToNodeModules(path).replace(/\/package\.json$/, '');
-  for (const [subpath, entry] of Object.entries(pkg.exports)) {
-    const types = typesOf(entry);
-    if (!types || subpath.includes('*')) continue;
-    const stubDir = `${name}${subpath.slice(1)}`;
-    // Путь к .d.ts относительно заглушки: из 'react-router/dom/index.d.ts' в 'react-router/dist/production/…'
-    const depth = subpath === '.' ? 0 : subpath.slice(2).split('/').length;
-    const target = `${'../'.repeat(depth) || './'}${types.slice(2).replace(/\.d\.ts$/, '')}`;
-    ts.typescriptDefaults.addExtraLib(`export * from '${target}';`, `${NODE_MODULES}${stubDir}/index.d.ts`);
+/** Типы библиотек загружены и переданы TS-воркеру: до этого проверка дала бы «Cannot find module 'react'» */
+const typesReady = import('./library-types').then(({ typeFiles, typedPackages }) => {
+  for (const [path, source] of Object.entries(typeFiles)) {
+    ts.typescriptDefaults.addExtraLib(source, NODE_MODULES + relativeToNodeModules(path));
   }
-}
+  for (const [path, pkg] of Object.entries(typedPackages)) {
+    const name = relativeToNodeModules(path).replace(/\/package\.json$/, '');
+    for (const [subpath, entry] of Object.entries(pkg.exports)) {
+      const types = typesOf(entry);
+      if (!types || subpath.includes('*')) continue;
+      const stubDir = `${name}${subpath.slice(1)}`;
+      // Путь к .d.ts относительно заглушки: из 'react-router/dom/index.d.ts' в 'react-router/dist/production/…'
+      const depth = subpath === '.' ? 0 : subpath.slice(2).split('/').length;
+      const target = `${'../'.repeat(depth) || './'}${types.slice(2).replace(/\.d\.ts$/, '')}`;
+      ts.typescriptDefaults.addExtraLib(`export * from '${target}';`, `${NODE_MODULES}${stubDir}/index.d.ts`);
+    }
+  }
+});
 
 // Импорт стилей — как в Vite (vite/client): CSS Modules дают карту классов, обычный CSS — ничего
-ts.typescriptDefaults.addExtraLib(
-  [
-    "declare module '*.module.css' {",
-    '  const classes: { readonly [key: string]: string };',
-    '  export default classes;',
-    '}',
-    "declare module '*.css' {}",
-  ].join('\n'),
-  'file:///course-env.d.ts',
-);
+ts.typescriptDefaults.addExtraLib(courseEnv, 'file:///course-env.d.ts');
 
 // --- Форматирование кода (Prettier) ---
-/** Настройки — общие с файлами уроков на диске (shared/lesson-prettier.json: по ним форматирует write_steps
- *  в генераторах глав); .ts и .tsx разбирает парсер `typescript` */
+/** Настройки — общие с файлами уроков на диске (shared/lesson-prettier.json: по ним форматирует код шагов
+ *  npm run chapter export); .ts и .tsx разбирает парсер `typescript` */
 const PRETTIER_OPTIONS = lessonPrettier as { printWidth: number; singleQuote: boolean; trailingComma: 'all' };
 
 /** Prettier весит заметно, поэтому грузим его только при первом форматировании */
@@ -161,12 +134,50 @@ for (const language of ['typescript', 'css']) {
   });
 }
 
+// ---------- Подсветка: Shiki (грамматики VS Code) ----------
+//
+// Встроенная Monarch-грамматика typescript в Monaco не знает JSX: теги и атрибуты не выделяются. Shiki подсвечивает
+// теми же TextMate-грамматиками, что VS Code, и темами курса (src/editor/course-themes.ts) — как код в тексте урока.
+// TS-воркер Monaco работает только с языком 'typescript', поэтому грамматика TSX регистрируется под этим именем:
+// .ts и .tsx подсвечиваются одинаково (TSX — надмножество TS, кроме приведения типа `<T>x`, которого в курсе нет).
+
+let highlighted = false;
+
 function applyTheme() {
-  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  monaco.editor.setTheme(dark ? 'vs-dark' : 'vs');
+  // Действующую тему ставит на <html> src/app/theme.ts (и скрипт в index.html до запуска)
+  const dark = document.documentElement.dataset.theme === 'dark';
+  if (highlighted) monaco.editor.setTheme(dark ? courseDark.name! : courseLight.name!);
+  else monaco.editor.setTheme(dark ? 'vs-dark' : 'vs');
 }
 applyTheme();
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+new MutationObserver(applyTheme).observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ['data-theme'],
+});
+
+async function setupHighlighting() {
+  const [{ shikiToMonaco }, tsx, css] = await Promise.all([
+    import('@shikijs/monaco'),
+    import('shiki/langs/tsx.mjs'),
+    import('shiki/langs/css.mjs'),
+  ]);
+  const typescript = tsx.default.map((lang) =>
+    lang.name === 'tsx' ? { ...lang, name: 'typescript', aliases: [] } : lang,
+  );
+  const highlighter = await createHighlighterCore({
+    themes: [courseLight, courseDark],
+    langs: [typescript, css.default],
+    engine: createJavaScriptRegexEngine(),
+  });
+  // Встроенные грамматики Monaco подгружаются лениво и при загрузке регистрируются заново — поверх Shiki, если
+  // загрузились позже него. colorize ждёт, пока встроенная грамматика языка загрузится: после этого Shiki — последний
+  await Promise.all(['typescript', 'css'].map((language) => monaco.editor.colorize('', language, {})));
+  // Адаптер типизирован под monaco-editor-core; monaco-editor содержит то же API
+  shikiToMonaco(highlighter, monaco as unknown as Parameters<typeof shikiToMonaco>[1]);
+  highlighted = true;
+  applyTheme();
+}
+setupHighlighting().catch((error) => console.warn('Подсветка Shiki не загрузилась, остаётся встроенная:', error));
 
 const stepPrefix = (stepId: string) => `file:///steps/${stepId}/`;
 
@@ -258,6 +269,7 @@ const isTs = (file: string) => /\.tsx?$/.test(file);
  * проверка одного файла может начаться раньше, чем воркер узнает о соседних, — и импорты станут «не найдены»
  */
 async function syncStepWithWorker(stepId: string, files: string[]) {
+  await typesReady;
   const getWorker = await getTypeScriptWorker();
   const uris = files
     .filter(isTs)
@@ -279,7 +291,11 @@ export async function refreshDiagnostics(stepId: string, files: string[]) {
   ts.typescriptDefaults.addExtraLib(`// ${++revalidation}`, 'file:///course-revalidate.d.ts');
 }
 
-/** Ошибки TypeScript во всех .ts/.tsx-файлах шага (сам код компилирует воркер src/compiler) */
+/**
+ * Ошибки типов во всех .ts/.tsx-файлах шага — для консоли превью (сам код компилирует воркер src/compiler).
+ * Синтаксические ошибки сюда не входят: их сообщает компиляция с меткой «Сборка» (тот же разбор TypeScript), и в
+ * консоли была бы одна ошибка дважды. Подчёркивания в редакторе Monaco ставит сам — там видны обе
+ */
 export async function collectDiagnostics(stepId: string, files: string[]): Promise<Diagnostic[]> {
   const getWorker = await syncStepWithWorker(stepId, files);
   const result: Diagnostic[] = [];
@@ -289,11 +305,7 @@ export async function collectDiagnostics(stepId: string, files: string[]): Promi
     if (!model) continue;
     const worker = await getWorker(uri);
     const name = uri.toString();
-    const [syntactic, semantic] = await Promise.all([
-      worker.getSyntacticDiagnostics(name),
-      worker.getSemanticDiagnostics(name),
-    ]);
-    for (const diagnostic of [...syntactic, ...semantic]) {
+    for (const diagnostic of await worker.getSemanticDiagnostics(name)) {
       const position = model.getPositionAt(diagnostic.start ?? 0);
       result.push({
         file,

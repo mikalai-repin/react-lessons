@@ -1,0 +1,144 @@
+/* Стили компонента App: классы отсюда действуют только там, где их подключили */
+.page {
+  padding: 16px;
+}
+
+.title {
+  color: var(--brand);
+}
+
+/* Шапка магазина (шаг «Фрагменты») */
+.header {
+  padding: 16px 16px 0;
+}
+
+.header p {
+  margin: 0;
+}
+
+/* Карточка игры */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 200px;
+  padding: 8px;
+  border-top: 4px solid transparent;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.card > * {
+  margin: 0;
+}
+
+/* Цвет полоски сверху — по атрибуту data-category */
+.card[data-category='family'] {
+  border-top-color: #e8a33d;
+}
+
+.card[data-category='strategy'] {
+  border-top-color: #4a6fa5;
+}
+
+.card[data-category='cooperative'] {
+  border-top-color: #3c9d6b;
+}
+
+.card[data-category='party'] {
+  border-top-color: #b05cc7;
+}
+
+.media {
+  position: relative;
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 6px;
+}
+
+.cardTitle {
+  font-size: 16px;
+}
+
+.price {
+  font-weight: 600;
+}
+
+.oldPrice {
+  margin-left: 6px;
+  font-weight: normal;
+}
+
+.soldOut {
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Полоска рейтинга: ширину заливки задаёт style */
+.rating {
+  height: 4px;
+  border-radius: 2px;
+  background: #e5e5ea;
+  overflow: hidden;
+}
+
+.ratingFill {
+  height: 100%;
+  background: #f5a623;
+}
+
+/* Характеристики: «термин — значение» в две колонки */
+.specs {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 8px;
+  font-size: 13px;
+}
+
+.specs dt {
+  color: var(--muted);
+}
+
+.specs dd {
+  margin: 0;
+}
+
+/* Акция над каталогом */
+.promo {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: #fff4d6;
+}
+
+/* Бейджи поверх обложки (практикум) */
+.badges {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.badge {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 12px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  color: var(--muted);
+}
