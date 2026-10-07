@@ -1,5 +1,6 @@
 // Проверка утверждений и экспериментов главы 1 «Первое приложение»: каждый эксперимент из текста — на коде
 // того шага, о котором текст. node tools/e2e/checks/ch01-first-app.mjs (нужен npm run dev)
+import ts from 'typescript';
 import { BASE_URL, compileMap, CONTENT, launch, openPreview, pageText, readDir, wait } from '../lib.mjs';
 
 const CH = `${CONTENT}/01-first-app`;
@@ -224,6 +225,53 @@ const s6start = readDir(`${CH}/06-debugging/start`);
   expect(
     logs.includes('[preview:log] ["$$typeof", "type", "key", "props", "_owner", "_store"] true'),
     '1.7 ключи элемента и заморозка',
+  );
+}
+
+// 1.7, врезка «React.createElement»: тот же элемент, key → element.key, дочерние аргументы → props.children;
+// старый трансформ без import React падает
+{
+  const s7 = readDir(`${CH}/06-debugging/solution`);
+  const withCreate = {
+    ...s7,
+    'App.tsx':
+      "import { createElement } from 'react';\n" +
+      s7['App.tsx'] +
+      `
+const a = <h1 className="title">Ход конём</h1>;
+const b = createElement('h1', { className: 'title' }, 'Ход конём');
+console.log(b.type, b.props, b.key);
+console.log(Object.keys(b), Object.isFrozen(b), JSON.stringify(Object.keys(a)) === JSON.stringify(Object.keys(b)), a.$$typeof === b.$$typeof);
+const c = createElement('li', { key: 'lighthouse', title: 'Маяк' });
+console.log(c.key, c.props);
+const d = createElement('ul', null, createElement('li', null, 'один'), createElement('li', null, 'два'));
+console.log(Array.isArray(d.props.children), (d.props as { children: unknown[] }).children.length);
+`,
+  };
+  const r = await run(withCreate);
+  const logs = preview(r.logs);
+  expect(
+    logs.includes('[preview:log] h1 { className: "title", children: "Ход конём" } null') &&
+      logs.includes('[preview:log] ["$$typeof", "type", "key", "props", "_owner", "_store"] true true true'),
+    `1.7 createElement — тот же замороженный элемент ${JSON.stringify(logs)}`,
+  );
+  expect(
+    logs.includes('[preview:log] lighthouse { title: "Маяк" }'),
+    '1.7 createElement: key → element.key, не в props',
+  );
+  expect(logs.includes('[preview:log] true 2'), '1.7 createElement: дочерние аргументы → props.children');
+  const classic = ts.transpileModule('const el = <h1>Ход конём</h1>;', {
+    compilerOptions: { jsx: ts.JsxEmit.React, module: ts.ModuleKind.ESNext },
+  }).outputText;
+  let error = '';
+  try {
+    new Function(classic)();
+  } catch (e) {
+    error = `${e.constructor.name}: ${e.message}`;
+  }
+  expect(
+    classic.includes('React.createElement("h1", null') && error === 'ReferenceError: React is not defined',
+    `1.7 старый трансформ: React.createElement, без импорта — ${error}`,
   );
 }
 
