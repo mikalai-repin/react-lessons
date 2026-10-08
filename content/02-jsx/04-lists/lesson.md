@@ -117,7 +117,7 @@ export function App() {
   Check the render method of `App`. See https://react.dev/link/warning-keys for more information.
   ```
 
-  Под ней — стек владельцев: строка `App.tsx:17:11` ведёт прямо к `<article>` внутри `map`. React не может сопоставлять элементы списка и предупреждает. TypeScript молчит: `key` необязателен для типов.
+  Под ней — **стек владельцев** (owner stack): цепочка компонентов, которые создали проблемный элемент, со ссылками на строки кода. Строка `App.tsx:17:11` ведёт прямо к `<article>` внутри `map`. React не может сопоставлять элементы списка и предупреждает. TypeScript молчит: `key` необязателен для типов.
 
 - **Поставьте неуникальный ключ** — `key={game.category}`. У трёх игр категория `family`, и React сообщит: ``Encountered two children with the same key, `family`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.`` С одинаковыми ключами при обновлении списка карточки могут продублироваться или пропасть. Верните `game.id`.
 
