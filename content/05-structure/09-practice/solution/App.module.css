@@ -1,0 +1,24 @@
+/* Стили компонента App: классы отсюда действуют только там, где их подключили */
+.page {
+  padding: 16px;
+}
+
+/* Акция над каталогом */
+.promo {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: #fff4d6;
+}
+
+/* Пустая витрина: ничего не подошло под фильтры */
+.empty {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 16px 0;
+}
+
+.empty p {
+  margin: 0;
+}

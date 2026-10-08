@@ -35,6 +35,8 @@ export const PREVIEW_MODULES = {
   zustand: null,
   'zustand/middleware': null,
   'zustand/react/shallow': null,
+  immer: null,
+  'use-immer': null,
 };
 
 const IDENT = /^[A-Za-z_$][\w$]*$/;

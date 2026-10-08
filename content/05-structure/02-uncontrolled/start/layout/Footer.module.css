@@ -1,0 +1,42 @@
+/* Стили подвала — для компонента Footer */
+.footer {
+  padding: 16px;
+  background: var(--surface);
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+/* Форма подписки: поля столбиком */
+.form {
+  display: grid;
+  gap: 4px;
+  max-width: 360px;
+}
+
+.form label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Флажок — в строку с подписью */
+.form .check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+/* Кнопка — по ширине текста, а не во всю форму */
+.form button {
+  justify-self: start;
+}
+
+.done {
+  margin: 8px 0 0;
+  font-weight: 600;
+}

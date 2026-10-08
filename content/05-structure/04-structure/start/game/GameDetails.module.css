@@ -1,0 +1,54 @@
+/* Стили страницы игры — для компонента GameDetails */
+.details {
+  margin-bottom: 24px;
+}
+
+/* «← К каталогу» — кнопка, похожая на ссылку */
+.back {
+  margin-bottom: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brand);
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Обложка слева, сведения справа */
+.body {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.cover {
+  width: 100%;
+  border-radius: var(--radius);
+}
+
+.title {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+.info {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.price {
+  margin: 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.inCart {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--brand);
+}
+
+.description {
+  line-height: 1.5;
+}

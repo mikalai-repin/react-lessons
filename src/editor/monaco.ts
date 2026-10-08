@@ -57,13 +57,14 @@ ts.typescriptDefaults.setEagerModelSync(true);
 const NODE_MODULES = 'file:///node_modules/';
 const relativeToNodeModules = (path: string) => path.slice(path.indexOf('/node_modules/') + '/node_modules/'.length);
 
-/** Путь к .d.ts из условия `types` в `exports` (условия бывают вложенными: import → types) */
+/** Путь к .d.ts из условия `types` в `exports` (условия бывают вложенными: import → types).
+ *  `require` — последним: у use-immer в `import` типы `.d.mts`, а `.d.ts` — только там */
 function typesOf(entry: unknown): string | undefined {
   if (typeof entry === 'string') return entry.endsWith('.d.ts') ? entry : undefined;
   if (!entry || typeof entry !== 'object') return undefined;
   const conditions = entry as Record<string, unknown>;
   if (typeof conditions.types === 'string' && conditions.types.endsWith('.d.ts')) return conditions.types;
-  for (const key of ['import', 'module', 'default', 'browser']) {
+  for (const key of ['import', 'module', 'default', 'browser', 'require']) {
     const found = typesOf(conditions[key]);
     if (found) return found;
   }

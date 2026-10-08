@@ -75,7 +75,7 @@ admin/                         админка на antd (ленивый разд
 | 2 | Карточка одной игры из данных (`api/models.ts`, `data/games.ts` — локальный массив), список карточек |
 | 3 | `GameCard`, `Rating`, стикеры через props-элементы, кнопка-обёртка |
 | 4 | Счётчик и мини-корзина из позиций, корзина в шапке (подъём состояния) |
-| 5 | Живой поиск, фильтры и сортировка (вычисление при рендере), корзина на `useReducer` (+ Immer) |
+| 5 | Живой поиск, категория, «в наличии» и сортировка (вычисление при рендере; `catalog/CatalogFilters.tsx`, `catalog/filters.ts`), подписка в подвале (`layout/Footer.tsx`, неуправляемые поля), страница игры с отзывом (`game/GameDetails.tsx`, `selectedId`, сброс через `key`), корзина на редьюсере (`store/cartReducer.ts`, `useImmerReducer`) |
 | 6 | Окно «Подробнее» (`<dialog>`), таймер скидки, фокус в поиске, «Показать ещё» (`IntersectionObserver`), подсказка в портале, «Нет сети» |
 | 7 | Хуки `useLocalStorage`, `useDebouncedValue`, `useInView`, `useCountdown` |
 | 8 | `CartProvider` (контекст + редьюсер), `FavoritesProvider`, тема |

@@ -1,0 +1,45 @@
+/* Стили компонента App: классы отсюда действуют только там, где их подключили */
+.page {
+  padding: 16px;
+}
+
+/* Акция над каталогом */
+.promo {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: #fff4d6;
+}
+
+/* Панель поиска и фильтров над каталогом */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 12px;
+  margin-bottom: 4px;
+}
+
+/* Поле с подписью сверху */
+.field {
+  display: grid;
+  flex: 1 1 140px;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Поиск — на всю ширину панели */
+.field:first-child {
+  flex-basis: 100%;
+}
+
+/* Флажок — в строку с подписью, на уровне соседних полей */
+.check {
+  display: flex;
+  align-self: end;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}

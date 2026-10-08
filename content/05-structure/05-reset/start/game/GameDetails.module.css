@@ -1,0 +1,85 @@
+/* Стили страницы игры — для компонента GameDetails */
+.details {
+  margin-bottom: 24px;
+}
+
+/* Строка навигации: «← К каталогу» слева, «Следующая игра →» справа */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+/* Кнопки навигации похожи на ссылки */
+.back {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brand);
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Обложка слева, сведения справа */
+.body {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.cover {
+  width: 100%;
+  border-radius: var(--radius);
+}
+
+.title {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+.info {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.price {
+  margin: 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.inCart {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--brand);
+}
+
+.description {
+  line-height: 1.5;
+}
+
+/* Форма отзыва */
+.review {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.review textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+
+/* Счётчик символов и кнопка — в одну строку */
+.reviewFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.thanks {
+  margin: 8px 0 0;
+  font-weight: 600;
+}

@@ -53,7 +53,7 @@
 ## Этап 3. Основы: главы 4–8 — ⬜
 
 - ✅ Глава 4. Состояние и события (9 шагов, 2026-10-08; `checks/ch04-state.mjs` — 72 проверки, квиз — 14 вопросов; подъём состояния переставлен перед массивами; найдено и исправлено: отправка формы без `preventDefault` уводила iframe превью — теперь перезапуск с адреса формы; проверено: функция обновления в StrictMode вызывается дважды, `set` того же значения не рендерит, `__reactFiber$` у DOM-узла может отставать на обновление)
-- ⬜ Глава 5. Структура состояния и поля ввода (первая библиотека — Immer)
+- ✅ Глава 5. Структура состояния и поля ввода (9 шагов, 2026-10-08; `checks/ch05-structure.mjs` — 86 проверок, квиз — 14 вопросов; до главы — `immer` 11.1.21 и `use-immer` 0.11.0 в vendor превью и типах Monaco, `checks/preview.mjs` +3; проверено: `FormEvent` в `@types/react` 19.3 устарел — `SubmitEvent`, редьюсер вызывается при рендере и в StrictMode дважды, `false` держит место среди детей, `useImmerReducer(r, [])` выводит `never[]`)
 - ⬜ Глава 6. Ссылки и эффекты
 - ⬜ Глава 7. Собственные хуки
 - ⬜ Глава 8. Контекст
@@ -107,10 +107,10 @@
 
 ## Следующий шаг
 
-**Глава 5 «Структура состояния и поля ввода»** по `docs/course-plan.md` (5.1–5.7 + практикум «Витрина» + «Под капотом: позиция в дереве») и процессу `docs/authoring-process.md`. Первая сторонняя библиотека курса — Immer.
+**Глава 6 «Ссылки и эффекты»** по `docs/course-plan.md` (6.1–6.9 + практикум «Показать ещё» + «Под капотом: когда выполняются эффекты») и процессу `docs/authoring-process.md`. Новых библиотек нет.
 
-1. Прочитать «Фактическое состояние» главы 4 в `docs/authoring-process.md` (особенно «Опоры для главы 5»), `docs/writing-guide.md`, `docs/modern-react.md`; главу 4 целиком (`content/04-state/*/lesson.md`).
-2. **До главы — vendor Immer:** `immer` и `use-immer` (`docs/libraries.md`: 11.1.x) — точные версии в `package.json` (`devDependencies`), `PREVIEW_MODULES` в `scripts/copy-vendor.mjs`, `.d.ts` в `src/editor/library-types.ts`; сверить экспорты (`produce`, `useImmer`, `useImmerReducer`) по `node_modules`; `checks/preview.mjs` и `checks/platform.mjs`.
-3. `npm run chapter new 05-structure -- --title "Структура состояния и поля ввода" --description "…"` — база: результат `04-state/09-practice`.
-4. Проверить запуском до текста: управляемое поле (`value` без `onChange` — предупреждение React, текст — из консоли; `undefined` → строка — «uncontrolled to controlled»), `<select>`, `checked`; `defaultValue` + `FormData`; сброс состояния `key` и «состояние привязано к позиции» (одна и та же позиция — состояние сохраняется, другой тип — сбрасывается) — по логу и полю ввода; `useReducer` в StrictMode (редьюсер вызывается дважды?); `produce` и мутация черновика; `useImmerReducer`.
-5. После каждого шага — `npm run chapter export 05-structure`, `npm run validate`; в конце — квиз, `node tools/e2e/run-chapter.mjs 05-structure`, `checks/ch05-structure.mjs` (по образцу `checks/ch04-state.mjs`: `add`, `fresh`, `typeErrors`), `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.
+1. Прочитать «Фактическое состояние» главы 5 в `docs/authoring-process.md` (особенно «Опоры для главы 6»), `docs/writing-guide.md`, `docs/modern-react.md`; главу 5 целиком (`content/05-structure/*/lesson.md`). Глава 5 обещает разбор двух лишних эффектов (`::: legacy` в 5.3 — синхронизация производного, `::: warning` в 5.5 — сброс при смене props) — они должны появиться в 6.6.
+2. Сверить API по `@types/react` 19.3 и исходникам: `useRef` (тип `RefObject` — `MutableRefObject` устарел?), `ref` как проп, колбэк-ref с функцией очистки (и что TS говорит о неявном `return`), `useImperativeHandle` без `forwardRef`, `useEffectEvent` (стабилен — проверено), `useLayoutEffect`, `createPortal` (`react-dom`), `useSyncExternalStore`.
+3. `npm run chapter new 06-effects -- --title "Ссылки и эффекты" --description "…"` — база: результат `05-structure/09-practice`.
+4. Проверить запуском до текста (логом, не рассуждением): StrictMode — mount → unmount → mount эффектов и двойной вызов колбэк-ref; порядок эффектов родитель/потомок и `useLayoutEffect` против `useEffect`; эффект после дискретного события (щелчок) — выполняется ли до отрисовки (в главе 5 этот вопрос оставлен открытым, см. таблицу черновиков); `IntersectionObserver` в iframe превью 500 × 600; `matchMedia`/`online` в `useSyncExternalStore`; `<dialog>`.`showModal()` в превью.
+5. После каждого шага — `npm run chapter export 06-effects`, `npm run validate`; в конце — квиз, `node tools/e2e/run-chapter.mjs 06-effects`, `checks/ch06-effects.mjs` (по образцу `checks/ch05-structure.mjs`), `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.

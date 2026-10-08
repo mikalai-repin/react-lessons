@@ -104,6 +104,57 @@ expect(
   `консоль превью: ошибка со строкой исходника NotFound.tsx:4 ${JSON.stringify(crash.logs.filter((l) => l.startsWith('[preview') && l.includes('Бум')).map((l) => l.slice(0, 400)))}`,
 );
 
+// Immer и use-immer: один экземпляр immer в vendor (общий чанк), черновик можно менять, результат заморожен
+const immerApp = await openPreview(
+  browser,
+  compileMap({
+    'main.tsx': `import { createRoot } from 'react-dom/client';
+import { produce } from 'immer';
+import { useImmer, useImmerReducer } from 'use-immer';
+
+type Item = { id: number; quantity: number };
+type Action = { type: 'add'; id: number };
+
+function reducer(draft: Item[], action: Action) {
+  const item = draft.find((i) => i.id === action.id);
+  if (item) item.quantity += 1;
+  else draft.push({ id: action.id, quantity: 1 });
+}
+
+const base = [{ id: 1, quantity: 1 }];
+const next = produce(base, (draft) => {
+  draft[0].quantity = 5;
+});
+console.log('produce', base[0].quantity, next[0].quantity, Object.isFrozen(next[0]));
+
+function App() {
+  const [items, dispatch] = useImmerReducer(reducer, []);
+  const [user, updateUser] = useImmer({ name: 'Аня' });
+  return (
+    <main>
+      <button id="add" onClick={() => dispatch({ type: 'add', id: 7 })}>+</button>
+      <button id="rename" onClick={() => updateUser((d) => { d.name = 'Борис'; })}>имя</button>
+      <p id="out">{items.map((i) => i.id + ':' + i.quantity).join(',')}|{user.name}</p>
+    </main>
+  );
+}
+createRoot(document.getElementById('root')!).render(<App />);
+`,
+  }),
+  { waitMs: 600 },
+);
+for (const id of ['add', 'add', 'rename']) {
+  await immerApp.page.click(`#${id}`);
+  await wait(50);
+}
+const immerOut = await immerApp.page.$eval('#out', (e) => e.textContent);
+expect(immerOut === '7:2|Борис', `useImmerReducer и useImmer обновляют состояние (${immerOut})`);
+expect(
+  immerApp.logs.some((l) => l.includes('produce 1 5 true')),
+  `produce не трогает исходник, результат заморожен ${JSON.stringify(immerApp.logs.slice(0, 5))}`,
+);
+expect(!immerApp.logs.some((l) => /error|warn/.test(l)), 'Immer: консоль без ошибок');
+
 await browser.close();
 console.log(failures.length ? `\nПровалено: ${failures.length}` : '\nВсё прошло');
 process.exit(failures.length ? 1 : 0);
