@@ -171,6 +171,22 @@ await wait(2500);
 expect((await address()) === '/nope', `обычная ссылка <a href> перезапускает приложение с адреса: ${await address()}`);
 expect((await frameText()).includes('Нет такой страницы'), 'после перезапуска по ссылке — страница 404');
 
+// Форма без preventDefault: в браузере — загрузка страницы с полями в ?query, в превью — перезапуск с адреса
+await (
+  await frame()
+).evaluate(() => {
+  const form = document.createElement('form');
+  form.action = '/search';
+  form.innerHTML = '<input name="q" value="кот"><button>Найти</button>';
+  document.body.append(form);
+  form.querySelector('button').click();
+});
+await wait(2500);
+expect(
+  (await address()) === '/search?q=%D0%BA%D0%BE%D1%82' || (await address()) === '/search?q=кот',
+  `отправка формы без preventDefault перезапускает приложение с адреса формы: ${await address()}`,
+);
+
 await page.click('.address-input', { clickCount: 3 });
 await page.type('.address-input', '/\n');
 await wait(2500);

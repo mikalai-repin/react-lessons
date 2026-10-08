@@ -1,0 +1,99 @@
+/* Стили карточки игры — для компонента GameCard */
+/* Карточка игры */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 200px;
+  padding: 8px;
+  border-top: 4px solid transparent;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.card > * {
+  margin: 0;
+}
+
+/* Цвет полоски сверху — по атрибуту data-category */
+.card[data-category='family'] {
+  border-top-color: #e8a33d;
+}
+
+.card[data-category='strategy'] {
+  border-top-color: #4a6fa5;
+}
+
+.card[data-category='cooperative'] {
+  border-top-color: #3c9d6b;
+}
+
+.card[data-category='party'] {
+  border-top-color: #b05cc7;
+}
+
+.media {
+  position: relative;
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 6px;
+}
+
+.cardTitle {
+  font-size: 16px;
+}
+
+.price {
+  font-weight: 600;
+}
+
+.oldPrice {
+  margin-left: 6px;
+  font-weight: normal;
+}
+
+/* Характеристики: «термин — значение» в две колонки */
+.specs {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 8px;
+  font-size: 13px;
+}
+
+.specs dt {
+  color: var(--muted);
+}
+
+.specs dd {
+  margin: 0;
+}
+
+/* Бейджи поверх обложки */
+.badges {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Сколько штук игры в корзине */
+.inCart {
+  font-size: 13px;
+  color: var(--muted);
+}

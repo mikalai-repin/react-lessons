@@ -52,7 +52,7 @@
 
 ## Этап 3. Основы: главы 4–8 — ⬜
 
-- ⬜ Глава 4. Состояние и события
+- ✅ Глава 4. Состояние и события (9 шагов, 2026-10-08; `checks/ch04-state.mjs` — 72 проверки, квиз — 14 вопросов; подъём состояния переставлен перед массивами; найдено и исправлено: отправка формы без `preventDefault` уводила iframe превью — теперь перезапуск с адреса формы; проверено: функция обновления в StrictMode вызывается дважды, `set` того же значения не рендерит, `__reactFiber$` у DOM-узла может отставать на обновление)
 - ⬜ Глава 5. Структура состояния и поля ввода (первая библиотека — Immer)
 - ⬜ Глава 6. Ссылки и эффекты
 - ⬜ Глава 7. Собственные хуки
@@ -107,9 +107,10 @@
 
 ## Следующий шаг
 
-**Глава 4 «Состояние и события»** по `docs/course-plan.md` (4.1–4.7 + практикум «Мини-корзина» + «Под капотом: рендер и фиксация») и процессу `docs/authoring-process.md`.
+**Глава 5 «Структура состояния и поля ввода»** по `docs/course-plan.md` (5.1–5.7 + практикум «Витрина» + «Под капотом: позиция в дереве») и процессу `docs/authoring-process.md`. Первая сторонняя библиотека курса — Immer.
 
-1. Прочитать «Фактическое состояние» главы 3 в `docs/authoring-process.md` (особенно «Опоры для главы 4»), `docs/writing-guide.md`, `docs/modern-react.md`; главу 3 целиком (`content/03-components/*/lesson.md`).
-2. `npm run chapter new 04-state -- --title "Состояние и события" --description "…"` — база: результат `03-components/08-practice`.
-3. Проверить запуском до текста: StrictMode и клики (два рендера на клик — по логу), три `setCount(count + 1)` подряд → +1, `set(n => n + 1)` ×3 → +3, пакетирование в `setTimeout`/промисе, мутация массива + `setState` (экран не обновится — проверить), тексты предупреждений; `e.preventDefault` у формы; `onAdd` в props `GameCard` и подъём корзины в `App` (одна игра в «Хитах» и «Всех играх» — одна позиция корзины).
-4. После каждого шага — `npm run chapter export 04-state`, `npm run validate`; в конце — квиз `content/04-state/quiz.yaml`, `node tools/e2e/run-chapter.mjs 04-state`, `checks/ch04-state.mjs` (по образцу `checks/ch03-components.mjs` — с `typeErrors` для текстов ошибок TS), `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.
+1. Прочитать «Фактическое состояние» главы 4 в `docs/authoring-process.md` (особенно «Опоры для главы 5»), `docs/writing-guide.md`, `docs/modern-react.md`; главу 4 целиком (`content/04-state/*/lesson.md`).
+2. **До главы — vendor Immer:** `immer` и `use-immer` (`docs/libraries.md`: 11.1.x) — точные версии в `package.json` (`devDependencies`), `PREVIEW_MODULES` в `scripts/copy-vendor.mjs`, `.d.ts` в `src/editor/library-types.ts`; сверить экспорты (`produce`, `useImmer`, `useImmerReducer`) по `node_modules`; `checks/preview.mjs` и `checks/platform.mjs`.
+3. `npm run chapter new 05-structure -- --title "Структура состояния и поля ввода" --description "…"` — база: результат `04-state/09-practice`.
+4. Проверить запуском до текста: управляемое поле (`value` без `onChange` — предупреждение React, текст — из консоли; `undefined` → строка — «uncontrolled to controlled»), `<select>`, `checked`; `defaultValue` + `FormData`; сброс состояния `key` и «состояние привязано к позиции» (одна и та же позиция — состояние сохраняется, другой тип — сбрасывается) — по логу и полю ввода; `useReducer` в StrictMode (редьюсер вызывается дважды?); `produce` и мутация черновика; `useImmerReducer`.
+5. После каждого шага — `npm run chapter export 05-structure`, `npm run validate`; в конце — квиз, `node tools/e2e/run-chapter.mjs 05-structure`, `checks/ch05-structure.mjs` (по образцу `checks/ch04-state.mjs`: `add`, `fresh`, `typeErrors`), `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.

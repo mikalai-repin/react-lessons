@@ -44,6 +44,12 @@
 |---|---|---|
 | state | состояние | |
 | state setter | функция-сеттер, сеттер | `setCount` |
+| event handler | обработчик события | `onClick={handleAddClick}`; проп — `onX`, функция — `handleX` |
+| synthetic event | синтетическое событие | обёртка React над событием браузера (`SyntheticBaseEvent`), настоящее — `e.nativeEvent` |
+| event propagation / bubbling | всплытие (события) | `e.stopPropagation()` |
+| default action | действие (браузера) по умолчанию | `e.preventDefault()` |
+| render trigger | запуск рендера | первый — `root.render`, дальше — сеттеры состояния |
+| current / work-in-progress tree | текущее / черновое дерево файберов | две копии, меняются местами после фиксации |
 | updater function | функция обновления | `set(n => n + 1)` |
 | snapshot | снимок | «состояние — снимок» |
 | batching | пакетная обработка обновлений | |

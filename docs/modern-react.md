@@ -52,6 +52,14 @@ React и экосистема сильно изменились в 2022–2026 �
 | Компонент, вызванный функцией (`GameCard({ game })`), не получает файбера: в цепочке `__reactFiber$….return` его нет, предупреждение про `key` — «Check the render method of \`App\`»; фрагмент на верхнем уровне компонента тоже не даёт файбера, `StrictMode` даёт (`react.strict_mode`), корень — `type: null` | `checks/ch03-components.mjs` |
 | Порядок рендера — обход в глубину по элементам; в StrictMode каждый компонент вызывается дважды подряд (лог `App App Header Header Section Section Badge Badge …`) | `checks/ch03-components.mjs` |
 | `eslint-plugin-react-hooks@7.1.1` содержит правила компилятора, среди них `purity`, `immutability`, `static-components`, `refs`, `set-state-in-render`, `set-state-in-effect`, `no-deriving-state-in-effects` | `npm pack`, имена правил в `cjs/` |
+| **Состояние и рендер** (StrictMode): клик с `setState` в карточке → рендер только этой карточки, по 2 вызова; изменение обычной переменной рендер не запускает; `set(x)` того же значения (и `set(prev => prev)`) — ни одного вызова компонента; состояние в `App` → `App`, `Header` и все 9 карточек по 2 раза, а в DOM 1–3 изменения (`MutationObserver`) | `checks/ch04-state.mjs` |
+| Снимок и очередь: три `set(n + 1)` → +1, `console.log(n)` после — старое; три `set(n => n + 1)` → +3; `set(n + 5); set(n => n + 1)` → 6; `set(n => n + 1); set(42)` → 42; функция обновления в StrictMode вызывается **дважды** с одним аргументом (мутация в ней даёт +2 за клик) | `checks/ch04-state.mjs` |
+| Пакетная обработка: несколько `set` в обработчике, в `setTimeout`, после `await` — один рендер на пачку; `flushSync(() => set…)` рендерит сразу (DOM обновлён на следующей строке) | `checks/ch04-state.mjs` |
+| `onClick={handler()}` с `setState` внутри → `Too many re-renders. React limits the number of renders to prevent an infinite loop.`, приложение падает; TS — `Type 'void' is not assignable to type 'MouseEventHandler<HTMLButtonElement> \| undefined'.` Хук в обработчике → `Invalid hook call. Hooks can only be called inside of the body of a function component. …` (TS молчит) | `checks/ch04-state.mjs` |
+| Объект события: `e.constructor.name` — `SyntheticBaseEvent`, `e.nativeEvent` у щелчка — `PointerEvent`; тип — `MouseEvent<HTMLButtonElement>` из `react` | `checks/ch04-state.mjs` |
+| `push` + `setState(тот же массив)` — рендера нет (`Object.is`), мутация всплывает при следующем «правильном» обновлении; `useState([])` без типа — `never[]` | `checks/ch04-state.mjs`, `tsc` |
+| Файбер `App` надёжно брать от корня: `container.__reactContainer$….stateNode.current.child.child` (через `StrictMode`); `__reactFiber$` у DOM-узла может указывать на отставшую копию (двойная буферизация), `memoizedState` — первый хук, `.next` — следующий | `checks/ch04-state.mjs` |
+| Отправка формы без `preventDefault` в превью — перезапуск приложения с адреса формы (`/?email=…`), консоль платформы очищается (как ⟳); перехват — `submit` в `preview-runtime.js` | `checks/platform.mjs`, `checks/ch04-state.mjs` |
 
 ## Запрещено в коде курса (только во врезке «Вы встретите в старом коде»)
 
@@ -93,7 +101,7 @@ React и экосистема сильно изменились в 2022–2026 �
 - 19.3: **неизвестно** — прочитать CHANGELOG (`node_modules/react/…` нет changelog — смотреть github.com/facebook/react/releases) и блог react.dev.
 - ✅ `<ViewTransition>`, `addTransitionType` — стабильные в 19.3 (см. «Проверено»); поведение — проверить запуском перед главой 12.
 - StrictMode в разработке: двойной вызов рендера, инициализаторов `useState`/`useMemo`/`useReducer`, двойной цикл эффектов (mount → unmount → mount), двойной вызов колбэк-ref; в React 19 при двойном рендере повторно используется результат `useMemo`/`useCallback` первого рендера (проверить).
-- Автоматическое пакетирование (batching) обновлений везде (с React 18), `flushSync`.
+- ✅ Автоматическое пакетирование (batching) обновлений везде (с React 18), `flushSync` — проверено (см. «Проверено», глава 4).
 - `useId` — формат идентификаторов (в 19.x поменялся — проверить).
 
 ### React Compiler 1.0

@@ -379,6 +379,23 @@ window.addEventListener('click', (event) => {
   send({ type: 'restart', url: url.pathname + url.search + url.hash });
 });
 
+// Отправка формы, которую никто не остановил (preventDefault): в браузере — загрузка страницы по адресу
+// action (GET — с полями формы в ?query). Как со ссылкой: перезапускаем приложение с этого адреса
+window.addEventListener('submit', (event) => {
+  if (event.defaultPrevented || !(event.target instanceof HTMLFormElement)) return;
+  const form = event.target;
+  const submitter = event.submitter;
+  const action = submitter?.getAttribute('formaction') ?? form.getAttribute('action') ?? '';
+  const method = (submitter?.getAttribute('formmethod') ?? form.method).toLowerCase();
+  const url = new URL(action || location.pathname + location.search, location.href);
+  if (url.origin !== location.origin) return;
+  event.preventDefault();
+  if (method !== 'post') {
+    url.search = new URLSearchParams(new FormData(form, submitter)).toString();
+  }
+  send({ type: 'restart', url: url.pathname + url.search + url.hash });
+});
+
 function applyStyles(styles) {
   for (const css of styles ?? []) {
     const style = document.createElement('style');
