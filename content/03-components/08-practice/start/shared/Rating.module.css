@@ -1,0 +1,32 @@
+/* Стили рейтинга — для компонента Rating */
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
+}
+
+/* Размеры: класс выбирается по пропу size */
+.sm {
+  font-size: 13px;
+}
+
+.md {
+  font-size: 18px;
+}
+
+/* Закрашенная и пустая звезда */
+.on {
+  color: #f5a623;
+}
+
+.off {
+  color: #d8d8de;
+}
+
+/* Число рядом со звёздами */
+.value {
+  margin-left: 4px;
+  color: var(--muted);
+  font-size: 0.85em;
+}

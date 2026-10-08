@@ -134,6 +134,11 @@ node tools/e2e/run-dir.mjs content/10-routing/03-params/solution /games/8   # с
 | «Новые метки `@todo` дают заготовку» (практикум 2.8 с коммитом `start`) | `chapter.mjs` игнорировал метки, если у шага есть коммит `start`: старт практикума был без `TODO`. Исправлено — метки работают поверх `start` |
 | «`{discount && …}` — ловушка» (замысел 2.8) | Подтверждено: на обложках без скидки — `0` в углу. Вошло в подсказку практикума |
 | «React чистит HTML, как Angular» (ожидание читателя из Angular) | Нет: `dangerouslySetInnerHTML` вставляет как есть, `onerror` выполняется; `javascript:` React 19 блокирует только в своих `href`/`src`/`action`/`formAction`, внутри HTML-строки — нет |
+| «Ученик сам создаст `layout/Header.tsx`» (замысел 3.1) | В редакторе платформы нельзя создать файл. Новый файл приходит в коммите `start` заготовкой из одних комментариев (импорт без использования — ошибка `noUnusedLocals` в старте), стили — готовыми |
+| «`console.log(children)` — по строке на бейдж» (черновик 3.3) | Каждая строка дважды (строгий режим), порядок — по карточкам сверху вниз; консоль платформы сворачивает повторы в счётчик |
+| «Props заморожены — изменить их нельзя» (замысел 3.5) | Заморозка неглубокая: `props.game =` — `TypeError`, а `game.tags.push` проходит и портит общий объект у всех карточек (два «хита» в «Хитах», четыре во «Всех играх»). TypeScript молчит в обоих случаях |
+| «У Ant Design `Card` — `title`/`extra`, у `Table` — `render`» (черновик 3.4) | antd ещё не установлен — проверить нечем; конкретика убрана из текста до главы 15 |
+| «Неверный `tone` — React предупредит» (замысел 3.3) | Нет: `styles[tone]` даёт класс `undefined` без сообщений; ловит только TypeScript |
 
 ## 6. Регистрация и прогон в платформе
 
@@ -175,6 +180,9 @@ node tools/e2e/run-dir.mjs content/10-routing/03-params/solution /games/8   # с
 - **Неразрывные пробелы** (`Intl.NumberFormat('ru-RU')` пишет U+00A0 в «1 990 ₽») — в проверках сравнивать после замены на обычный пробел.
 - **Циклические импорты превью не поддерживает** («Циклический импорт: … → … → …»), в настоящем проекте Vite их собирает.
 - **Обычная ссылка `<a href>` в превью перезапускает приложение** с её адреса (как ⟳), `Link` роутера — нет. `navigate` в `exp.mjs` — `pushState` + `popstate`, без перезапуска.
+- **zsh и `$VAR:x`**: `git show $S:layout/…` zsh читает как модификатор `:l` (нижний регистр) — получается чужой путь и пустой файл. Пишите `${S}:layout/…`.
+- **`run-dir.mjs` на `authoring/<глава>`** запускает пустое приложение: читает формат шага, а не обычную папку. Сначала `npm run chapter export`, затем `run-dir.mjs content/<глава>/<шаг>/solution`.
+- **Тексты ошибок TypeScript в уроке** — из `typeErrors` в `checks/ch03-components.mjs` (полный код эксперимента, настройки `tsconfig.content.json`), а не из памяти.
 - **Рабочие папки глав — git worktree.** Не удаляйте `authoring/<глава>` руками: `git worktree remove authoring/<глава>` (или `git worktree prune` после удаления). Ветки `chapter/*` — часть исходников курса: отправляйте их в origin (`git push origin 'chapter/*'`).
 
 # Фактическое состояние
@@ -214,3 +222,20 @@ node tools/e2e/run-dir.mjs content/10-routing/03-params/solution /games/8   # с
 
 Опоры для главы 3: карточка в `App.tsx` вложена на шесть уровней — первый шаг главы 3 выносит её в `shared/GameCard.tsx` (+ `GameCard.module.css`: классы карточки из `App.module.css`), `games.map((game) => <GameCard key={game.id} game={game} />)`; `key` не попадает в props — показать там. Полоска рейтинга — кандидат в `Rating` (практикум главы 3), бейджи — в «слоты» (3.4). Кнопка «В корзину» без обработчика — глава 4.
 
+
+## Глава 3 «Компоненты и props» — 8 шагов
+
+Ветка `chapter/03-components`; все утверждения и эксперименты проверены запуском и `tsc` (`checks/ch03-components.mjs`, 62 проверки). Шаги 3.1–3.4, 3.6 и 3.8 — со своим стартом: коммит `start` кладёт готовый `X.module.css` и заготовку `X.tsx` из одних комментариев, ученик переносит или пишет код по тексту.
+
+- 3.1 «Свой компонент» — `layout/Header.tsx` (+ `Header.module.css`): шапка из `App`, сама импортирует `games`. Эксперименты: класс `Header_header_…`, `<header />` (пустой тег, консоль молчит), без `export` (TS2459 + `SyntaxError … does not provide an export named 'Header'`); врезка — компонент внутри компонента (поле теряет текст; правило `react-hooks/static-components`).
+- 3.2 «Props» — `Header({ count })`, `shared/GameCard.tsx` (+ `GameCard.module.css`, константы карточки) с `game: Game`; `App` — 29 строк. Эксперименты: `console.log(props)` (12 строк, без `key`), `props.key` (TS2339; `(props as any).key` → `undefined` + «`key` is not a prop»), без `count` (TS2741, «в каталоге игр»), `count="6"`, `cout` («Did you mean 'count'?»); `::: deep` — `jsxDEV(GameCard, { game }, game.id, …)`.
+- 3.3 «children» — `shared/Badge.tsx` (+ `.module.css`): `children: ReactNode`, `tone?: 'accent' | 'dark' | 'warning'` = `'accent'`; скидка — тон по умолчанию, «Хит» — `dark`, «Осталось» — `warning`. Эксперименты: `children` — строка или массив `["Осталось ", 3, " шт."]`, разметка в `children`, пустой бейдж (TS2741), `children` атрибутом, `tone="danger"` (класс `undefined`); `::: legacy` — `defaultProps` у функций молча не работают.
+- 3.4 «Несколько слотов» — `shared/Section.tsx` (`title`, `extra?`, `children`), `shared/gameRules.ts` (`isHit`, готовый файл в старте), разделы «Хиты» (`extra` — `<Badge tone="dark">3</Badge>`) и «Все игры»; название в карточке — `<h3>`. Эксперименты: разметка в `title`, `{GameCard}` («Functions are not valid as a React child»); render-функции — обзорно (`GameList` с `renderItem`, проверено запуском).
+- 3.5 «Однонаправленный поток» (`noSolution`, пустой `start`) — схема потока, `game.tags.push('хит')` (2 и 4 «хита» + предупреждения про ключи), `props.game =` (`TypeError`, заморозка неглубокая, только в dev), счётчик модуля №2…№18 со StrictMode и №1…№9 без; `Readonly<Props>`, правила `react-hooks/purity` и `immutability`.
+- 3.6 «Типизация компонентов» — `shared/Button.tsx`: `ComponentProps<'button'>`, `type = 'button'`, `className`, `...rest`; «Нет в наличии» — `<Button disabled>` (класс `soldOut` удалён). Эксперименты: `className` + `title`, `onClick` (тип события выведен), `size="sm"` (TS2322); union-props (`Stock`) и деструктуризация до сужения (TS2339); `::: legacy` — `React.FC` (в `@types/react@17` — неявный `children`, в 19.3 — нет).
+- 3.7 «Под капотом: дерево элементов и дерево компонентов» (`noSolution`, пустой `start`) — `App()` → `Symbol(react.fragment) ["Header", "main"]`, обход в глубину по логу (`Badge 3` раньше карточек), путь по файберам через `__reactFiber$` (`button ← Button ← article ← GameCard ← … ← App ← react.strict_mode ← null`; фрагмента верхнего уровня нет), `GameCard({ game })` — карточки нет в дереве, предупреждение про `key` у `App`.
+- 3.8 «Практикум: Rating» (свой старт: `Rating.module.css`, заготовка `Rating.tsx`) — `Rating({ value, max = 5, size = 'md' })`: `Math.round(value)` закрашенных `★` из `max`, число, `role="img"` + `aria-label`, ключ-индекс; в карточке — `size="sm"` вместо полоски; «Итоги главы».
+
+Код магазина к концу главы: `main.tsx` (как в главе 1), `App.tsx` (`Header`, баннер `PROMO_HTML`, `Section` «Хиты» и «Все игры» с `GameCard`), `App.module.css` (`page`, `promo`), `layout/Header.tsx` + `.module.css`, `shared/GameCard.tsx` + `.module.css`, `shared/Badge.tsx` + `.module.css`, `shared/Section.tsx` + `.module.css`, `shared/Button.tsx`, `shared/Rating.tsx` + `.module.css`, `shared/gameRules.ts`, `shared/format.ts`, `api/models.ts`, `data/games.ts`, `styles.css`.
+
+Опоры для главы 4: `<Button>В корзину</Button>` в `GameCard` без обработчика — в главе 4 появятся `onAdd` в props карточки и состояние корзины в `App` (подъём состояния); `Button` уже пропускает `onClick` через `...rest`. «Хиты» и «Все игры» рисуют одну игру дважды — хорошая проверка, что корзина считает позиции по `id`, а не по карточкам. Шаг 3.7 обещает: «состояние карточки, вызванной функцией, досталось бы `App`» — в главе 4 это можно показать на `useState`. В 3.5 обещан пример, как React прерывает и повторяет рендер (глава 12).

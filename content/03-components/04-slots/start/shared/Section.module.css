@@ -1,0 +1,17 @@
+/* Стили раздела — для компонента Section */
+.section {
+  margin-bottom: 24px;
+}
+
+/* Строка заголовка: название слева, дополнение рядом */
+.head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+}

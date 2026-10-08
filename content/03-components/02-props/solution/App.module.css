@@ -1,0 +1,12 @@
+/* Стили компонента App: классы отсюда действуют только там, где их подключили */
+.page {
+  padding: 16px;
+}
+
+/* Акция над каталогом */
+.promo {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: #fff4d6;
+}

@@ -12,6 +12,10 @@
 | JSX | JSX | |
 | props | props (пропсы) | в тексте — «props», мн. ч.: «передать в props», «проп `game`» |
 | children | `children`, дочерние элементы | |
+| slot | слот | проп типа `ReactNode`, в который родитель кладёт разметку (`title`, `extra`); глава 3 |
+| render prop / render function | render-функция (render prop) | проп-функция, возвращающая JSX: `renderItem={(game) => …}` |
+| element tree / component tree | дерево элементов / дерево компонентов | элементы — одноразовые описания; дерево компонентов — файберы, живут между рендерами |
+| depth-first traversal | обход в глубину | порядок вызова компонентов при рендере |
 | root | корень | `createRoot` |
 | entry point | точка входа | `main.tsx` |
 | global styles | глобальные стили | `styles.css`, импорт в `main.tsx` |
@@ -85,7 +89,7 @@
 | React Compiler | React Compiler (компилятор React) | |
 | code splitting | разделение кода | |
 | virtualization | виртуализация | |
-| Fiber | Fiber, узел Fiber | |
+| Fiber | файбер (fiber) | объект, который React хранит для каждого элемента дерева; при первом упоминании — «файбер (fiber, „волокно“)», дальше «файбер», мн. ч. «файберы» (глава 3, «Под капотом») |
 | work-in-progress tree | рабочее дерево | |
 | scheduler | планировщик | |
 

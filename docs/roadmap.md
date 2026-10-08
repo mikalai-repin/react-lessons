@@ -47,7 +47,7 @@
 - ✅ Глава 1. Первое приложение (7 шагов; утверждения и эксперименты проверены запуском и `tsc`; `checks/ch01-first-app.mjs`; найдено и исправлено: превью запускало код с синтаксической ошибкой — теперь нет, как в Vite)
 - ✅ Глава 2. JSX и разметка (8 шагов, 2026-10-07; `checks/ch02-jsx.mjs` — 35 проверок; найдено и исправлено: `chapter export` игнорировал метки `@todo` у шага с коммитом `start`; проверено: React 19 блокирует `javascript:` только в своих атрибутах, `dangerouslySetInnerHTML` HTML не чистит)
 - ✅ Квизы глав (2026-10-07): `content/<глава>/quiz.yaml` (10–15 вопросов, один ответ, первый вариант — правильный, перемешивание вопросов и вариантов), страница `/<глава>/quiz` (`src/quiz/QuizPage.tsx`), зачёт ≥ 85 % — глава пройдена (✓ в оглавлении), разбор ошибок со ссылками на шаги; проверка формата в `npm run validate`; квизы глав 1 (13 вопросов) и 2 (14 вопросов) — по проверенным утверждениям уроков; `checks/quiz.mjs` (28 проверок; найдено и исправлено: оглавление не обновляло ✓ после сдачи без перехода по адресу)
-- ⬜ Глава 3. Компоненты и props
+- ✅ Глава 3. Компоненты и props (8 шагов, 2026-10-08; `checks/ch03-components.mjs` — 62 проверки, квиз — 14 вопросов; новые файлы шагов приходят заготовками в коммите `start` — создавать файлы в редакторе платформы нельзя; проверено: `defaultProps` у функций React 19 игнорирует молча, props заморожены неглубоко и только в dev, `GameCard({ game })` не даёт файбера)
 - ⬜ Вычитка: тексты понятны человеку без опыта в React
 
 ## Этап 3. Основы: главы 4–8 — ⬜
@@ -107,10 +107,10 @@
 
 ## Следующий шаг
 
-**Глава 3 «Компоненты и props»** по `docs/course-plan.md` (3.1–3.6 + практикум `Rating` + «Под капотом: дерево элементов и дерево компонентов») и процессу `docs/authoring-process.md`.
+**Вычитка глав 1–3** (последний пункт этапа 2), затем **глава 4 «Состояние и события»** по `docs/course-plan.md` (4.1–4.7 + практикум «Мини-корзина» + «Под капотом: рендер и фиксация») и процессу `docs/authoring-process.md`.
 
-1. Прочитать `CLAUDE.md`, `docs/authoring-process.md` (раздел 2 и «Фактическое состояние» глав 1–2 — особенно «Опоры для главы 3»), `docs/writing-guide.md`, `docs/modern-react.md`; главу 2 целиком (`content/02-jsx/*/lesson.md`) — что ученик уже знает; для сравнения — глава 5 angular-learn («Компоненты»).
-2. `npm run chapter new 03-components -- --title "Компоненты и props" --description "…"` — база: результат `02-jsx/08-practice`.
-3. 3.1: вынести карточку из `App.tsx` в `shared/GameCard.tsx` + `GameCard.module.css` (классы карточки переезжают из `App.module.css`); 3.2 — props `game`, типизация `type GameCardProps`, деструктуризация, значения по умолчанию; показать, что `key` не попадает в props (проверить текст предупреждения React 19 запуском). Полоска рейтинга → `Rating` (практикум), бейджи → props-элементы (3.4), кнопка-обёртка с `ComponentProps<'button'>` (3.6).
-4. Проверить запуском до текста: чтение `props.key` (предупреждение?), изменение props (`Object.isFrozen(props)` — проверить в dev), `children` разных типов, `React.FC` против функции (в `@types/react` 19.3 — без неявного `children`), что пишет React при передаче функции-компонента без вызова.
-5. После каждого шага — `npm run chapter export 03-components`, `npm run validate`; в конце — квиз `content/03-components/quiz.yaml` (`docs/authoring-process.md`, 6а; без него `validate` не пройдёт), `node tools/e2e/run-chapter.mjs 03-components`, `checks/ch03-components.mjs`, `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.
+1. Вычитка: тексты глав 1–3 глазами человека без опыта в React — термины при первом появлении, нет ли забеганий вперёд, понятны ли задания `::: task` без подсказок. Правки текста — прямо в `content/<глава>/<шаг>/lesson.md`; правки кода — `npm run chapter fix`, затем `sync-base` следующих глав (`npm run validate` подскажет).
+2. Глава 4: прочитать «Фактическое состояние» главы 3 в `docs/authoring-process.md` (особенно «Опоры для главы 4»), `docs/writing-guide.md`, `docs/modern-react.md`; главу 3 целиком (`content/03-components/*/lesson.md`).
+3. `npm run chapter new 04-state -- --title "Состояние и события" --description "…"` — база: результат `03-components/08-practice`.
+4. Проверить запуском до текста: StrictMode и клики (два рендера на клик — по логу), три `setCount(count + 1)` подряд → +1, `set(n => n + 1)` ×3 → +3, пакетирование в `setTimeout`/промисе, мутация массива + `setState` (экран не обновится — проверить), тексты предупреждений; `e.preventDefault` у формы; `onAdd` в props `GameCard` и подъём корзины в `App` (одна игра в «Хитах» и «Всех играх» — одна позиция корзины).
+5. После каждого шага — `npm run chapter export 04-state`, `npm run validate`; в конце — квиз `content/04-state/quiz.yaml`, `node tools/e2e/run-chapter.mjs 04-state`, `checks/ch04-state.mjs` (по образцу `checks/ch03-components.mjs` — с `typeErrors` для текстов ошибок TS), `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.

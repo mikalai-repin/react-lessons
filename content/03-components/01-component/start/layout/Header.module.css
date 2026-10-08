@@ -1,0 +1,12 @@
+/* Стили шапки — для компонента Header */
+.header {
+  padding: 16px 16px 0;
+}
+
+.header p {
+  margin: 0;
+}
+
+.title {
+  color: var(--brand);
+}
