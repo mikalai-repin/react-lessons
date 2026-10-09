@@ -1,0 +1,39 @@
+/* Стили окна подтверждения — для компонента ConfirmDialog */
+.dialog {
+  max-width: 320px;
+  padding: 16px;
+  border: 0;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 25%);
+}
+
+/* Затемнение страницы под модальным окном */
+.dialog::backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.text {
+  margin: 0 0 16px;
+}
+
+/* Кнопки — справа, «Отмена» перед подтверждением */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Второстепенная кнопка: белая с рамкой */
+.cancel {
+  padding: 8px 14px;
+  border: 1px solid #d2d2d7;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  cursor: pointer;
+}

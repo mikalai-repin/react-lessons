@@ -387,6 +387,8 @@ window.addEventListener('submit', (event) => {
   const submitter = event.submitter;
   const action = submitter?.getAttribute('formaction') ?? form.getAttribute('action') ?? '';
   const method = (submitter?.getAttribute('formmethod') ?? form.method).toLowerCase();
+  // <form method="dialog"> не уходит со страницы: браузер только закрывает <dialog>
+  if (method === 'dialog') return;
   const url = new URL(action || location.pathname + location.search, location.href);
   if (url.origin !== location.origin) return;
   event.preventDefault();

@@ -66,10 +66,17 @@
 | hook / custom hook | хук / свой хук | |
 | rules of hooks | правила хуков | |
 | ref | ссылка (ref) | «ссылка на DOM-элемент», «ref-значение» |
-| effect / cleanup | эффект / очистка | |
+| callback ref | колбэк-ref | функция в атрибуте `ref`; в React 19 может вернуть очистку |
+| imperative handle | своё (императивное) API компонента | объект из `useImperativeHandle` вместо DOM-элемента в ссылке родителя |
+| effect / setup / cleanup | эффект / настройка / очистка | «функция настройки» — первый аргумент `useEffect` |
+| external system | внешняя система | то, с чем синхронизирует эффект: таймер, событие окна, сервер, виджет |
 | dependencies (deps) | зависимости | массив зависимостей |
+| layout effect / passive effect | layout-эффект / обычный (пассивный) эффект | `useLayoutEffect` — до отрисовки; `useEffect` — пассивный |
+| Effect Event | событие эффекта | функция из `useEffectEvent`: нереактивная часть эффекта |
 | stale closure | устаревшее замыкание | |
-| external store | внешнее хранилище | `useSyncExternalStore` |
+| discrete / continuous event | дискретное / непрерывное событие | щелчок, ввод — дискретные: эффекты сразу; наведение, прокрутка — непрерывные |
+| external store | внешнее хранилище | `useSyncExternalStore`; `getSnapshot` — снимок |
+| tearing | разрыв | части экрана с разными значениями хранилища в конкурентном рендере |
 | context / provider / consumer | контекст / провайдер / потребитель | |
 | prop drilling | проброс props | |
 | portal | портал | `createPortal` |

@@ -1,0 +1,40 @@
+/* Стили компонента App: классы отсюда действуют только там, где их подключили */
+.page {
+  padding: 16px;
+}
+
+/* Акция над каталогом */
+.promo {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: #fff4d6;
+}
+
+/* Пустая витрина: ничего не подошло под фильтры */
+.empty {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 16px 0;
+}
+
+.empty p {
+  margin: 0;
+}
+
+/* Уведомление внизу окна: «Добавлено: …» */
+.toast {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--text);
+  color: #fff;
+  font-size: 14px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+}

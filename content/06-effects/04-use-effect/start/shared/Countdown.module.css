@@ -1,0 +1,8 @@
+/* Стили таймера скидки — для компонента Countdown */
+.countdown {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--brand);
+  /* Цифры одной ширины: строка не «дрожит» каждую секунду */
+  font-variant-numeric: tabular-nums;
+}

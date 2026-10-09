@@ -1,0 +1,12 @@
+/* Стили полосы «Нет сети» — для компонента OfflineBanner */
+.banner {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: 0;
+  padding: 8px 16px;
+  background: #3a3a3c;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}

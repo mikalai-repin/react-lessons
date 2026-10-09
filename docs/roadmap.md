@@ -54,7 +54,7 @@
 
 - ✅ Глава 4. Состояние и события (9 шагов, 2026-10-08; `checks/ch04-state.mjs` — 72 проверки, квиз — 14 вопросов; подъём состояния переставлен перед массивами; найдено и исправлено: отправка формы без `preventDefault` уводила iframe превью — теперь перезапуск с адреса формы; проверено: функция обновления в StrictMode вызывается дважды, `set` того же значения не рендерит, `__reactFiber$` у DOM-узла может отставать на обновление)
 - ✅ Глава 5. Структура состояния и поля ввода (9 шагов, 2026-10-08; `checks/ch05-structure.mjs` — 86 проверок, квиз — 14 вопросов; до главы — `immer` 11.1.21 и `use-immer` 0.11.0 в vendor превью и типах Monaco, `checks/preview.mjs` +3; проверено: `FormEvent` в `@types/react` 19.3 устарел — `SubmitEvent`, редьюсер вызывается при рендере и в StrictMode дважды, `false` держит место среди детей, `useImmerReducer(r, [])` выводит `never[]`)
-- ⬜ Глава 6. Ссылки и эффекты
+- ✅ Глава 6. Ссылки и эффекты (11 шагов, 2026-10-09; `checks/ch06-effects.mjs` — 87 проверок, квиз — 15 вопросов; найдено и исправлено: `<form method="dialog">` перезапускал превью — теперь нет, `checks/platform.mjs`; проверено: после щелчка и ввода `useEffect` выполняется до кадра, в остальных случаях — отдельной задачей; колбэк-ref и эффекты в StrictMode — настройка, очистка, настройка; тексты правил `eslint-plugin-react-hooks` 7.1.1 — запуском ESLint в scratchpad)
 - ⬜ Глава 7. Собственные хуки
 - ⬜ Глава 8. Контекст
 - ⬜ Проверки `check.ts` для практикумов
@@ -107,10 +107,10 @@
 
 ## Следующий шаг
 
-**Глава 6 «Ссылки и эффекты»** по `docs/course-plan.md` (6.1–6.9 + практикум «Показать ещё» + «Под капотом: когда выполняются эффекты») и процессу `docs/authoring-process.md`. Новых библиотек нет.
+**Глава 7 «Собственные хуки»** по `docs/course-plan.md` (7.1–7.6 + практикум `useCountdown` + «Под капотом: где живут хуки») и процессу `docs/authoring-process.md`. Новых библиотек в превью нет.
 
-1. Прочитать «Фактическое состояние» главы 5 в `docs/authoring-process.md` (особенно «Опоры для главы 6»), `docs/writing-guide.md`, `docs/modern-react.md`; главу 5 целиком (`content/05-structure/*/lesson.md`). Глава 5 обещает разбор двух лишних эффектов (`::: legacy` в 5.3 — синхронизация производного, `::: warning` в 5.5 — сброс при смене props) — они должны появиться в 6.6.
-2. Сверить API по `@types/react` 19.3 и исходникам: `useRef` (тип `RefObject` — `MutableRefObject` устарел?), `ref` как проп, колбэк-ref с функцией очистки (и что TS говорит о неявном `return`), `useImperativeHandle` без `forwardRef`, `useEffectEvent` (стабилен — проверено), `useLayoutEffect`, `createPortal` (`react-dom`), `useSyncExternalStore`.
-3. `npm run chapter new 06-effects -- --title "Ссылки и эффекты" --description "…"` — база: результат `05-structure/09-practice`.
-4. Проверить запуском до текста (логом, не рассуждением): StrictMode — mount → unmount → mount эффектов и двойной вызов колбэк-ref; порядок эффектов родитель/потомок и `useLayoutEffect` против `useEffect`; эффект после дискретного события (щелчок) — выполняется ли до отрисовки (в главе 5 этот вопрос оставлен открытым, см. таблицу черновиков); `IntersectionObserver` в iframe превью 500 × 600; `matchMedia`/`online` в `useSyncExternalStore`; `<dialog>`.`showModal()` в превью.
-5. После каждого шага — `npm run chapter export 06-effects`, `npm run validate`; в конце — квиз, `node tools/e2e/run-chapter.mjs 06-effects`, `checks/ch06-effects.mjs` (по образцу `checks/ch05-structure.mjs`), `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.
+1. Прочитать «Фактическое состояние» главы 6 в `docs/authoring-process.md` (особенно «Опоры для главы 7» и новые ловушки: пауза после щелчка в проверках, ESLint в scratchpad, `ONLY=`), `docs/writing-guide.md`, `docs/modern-react.md` (строки главы 6); главу 6 целиком (`content/06-effects/*/lesson.md`).
+2. Решить, как показывать линтер в 7.2: в превью ESLint нет. Вариант — тексты правил из ESLint в scratchpad (как в главе 6) на коде шагов 6.6/6.7 и примеры из шагов главы 7; проверить состав `recommended` в `eslint-plugin-react-hooks` 7.1.1 (`rules-of-hooks`, `exhaustive-deps`, правила компилятора) и тексты сообщений `rules-of-hooks` (хук в условии, после раннего `return`, в обработчике).
+3. Проверить запуском до текста: хук в условии — какая ошибка React 19 («Rendered more hooks than during the previous render» / «change in the order of Hooks»), хук после раннего `return` в `MiniCart`; `useLocalStorage` с `useSyncExternalStore` и событием `storage` (общий `localStorage` превью с платформой — очищать в проверках); стабильность функций, которые возвращает хук (без `useCallback` до главы 16 — как объяснять); порядок хуков в `memoizedState` файбера (как в 4.8, от корня).
+4. `npm run chapter new 07-hooks -- --title "Собственные хуки" --description "…"` — база: результат `06-effects/11-practice`.
+5. После каждого шага — `npm run chapter export 07-hooks`, `npm run validate`; в конце — квиз, `node tools/e2e/run-chapter.mjs 07-hooks`, `checks/ch07-hooks.mjs` (по образцу `checks/ch06-effects.mjs`), `npx prettier --check .`; обновить «Фактическое состояние», этот файл и `CLAUDE.md`.

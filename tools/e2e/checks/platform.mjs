@@ -187,6 +187,25 @@ expect(
   `отправка формы без preventDefault перезапускает приложение с адреса формы: ${await address()}`,
 );
 
+// <form method="dialog"> никуда не уходит: браузер закрывает <dialog>, превью не перезапускается (глава 6)
+const beforeDialog = await address();
+const dialogResult = await (
+  await frame()
+).evaluate(async () => {
+  const dialog = document.createElement('dialog');
+  dialog.innerHTML = '<form method="dialog"><button value="ok">OK</button></form>';
+  document.body.append(dialog);
+  dialog.showModal();
+  dialog.querySelector('button').click();
+  await new Promise((r) => setTimeout(r, 100));
+  return `${dialog.open}:${dialog.returnValue}`;
+});
+await wait(1500);
+expect(
+  dialogResult === 'false:ok' && (await address()) === beforeDialog,
+  `форма method="dialog" закрывает окно без перезапуска: ${dialogResult}, ${await address()}`,
+);
+
 await page.click('.address-input', { clickCount: 3 });
 await page.type('.address-input', '/\n');
 await wait(2500);

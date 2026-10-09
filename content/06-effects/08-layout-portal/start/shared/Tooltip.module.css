@@ -1,0 +1,22 @@
+/* Стили подсказки — для компонента Tooltip */
+/* Элемент, у которого подсказка: фокус с клавиатуры, курсор «справка» */
+.anchor {
+  display: inline-flex;
+  cursor: help;
+}
+
+/* Подсказка: координаты окна, поверх всего; top и left задаёт компонент */
+.tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  max-width: 220px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--text);
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.4;
+  pointer-events: none;
+}

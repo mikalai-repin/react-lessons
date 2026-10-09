@@ -1,0 +1,5 @@
+{
+  "title": "Ссылки и эффекты",
+  "description": "Связь с внешним миром: useRef для значений и DOM, ref как проп, useImperativeHandle и <dialog>, useEffect и очистка, эффекты в StrictMode, лишние эффекты, useEffectEvent, useLayoutEffect и порталы, useSyncExternalStore — уведомления, фокус, окно подтверждения, таймер скидки, подсказки, «Нет сети» и каталог порциями.",
+  "part": 1
+}
