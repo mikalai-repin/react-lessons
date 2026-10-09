@@ -48,7 +48,7 @@ export function compileMap(files) {
 export async function openPreview(
   browser,
   compiled,
-  { waitMs = 2000, width = 500, height = 600, url = '/', backend = { latency: 0 } } = {},
+  { waitMs = 2000, width = 500, height = 600, url = '/', backend = { latency: 0 }, keepStorage = false } = {},
 ) {
   const page = await browser.newPage();
   await page.setViewport({ width, height });
@@ -57,8 +57,9 @@ export async function openPreview(
   page.on('console', (m) => logs.push(`[${m.type()}] ${m.text()}`));
   page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
   await page.goto(`${BASE_URL}/preview.html`, { waitUntil: 'networkidle0' });
-  // Чистое состояние: корзина магазина сохраняется в localStorage (persist), а у всех проверок один origin
-  await page.evaluate(() => localStorage.clear());
+  // Чистое состояние: корзина магазина сохраняется в localStorage (persist), а у всех проверок один origin.
+  // keepStorage — запуск «после перезапуска»: то, что приложение сохранило раньше, остаётся
+  if (!keepStorage) await page.evaluate(() => localStorage.clear());
   // В чистом превью «родитель» — само окно: сообщения среды превью приходят сюда же.
   // Ошибки и запросы копим в массивах: через console нельзя — перехваченный console.error сам шлёт сообщение
   await page.evaluate((source) => {

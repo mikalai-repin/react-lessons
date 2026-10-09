@@ -65,6 +65,11 @@
 | lazy initializer | функция начального значения | `useState(() => …)`: вызывается только при создании состояния |
 | hook / custom hook | хук / свой хук | |
 | rules of hooks | правила хуков | |
+| hook (in the fiber list) | ячейка хука | элемент списка `memoizedState` файбера; хуки получают ячейки по порядку вызова (глава 7) |
+| hooks dispatcher | диспетчер (хуков) | `ReactSharedInternals.H`: реализации хуков для монтирования / обновления / «вне рендера» |
+| stable function / identity | стабильная функция | та же между рендерами: сеттер `useState`, `useCallback` (глава 7) |
+| debounce | задержка (debounce) | значение или действие — после паузы в событиях (`useDebouncedValue`) |
+| linter | линтер | ESLint с `eslint-plugin-react-hooks` |
 | ref | ссылка (ref) | «ссылка на DOM-элемент», «ref-значение» |
 | callback ref | колбэк-ref | функция в атрибуте `ref`; в React 19 может вернуть очистку |
 | imperative handle | своё (императивное) API компонента | объект из `useImperativeHandle` вместо DOM-элемента в ссылке родителя |

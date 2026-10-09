@@ -1,0 +1,20 @@
+/* Баннер акции над каталогом: текст и обратный отсчёт */
+.promo {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: #fff4d6;
+}
+
+.promo p {
+  margin: 0;
+}
+
+/* «До конца акции — 1:59:58» */
+.timer {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--brand);
+  /* Цифры одной ширины: строка не «дрожит» каждую секунду */
+  font-variant-numeric: tabular-nums;
+}
