@@ -1,0 +1,16 @@
+/* Стили компонента App: классы отсюда действуют только там, где их подключили */
+.page {
+  padding: 16px;
+}
+
+/* Пустая витрина: ничего не подошло под фильтры */
+.empty {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 16px 0;
+}
+
+.empty p {
+  margin: 0;
+}

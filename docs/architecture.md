@@ -94,9 +94,15 @@
 
 Вкладка «Тесты» при `preview: tests`. Раннер с API Vitest (`describe`, `it`, `expect`, `beforeEach`, `vi.fn`, `vi.mock` — последнее сложно без сборщика, решить) + `@testing-library/react`, `user-event`, `jest-dom` из vendor. Тесты запускаются в отдельном iframe с тем же учебным бэкендом. Цель — тесты курса без изменений запускаются в Vite-проекте (глава 23).
 
-## Проверка шагов `check.ts` — план (этап 3)
+## Проверка шагов `check.ts` — сделано (этап 3, 2026-10-12)
 
-Как в angular-learn: функция получает `document`, `navigate`, `backend` и проверяет **результат** (DOM, URL, запросы), а не текст кода.
+В angular-learn это был только план; здесь — реализовано и проверено `tools/e2e/checks/step-checks.mjs` (в dev и на продакшен-сборке).
+
+- **Файл**: `content/<глава>/<шаг>/check.ts` рядом с `lesson.md` — `export default async function check(ctx: CheckContext): Promise<CheckResult>`. Типы — `src/check/types.ts`, в проверке — `import type { … } from '@course/check'` (`paths` в `tsconfig.json`, `alias` в `vite.config.ts`). Только у шагов с решением (валидатор).
+- **Загрузка**: `import.meta.glob('/content/**/check.ts')` в `src/check/runCheck.ts` — Vite компилирует проверки как модули платформы, грузятся при первом «Проверить». `chapter export` их не трогает.
+- **Запуск** (`StepPage`, кнопка «✓ Проверить» у шагов с проверкой): свежая компиляция кода ученика → панель «Результат» разворачивается (проверки меряют элементы, ждут `IntersectionObserver`) → приложение перезапускается с `url` шага → `check(ctx)` в окне платформы против `document` iframe (тот же origin). Успех — шаг отмечен пройденным; провал — подсказка под панелью кнопок. Исключение в проверке и зависание дольше 20 с — тоже «не пройдено». Сборка не прошла — подсказка без запуска проверки.
+- **Контекст** (`CheckContext`): `document`/`window` текущего запуска (геттеры — после `restart` новые; не деструктурировать), `restart(url?, { clearStorage })`, `navigate` (pushState + popstate), `url()`, `wait`, `waitFor(условие, мс)`, `all(селектор)`, `button(текст или aria-label)`, `click`, `type` (сеттер `value` из прототипа + `input` — управляемые поля видят ввод), `select` (+ `change`), `text` (пробелы схлопнуты, `null` → `''`), `errors()` (console.error, исключения, сборка), `typeErrors()` (метки «TS»), `requests()` (вкладка «Сеть»).
+- **`Preview`** отдаёт ручку через `ref` (`PreviewHandle`): `restart` ждёт сообщения `ready` нового iframe и первого содержимого `#root` (до 5 с) плюс 250 мс на эффекты; ошибки и запросы копит в ref, без задержки состояния React.
 
 ## Структура исходников (целевая)
 

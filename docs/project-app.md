@@ -78,7 +78,7 @@ admin/                         админка на antd (ленивый разд
 | 5 | Живой поиск, категория, «в наличии» и сортировка (вычисление при рендере; `catalog/CatalogFilters.tsx`, `catalog/filters.ts`), подписка в подвале (`layout/Footer.tsx`, неуправляемые поля), страница игры с отзывом (`game/GameDetails.tsx`, `selectedId`, сброс через `key`), корзина на редьюсере (`store/cartReducer.ts`, `useImmerReducer`) |
 | 6 | Окно «Подробнее» (`<dialog>`), таймер скидки, фокус в поиске, «Показать ещё» (`IntersectionObserver`), подсказка в портале, «Нет сети» |
 | 7 | Хуки `useLocalStorage`, `useDebouncedValue`, `useInView`, `useCountdown` |
-| 8 | `CartProvider` (контекст + редьюсер), `FavoritesProvider`, тема |
+| 8 | `catalog/GameGrid.tsx` (сетка карточек), `cart/CartContext.ts` (`CartContext` + `CartActionsContext`, `useCart`, `useCartActions`) и `cart/CartProvider.tsx` (редьюсер + уведомление, `useMemo`), тема (`theme/ThemeContext.ts`, `theme/ThemeProvider.tsx`, `data-theme` у `<html>`, тёмные переменные в `styles.css`), избранное (`favorites/FavoritesContext.ts`, `FavoritesProvider.tsx`, сердечко на карточке, «♥ N» в шапке); `App` без кода корзины |
 | 9 | Корзина и избранное — Zustand с `persist`, склад и промокод |
 | 10 | Маршруты: главная, каталог (фильтры в URL), игра `/games/:id`, корзина, кабинет (вложенные), оформление (защита), 404, ленивая админка, крошки |
 | 11 | Каталог, игра, отзывы с сервера (TanStack Query), бесконечный каталог, ошибки |

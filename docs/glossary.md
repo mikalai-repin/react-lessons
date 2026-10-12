@@ -82,8 +82,11 @@
 | discrete / continuous event | дискретное / непрерывное событие | щелчок, ввод — дискретные: эффекты сразу; наведение, прокрутка — непрерывные |
 | external store | внешнее хранилище | `useSyncExternalStore`; `getSnapshot` — снимок |
 | tearing | разрыв | части экрана с разными значениями хранилища в конкурентном рендере |
-| context / provider / consumer | контекст / провайдер / потребитель | |
-| prop drilling | проброс props | |
+| context / provider / consumer | контекст / провайдер / потребитель | `<CartContext value>` — провайдер; потребитель — компонент, который читает контекст (`use`, `useContext`); глава 8 |
+| default value (context) | значение по умолчанию | аргумент `createContext`: когда выше нет ни одного провайдера |
+| provider component | компонент-провайдер | `CartProvider({ children })`: состояние + `<Context value>` |
+| prop drilling | проброс props | данные через компоненты, которым они не нужны |
+| context propagation | распространение изменений контекста | поиск потребителей по `fiber.dependencies` (глава 8, «Под капотом») |
 | portal | портал | `createPortal` |
 
 ## Асинхронность и конкурентность

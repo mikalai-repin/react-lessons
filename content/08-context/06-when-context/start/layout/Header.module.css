@@ -1,0 +1,47 @@
+/* Стили шапки — для компонента Header */
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 12px;
+  align-items: center;
+  padding: 16px 16px 0;
+}
+
+.header p {
+  margin: 0;
+}
+
+.title {
+  color: var(--brand);
+}
+
+/* Сводка корзины — справа от заголовка */
+.cart {
+  grid-column: 2;
+  grid-row: 1;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Переключатель темы — справа, под корзиной */
+.theme {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  padding: 2px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Тёмная тема включена */
+.theme[aria-pressed='true'] {
+  color: var(--text);
+}

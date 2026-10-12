@@ -1,0 +1,6 @@
+{
+  // Проверки шагов content/**/check.ts — отдельно от платформы, для npm run validate (третий шаг).
+  // Типы контекста — src/check/types.ts как модуль '@course/check' (paths в tsconfig.json)
+  "extends": "./tsconfig.json",
+  "include": ["content/**/check.ts", "src/check/types.ts"]
+}

@@ -51,7 +51,7 @@ CLAUDE.md
 docs/                 — документация проекта (этот контекст)
 content/              — уроки курса (см. lesson-format.md)
 src/                  — код платформы (Vite + React + TS), перенесён из ../angular-learn/src
-  compiler/ editor/ preview/ lesson/ app/ content/ progress/
+  compiler/ editor/ preview/ lesson/ app/ content/ progress/ quiz/ check/ (проверки шагов check.ts)
 shared/step-chain.js  — сборка полного кода шага из изменений (из angular-learn без изменений)
 shared/compile-core.js — компиляция шага: TSX → JS, CSS и CSS Modules → модули (браузер, e2e, валидатор)
 public/preview-runtime.js — среда выполнения кода ученика в iframe
@@ -64,18 +64,19 @@ authoring/<глава>/    — рабочие папки глав: git worktree 
 spikes/esm-preview/   — прототип этапа 0: React и библиотеки в iframe без сборщика (README — результаты и решения)
 ```
 
-У каждой главы — квиз `content/<глава>/quiz.yaml` (10–15 вопросов, один правильный ответ; глава пройдена при ≥ 85 %; формат — `docs/lesson-format.md`). В `content/` главы `01-first-app` (с демо-магазином шага 1.1 — на нём работают проверки платформы), `02-jsx`, `03-components`, `04-state`, `05-structure`, `06-effects` и `07-hooks`.
+У каждой главы — квиз `content/<глава>/quiz.yaml` (10–15 вопросов, один правильный ответ; глава пройдена при ≥ 85 %; формат — `docs/lesson-format.md`). У практикума главы — `check.ts`: кнопка «✓ Проверить» проверяет результат в приложении (`src/check/`, типы `@course/check`; формат — `docs/lesson-format.md`, «Проверка шага»). В `content/` главы `01-first-app` (с демо-магазином шага 1.1 — на нём работают проверки платформы), `02-jsx`, `03-components`, `04-state`, `05-structure`, `06-effects`, `07-hooks` и `08-context`.
 
 ## Команды
 
 - `npm run dev` — платформа на **http://localhost:5190** (5173/5174 — PixiJS, 5180 — Angular)
 - `npm run chapter new|open|status|export|fix|sync-base <глава>` — код шагов главы: ветка `chapter/<глава>` и рабочая папка `authoring/<глава>`, один коммит — один шаг; `export` раскладывает коммиты в `content/` (подробно — `docs/authoring-process.md`, раздел 2)
-- `npm run validate` — структура уроков, цепочка шагов, сборка и типы кода каждого шага
+- `npm run validate` — структура уроков, цепочка шагов, сборка и типы кода каждого шага, типы проверок `check.ts`
 - `npm run step <…/шаг/solution>` — выгрузить полный код шага
 - `npm run build` — проверка типов и продакшен-сборка
 - `npx prettier --check .` — форматирование (код уроков — как кнопка «Формат»: `shared/lesson-prettier.json`, ширина 64)
 - `node tools/e2e/run-dir.mjs <папка шага> [адрес] [мс]` — код шага в чистом превью: консоль, запросы, адрес, текст, скриншот в `tools/e2e/out/`
 - `node tools/e2e/run-chapter.mjs <глава>`, `node tools/e2e/exp.mjs <папка> <сценарий.mjs> [адрес]` — как в angular-learn
+- `node tools/e2e/checks/step-checks.mjs [глава…]` — проверки шагов `check.ts` в интерфейсе: старт не проходит с подсказкой, решение проходит, типичные ошибки (`MISTAKES`) дают свою подсказку
 - `node tools/e2e/checks/quiz.mjs` — квиз главы: перемешивание, зачёт 85 %, прогресс, оглавление (после правок в `src/quiz/`)
 - `node tools/e2e/checks/preview.mjs` и `checks/platform.mjs` — проверки среды превью и интерфейса на демо-магазине шага 1.1 (после любых правок в `src/`, `public/`, `shared/`, `scripts/copy-vendor.mjs`)
 - Проверки требуют запущенного `npm run dev` и Chrome (`CHROME_PATH`, по умолчанию путь macOS). Другой адрес — `BASE_URL=http://localhost:5191`
@@ -83,7 +84,7 @@ spikes/esm-preview/   — прототип этапа 0: React и библиот
 
 ## Текущий статус
 
-**Этапы 0 и 1 готовы, главы 1 «Первое приложение» (7 шагов), 2 «JSX и разметка» (8 шагов), 3 «Компоненты и props» (8 шагов), 4 «Состояние и события» (9 шагов), 5 «Структура состояния и поля ввода» (9 шагов, первая библиотека — Immer), 6 «Ссылки и эффекты» (11 шагов) и 7 «Собственные хуки» (8 шагов) написаны**; все утверждения проверены запуском — `checks/ch01-first-app.mjs` … `checks/ch07-hooks.mjs`. У глав есть квизы (`quiz.yaml`, страница `/<глава>/quiz`, `checks/quiz.mjs`). Код глав пишется коммитами в ветках `chapter/*` (`scripts/chapter.mjs`). Главы 1–3 вычитаны (2026-10-08). **Следующий шаг — глава 8 «Контекст»**: пошагово в `docs/roadmap.md`, раздел «Следующий шаг».
+**Этапы 0–3 готовы: главы 1 «Первое приложение» (7 шагов), 2 «JSX и разметка» (8), 3 «Компоненты и props» (8), 4 «Состояние и события» (9), 5 «Структура состояния и поля ввода» (9, первая библиотека — Immer), 6 «Ссылки и эффекты» (11), 7 «Собственные хуки» (8) и 8 «Контекст» (8) написаны**; все утверждения проверены запуском — `checks/ch01-first-app.mjs` … `checks/ch08-context.mjs`. У глав есть квизы (`quiz.yaml`, страница `/<глава>/quiz`, `checks/quiz.mjs`), у шага 1.6 и практикумов глав 2–8 — проверки `check.ts` (`checks/step-checks.mjs`). Код глав пишется коммитами в ветках `chapter/*` (`scripts/chapter.mjs`). Главы 1–3 вычитаны (2026-10-08). **Следующий шаг — этап 4, глава 9 «Состояние приложения» (Zustand, Jotai)**: пошагово в `docs/roadmap.md`, раздел «Следующий шаг».
 
 ## Пользователь и тон работы
 

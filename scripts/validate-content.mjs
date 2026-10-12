@@ -113,6 +113,14 @@ for (const [chapterIndex, chapterDir] of course.chapters.entries()) {
       if (!solution['main.tsx']) errors.push(`${where}: в решении нет main.tsx`);
     }
     if (!start['main.tsx']) errors.push(`${where}: в старте нет main.tsx`);
+    // Проверка шага check.ts: только у шага с решением (её прогоняют на решении и на старте — tools/e2e/checks/step-checks.mjs),
+    // функция — экспорт по умолчанию; типы проверяет tsc -p tsconfig.checks.json
+    const checkFile = join(step.path, 'check.ts');
+    if (existsSync(checkFile)) {
+      if (meta.noSolution) errors.push(`${where}: check.ts у шага без решения — проверять нечего`);
+      if (!/export default async function/.test(readFileSync(checkFile, 'utf8')))
+        errors.push(`${where}/check.ts: нужна export default async function check(…)`);
+    }
 
     // Старт со startFrom: previous — результат предыдущего шага, он уже проверен
     for (const [kind, files] of [

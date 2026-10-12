@@ -1,4 +1,6 @@
-import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useImperativeHandle, useRef, useState, type ReactNode, type Ref } from 'react';
+import type { PreviewDriver } from '../check/runCheck';
+import type { CheckRequest } from '../check/types';
 import type { BackendConfig, FileMap } from '../content/course';
 import { Loader } from '../app/Loader';
 import type { Diagnostic } from '../editor/monaco';
@@ -53,7 +55,19 @@ interface Props {
   backend: BackendConfig;
   /** Кнопки в конце адресной строки (свернуть панель) */
   actions?: ReactNode;
+  /** Управление превью для проверки шага (src/check/runCheck.ts) */
+  ref?: Ref<PreviewHandle>;
 }
+
+export interface PreviewHandle extends PreviewDriver {
+  /** id запуска кода, который сейчас в превью (PreviewRun.id) */
+  runId(): number | null;
+}
+
+// Сколько ждать первого рендера приложения после перезапуска, мс
+const APP_START_TIMEOUT = 5000;
+// Пауза после первого рендера: эффекты, таймеры с нулевой задержкой, первые запросы
+const APP_SETTLE_MS = 250;
 
 const DEFAULT_BACKEND: Required<BackendConfig> = { latency: 300, failRate: 0 };
 const LATENCIES = [0, 300, 1000, 3000];
@@ -81,7 +95,7 @@ function statusClass(status: NetworkEntry['status']) {
   return status >= 400 ? 'failed' : 'ok';
 }
 
-export function Preview({ run, initialUrl, backend, actions }: Props) {
+export function Preview({ run, initialUrl, backend, actions, ref }: Props) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [entries, setEntries] = useState<ConsoleEntry[]>([]);
   const [network, setNetwork] = useState<NetworkEntry[]>([]);
@@ -97,6 +111,13 @@ export function Preview({ run, initialUrl, backend, actions }: Props) {
   const [frame, setFrame] = useState<{ key: string; startUrl: string } | null>(null);
   const urlRef = useRef(initialUrl);
   const restarts = useRef(0);
+  // Для проверки шага: что пришло от текущего запуска (без задержки состояния React) и запущен ли он
+  const runRef = useRef(run);
+  runRef.current = run;
+  const frameKeyRef = useRef('');
+  const startedKeyRef = useRef('');
+  const errorsRef = useRef<string[]>([]);
+  const requestsRef = useRef(new Map<number, CheckRequest>());
 
   const configRef = useRef(backendConfig);
   configRef.current = backendConfig;
@@ -104,6 +125,9 @@ export function Preview({ run, initialUrl, backend, actions }: Props) {
   function start(startUrl: string) {
     if (!run) return;
     restarts.current++;
+    frameKeyRef.current = `${run.id}-${restarts.current}`;
+    errorsRef.current = [...run.buildErrors];
+    requestsRef.current = new Map();
     urlRef.current = startUrl;
     setUrl(startUrl);
     setTypedUrl(startUrl);
@@ -128,6 +152,37 @@ export function Preview({ run, initialUrl, backend, actions }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [run]);
 
+  // Последняя версия start — для ручки проверки (она создаётся один раз)
+  const startRef = useRef(start);
+  startRef.current = start;
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      async restart(url) {
+        startRef.current(url);
+        const key = frameKeyRef.current;
+        if (runRef.current?.buildErrors.length) return;
+        const until = Date.now() + APP_START_TIMEOUT;
+        // Ждём: iframe получил код и React нарисовал хоть что-то в #root (или упал с ошибкой)
+        while (Date.now() < until) {
+          const root = iframeRef.current?.contentDocument?.getElementById('root');
+          if (startedKeyRef.current === key && (root?.hasChildNodes() || errorsRef.current.length > 0)) break;
+          await new Promise((resolve) => setTimeout(resolve, 50));
+        }
+        await new Promise((resolve) => setTimeout(resolve, APP_SETTLE_MS));
+      },
+      frameWindow: () => iframeRef.current?.contentWindow ?? null,
+      buildFailed: () => Boolean(runRef.current?.buildErrors.length),
+      errors: () => [...errorsRef.current],
+      typeErrors: () =>
+        (runRef.current?.diagnostics ?? []).map((d) => `${d.file}:${d.line}:${d.column} — ${d.message}`),
+      requests: () => [...requestsRef.current.values()],
+      runId: () => runRef.current?.id ?? null,
+    }),
+    [],
+  );
+
   useEffect(() => {
     function onMessage(event: MessageEvent<PreviewMessage>) {
       const data = event.data;
@@ -135,6 +190,7 @@ export function Preview({ run, initialUrl, backend, actions }: Props) {
       if (event.source !== iframeRef.current?.contentWindow) return;
 
       if (data.type === 'ready' && run && frame) {
+        startedKeyRef.current = frame.key;
         iframeRef.current?.contentWindow?.postMessage(
           {
             type: 'run',
@@ -158,6 +214,7 @@ export function Preview({ run, initialUrl, backend, actions }: Props) {
         setTitle(data.title);
       } else if (data.type === 'network' && data.entry) {
         const entry = data.entry;
+        requestsRef.current.set(entry.id, { method: entry.method, url: entry.url, status: entry.status });
         setNetwork((list) => {
           const index = list.findIndex((e) => e.id === entry.id);
           if (index === -1) return [...list.slice(-199), entry];
@@ -168,6 +225,7 @@ export function Preview({ run, initialUrl, backend, actions }: Props) {
       } else if (data.type === 'console' || data.type === 'error') {
         const level: ConsoleEntry['level'] = data.type === 'error' ? 'error' : (data.level ?? 'log');
         const text = data.text ?? '';
+        if (level === 'error') errorsRef.current.push(text);
         setEntries((list) => {
           const last = list.at(-1);
           if (last && last.level === level && last.text === text) {

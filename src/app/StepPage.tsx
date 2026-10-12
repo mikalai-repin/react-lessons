@@ -3,6 +3,8 @@ import { Group, Panel, Separator, usePanelRef, type PanelImperativeHandle } from
 import { Navigate, useParams } from 'react-router';
 import { findStep, neighbours, nextPath, type FileMap, type Step } from '../content/course';
 import { CodeEditor } from '../editor/CodeEditor';
+import { hasCheck, runCheck } from '../check/runCheck';
+import type { CheckResult } from '../check/types';
 import { compileStep } from '../compiler';
 import {
   collectDiagnostics,
@@ -13,7 +15,7 @@ import {
   syncModels,
 } from '../editor/monaco';
 import { LessonPanel } from '../lesson/LessonPanel';
-import { Preview, type PreviewRun } from '../preview/Preview';
+import { Preview, type PreviewHandle, type PreviewRun } from '../preview/Preview';
 import { progress } from '../progress/storage';
 import { useMediaQuery } from './useMediaQuery';
 
@@ -59,12 +61,16 @@ function StepWorkspace({ step }: { step: Step }) {
   const [hasBackup, setHasBackup] = useState(() => Boolean(progress.getBackup(step.id)));
   const [mobileTab, setMobileTab] = useState<PaneId>('lesson');
   const panes = useCollapsiblePanes(!isNarrow, () => runCode());
+  const previewRef = useRef<PreviewHandle>(null);
+  // Проверка шага (check.ts): null — не запускалась, 'running' — идёт
+  const [check, setCheck] = useState<CheckResult | 'running' | null>(null);
+  const checkable = hasCheck(step.dir);
 
   const timers = useRef<{ save?: number; autorun?: number }>({});
 
   const { prev } = neighbours(step);
 
-  const runCode = useCallback(async () => {
+  const runCode = useCallback(async (): Promise<number | null> => {
     window.clearTimeout(timers.current.autorun);
     const id = ++runCounter;
     // Код компилирует воркер (TypeScript 6, TSX → JS), ошибки типов даёт TS-воркер Monaco
@@ -78,7 +84,7 @@ function StepWorkspace({ step }: { step: Step }) {
       collectDiagnostics(step.id, step.fileOrder),
     ]);
     // Пока компилировали, мог начаться следующий запуск — устаревший результат не показываем
-    if (id !== runCounter) return;
+    if (id !== runCounter) return null;
     setRun({
       files: compiled.files,
       sources: compiled.sources,
@@ -88,6 +94,7 @@ function StepWorkspace({ step }: { step: Step }) {
       entry: 'main.js',
       id,
     });
+    return id;
   }, [step]);
 
   useEffect(() => {
@@ -150,6 +157,24 @@ function StepWorkspace({ step }: { step: Step }) {
     setHasBackup(false);
   }
 
+  // Проверка: свежий код → чистый запуск с начального адреса шага → check.ts смотрит на результат
+  async function onCheck() {
+    setCheck('running');
+    // Превью должно быть видимым: проверки меряют элементы и ждут IntersectionObserver
+    if (isNarrow) setMobileTab('result');
+    else panes.expand('result');
+    const id = await runCode();
+    const preview = previewRef.current;
+    if (id === null || !preview) return setCheck(null);
+    // Новый запуск доходит до превью после рендера StepPage
+    while (preview.runId() !== id) await new Promise((resolve) => setTimeout(resolve, 20));
+    const result = await runCheck(step.dir, preview, step.meta.url ?? '/');
+    setCheck(result);
+    if (result.pass) progress.setDone(step.id);
+    // На узком экране итог проверки — под редактором, на вкладке «Код»
+    if (isNarrow) setMobileTab('code');
+  }
+
   function toggleAutorun(value: boolean) {
     setAutorun(value);
     progress.setAutorun(value);
@@ -191,16 +216,37 @@ function StepWorkspace({ step }: { step: Step }) {
         <button className="button" onClick={onReset}>
           Сброс
         </button>
+        {checkable && (
+          <button
+            className="button check-button"
+            onClick={onCheck}
+            disabled={check === 'running'}
+            title="Проверить результат задания в приложении"
+          >
+            {check === 'running' ? 'Проверяем…' : '✓ Проверить'}
+          </button>
+        )}
         <label className="toggle">
           <input type="checkbox" checked={autorun} onChange={(event) => toggleAutorun(event.target.checked)} />
           Автозапуск
         </label>
       </div>
+      {check !== null && check !== 'running' && (
+        <div className={check.pass ? 'check-result passed' : 'check-result failed'} role="status">
+          <span className="check-result-text">
+            {check.pass ? 'Всё верно — задание выполнено. Можно дальше.' : check.hint}
+          </span>
+          <button type="button" className="icon-button" title="Скрыть" onClick={() => setCheck(null)}>
+            ×
+          </button>
+        </div>
+      )}
     </div>
   );
 
   const preview = (
     <Preview
+      ref={previewRef}
       run={run}
       initialUrl={step.meta.url ?? '/'}
       backend={step.meta.backend ?? {}}
@@ -332,6 +378,9 @@ function useCollapsiblePanes(isWide: boolean, onResultExpanded: () => void) {
         )}
       </>
     ),
+
+    /** Развернуть панель, если она свёрнута */
+    expand: (id: PaneId) => refs[id].current?.expand(),
 
     /** Последнюю развёрнутую панель свернуть нельзя — кнопки у неё нет */
     collapseButton: (id: PaneId, icon: string) =>

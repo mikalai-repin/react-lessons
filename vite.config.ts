@@ -3,6 +3,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react()],
+  // Проверки шагов импортируют только типы '@course/check' (import type — esbuild их убирает); alias — на всякий случай
+  resolve: { alias: { '@course/check': '/src/check/types.ts' } },
   // 5173 и 5174 обычно заняты курсом PixiJS, 5180 — курсом Angular
   server: { port: 5190, strictPort: true },
   worker: { format: 'es' },

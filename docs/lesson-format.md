@@ -1,6 +1,6 @@
 # Формат уроков
 
-Формат **тот же, что в `../angular-learn/docs/lesson-format.md`** — прочитать его целиком: структура `content/`, `course.json`, `chapter.json`, frontmatter, «шаг хранит только изменения» (`startFrom: previous | custom`, `base` + `baseHash`, `removedInStart`/`removedInSolution`), контейнеры markdown (`tip`, `warning`, `deep`, `legacy`, `task`, `hint`), блоки кода с именем файла и подсветкой строк, `check.ts`, тесты в шаге. `shared/step-chain.js`, `scripts/step-files.mjs`, `scripts/validate-content.mjs` перенесены без изменений логики; вместо `tools/authoring/steps.py` и генераторов глав — `scripts/chapter.mjs`.
+Формат **тот же, что в `../angular-learn/docs/lesson-format.md`** — прочитать его целиком: структура `content/`, `course.json`, `chapter.json`, frontmatter, «шаг хранит только изменения» (`startFrom: previous | custom`, `base` + `baseHash`, `removedInStart`/`removedInSolution`), контейнеры markdown (`tip`, `warning`, `deep`, `legacy`, `task`, `hint`), блоки кода с именем файла и подсветкой строк, `check.ts` (у нас — реализован, раздел ниже), тесты в шаге. `shared/step-chain.js`, `scripts/step-files.mjs`, `scripts/validate-content.mjs` перенесены без изменений логики; вместо `tools/authoring/steps.py` и генераторов глав — `scripts/chapter.mjs`.
 
 Ниже — только отличия для React.
 
@@ -64,6 +64,42 @@ export function App() {
 Ссылки на API — на react.dev и документацию библиотек: `[useState](https://react.dev/reference/react/useState)`, `[useQuery](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery)`. Ссылку проверяем перед публикацией.
 
 Внутренние ссылки: `[шаг про состояние](step:04-state/02-use-state)`.
+
+## Проверка шага — `check.ts`
+
+У практикумов (и шага 1.6 «Отладка») — `content/<глава>/<шаг>/check.ts` рядом с `lesson.md`; платформа показывает кнопку «✓ Проверить». Устройство — `docs/architecture.md`, «Проверка шагов».
+
+```ts
+import type { CheckContext, CheckResult } from '@course/check';
+
+// Что проверяем — одной строкой
+export default async function check(
+  ctx: CheckContext,
+): Promise<CheckResult> {
+  const card = ctx.document
+    .querySelector('img[alt="Остров сокровищ"]')
+    ?.closest('article');
+  if (!card) {
+    return { pass: false, hint: 'Карточки не отрисовались — посмотрите консоль.' };
+  }
+  await ctx.click(ctx.button('В корзину', card));
+  if (!ctx.text(card).includes('В корзине: 1 шт.')) {
+    return { pass: false, hint: '…что не так и куда смотреть, без готового ответа' };
+  }
+  if (ctx.errors().length > 0 || ctx.typeErrors().length > 0) {
+    return { pass: false, hint: 'Работает, но в консоли есть ошибки.' };
+  }
+  return { pass: true };
+}
+```
+
+- Проверяем **результат** — DOM, адрес, запросы, консоль, — а не текст кода: решение ученика не обязано совпадать с нашим. Опора — то, что задание называет явно: тексты, `aria-label`, роли, `alt`; классы CSS Modules — по части имени (`[class*="_badge_"]`), только если задание их называет.
+- Перед `check` платформа уже перезапустила приложение с `url` шага. Хранилище общее с платформой: если проверка зависит от `localStorage` (избранное, корзина с `persist`), — `ctx.restart(undefined, { clearStorage: ['favorites'] })`.
+- `ctx.document` и `ctx.window` — геттеры: после `restart` это новый документ, поэтому не деструктурируйте их.
+- Каждый `pass: false` — с `hint`: что не так и куда смотреть, на русском, без готового кода.
+- Проверка обязана **проваливаться на старте** с осмысленной подсказкой и **проходить на решении** — это проверяет `tools/e2e/checks/step-checks.mjs`; туда же (`MISTAKES`) добавляйте типичную ошибку ученика и ожидаемую подсказку.
+- В тексте практикума, в начале «Проверьте себя», — фраза про кнопку «✓ Проверить».
+- Типы — `npm run validate` (`tsc -p tsconfig.checks.json`), формат — Prettier с настройками кода уроков.
 
 ## Квиз главы — `quiz.yaml`
 

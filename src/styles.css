@@ -954,6 +954,7 @@ button {
 
 .toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
@@ -969,6 +970,43 @@ button {
   font-size: 13px;
   color: var(--text-muted);
   cursor: pointer;
+}
+
+/* Результат проверки шага (check.ts): под панелью кнопок */
+.check-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.45;
+  flex-shrink: 0;
+}
+
+.check-result.passed {
+  background: var(--tip-soft);
+  color: var(--tip);
+}
+
+.check-result.failed {
+  background: var(--warning-soft);
+  color: var(--text);
+}
+
+.check-result-text {
+  flex: 1;
+}
+
+.check-result.passed .check-result-text::before {
+  content: '✓ ';
+  font-weight: 600;
+}
+
+.check-result.failed .check-result-text::before {
+  content: 'Пока не так. ';
+  font-weight: 600;
+  color: var(--warning);
 }
 
 /* ---------- Превью ---------- */
