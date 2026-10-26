@@ -155,6 +155,46 @@ expect(
 );
 expect(!immerApp.logs.some((l) => /error|warn/.test(l)), 'Immer: консоль без ошибок');
 
+// Jotai 3: атомы, производный атом, atomWithStorage из jotai/utils — тот же экземпляр React
+const jotaiApp = await openPreview(
+  browser,
+  compileMap({
+    'main.tsx': `import { createRoot } from 'react-dom/client';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
+
+const countAtom = atom(1);
+const doubleAtom = atom((get) => get(countAtom) * 2);
+const nameAtom = atomWithStorage('jotai-check', 'Аня');
+
+function App() {
+  const [count, setCount] = useAtom(countAtom);
+  const double = useAtomValue(doubleAtom);
+  const setName = useSetAtom(nameAtom);
+  const name = useAtomValue(nameAtom);
+  return (
+    <main>
+      <button id="inc" onClick={() => setCount((c) => c + 1)}>+</button>
+      <button id="rename" onClick={() => setName('Борис')}>имя</button>
+      <p id="out">{count}:{double}|{name}</p>
+    </main>
+  );
+}
+createRoot(document.getElementById('root')!).render(<App />);
+`,
+  }),
+  { waitMs: 600 },
+);
+for (const id of ['inc', 'inc', 'rename']) {
+  await jotaiApp.page.click(`#${id}`);
+  await wait(50);
+}
+const jotaiOut = await jotaiApp.page.$eval('#out', (e) => e.textContent);
+expect(jotaiOut === '3:6|Борис', `Jotai: атом, производный атом и atomWithStorage (${jotaiOut})`);
+const jotaiSaved = await jotaiApp.page.evaluate(() => localStorage.getItem('jotai-check'));
+expect(jotaiSaved === '"Борис"', `Jotai: atomWithStorage пишет в localStorage (${jotaiSaved})`);
+expect(!jotaiApp.logs.some((l) => /error|warn/.test(l)), `Jotai: консоль без ошибок ${JSON.stringify(jotaiApp.logs)}`);
+
 await browser.close();
 console.log(failures.length ? `\nПровалено: ${failures.length}` : '\nВсё прошло');
 process.exit(failures.length ? 1 : 0);

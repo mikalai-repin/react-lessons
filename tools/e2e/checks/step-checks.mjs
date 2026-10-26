@@ -99,12 +99,27 @@ const MISTAKES = [
     to: 'false',
     hint: 'Повторный щелчок',
   },
+  {
+    dir: '09-app-state/09-practice',
+    file: 'store/cartStore.ts',
+    from: '          promo: state.promo,\n',
+    to: '',
+    hint: 'После перезапуска промокод пропал',
+  },
+  {
+    dir: '09-app-state/09-practice',
+    file: 'store/cartSlice.ts',
+    from: 'summarizeCart(items, games, null).total < PROMO_MIN_TOTAL',
+    to: 'summarizeCart(items, games, null).total < 0',
+    hint: 'промокод остался',
+  },
 ].filter((m) => chapters.includes(m.dir.split('/')[0]));
 
 for (const mistake of MISTAKES) {
   const [chapter, step] = mistake.dir.split('/');
   const route = `${strip(chapter)}/${strip(step)}`;
-  const files = readDir(`${CONTENT}/${mistake.dir}/solution`);
+  // Копия: readDir отдаёт общий объект, а у шага может быть несколько ошибок подряд
+  const files = { ...readDir(`${CONTENT}/${mistake.dir}/solution`) };
   if (!files[mistake.file].includes(mistake.from)) throw new Error(`${mistake.dir}: нет «${mistake.from}»`);
   files[mistake.file] = files[mistake.file].replace(mistake.from, mistake.to);
   await page.evaluate(

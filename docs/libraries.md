@@ -17,7 +17,7 @@
 | `typescript` | 6.0.x (не 7!) | Рабочий | везде | Типизация props, хуков, контекста, обобщённые компоненты. TS 7 (7.0.2, Go) — без JS API, для воркера и Monaco не подходит | да (компиляция) |
 | `react-router` | 8.4.0 | Глубоко | 10, 14, 18 | Самый распространённый роутер; data mode (`loader`/`action`), framework mode = бывший Remix. **Мажорная версия 8 вышла недавно — сверить API и режимы до главы.** Требует `react >=19.2.7`, Node 22+ (для CLI/framework mode) | да |
 | `@tanstack/react-query` | 5.104.x | Глубоко | 11, 14, 18 | Стандарт серверного состояния: кэш, инвалидация, оптимистичные обновления, бесконечные списки, Suspense | да |
-| `zustand` | 5.0.x | Рабочий | 9 | Самое популярное лёгкое клиентское хранилище; селекторы, `persist`, `devtools`, `useShallow` | да |
+| `zustand` | 5.0.15 | Рабочий | 9 | Самое популярное лёгкое клиентское хранилище; селекторы, `persist`, `devtools`, `useShallow`, срезы. В превью `zustand`, `zustand/middleware`, `zustand/react/shallow` (без `zustand/vanilla` и `zustand/middleware/immer`) | да |
 | `@reduxjs/toolkit`, `react-redux` | 2.13 / 9.3 | Глубоко | 19 | Огромный пласт существующих проектов; `createSlice`, `createSelector`, RTK Query, listener middleware | да |
 | `react-hook-form` | 7.89.x | Глубоко | 13, 18 | Стандарт для больших форм; `register`/`Controller`/`useFieldArray` | да |
 | `zod` | 4.6.x | Рабочий | 13, 18 | Схемы и вывод типов, валидация форм и ответов API. **Zod 4 отличается от 3** (API ошибок, `z.email()` и т. п.) — сверить | да |
@@ -36,7 +36,7 @@
 | `@tanstack/react-virtual` | 3.14.x | 16 | Виртуализация длинных списков | да |
 | `@tanstack/react-table` | 9.2.x | 18 | Headless-таблицы (сравнение с antd `Table`). **v9 — сверить отличия от v8** | да |
 | `motion` (бывший `framer-motion`) | 14.0.x | 16 | Анимации, `AnimatePresence`, layout-анимации. Импорт — `motion/react` (сверить) | да |
-| `jotai` | 3.0.x | 9 | Атомарное состояние — альтернативная модель. **v3 — сверить** | да |
+| `jotai` | 3.0.1 | 9 | Атомарное состояние — альтернативная модель (фильтры витрины в 9.6). В превью `jotai` и `jotai/utils`; типы — условие `types@>=5.5` в `exports` (поддержано в `typesOf`, `src/editor/monaco.ts`) | да |
 | `msw` | 3.0.x | 17, 23 | Моки сети в тестах и разработке. В превью — проверить: Service Worker внутри iframe платформы может не работать; запасной путь — учебный бэкенд | проверить |
 | `babel-plugin-react-compiler` | 1.0.0 | 16, 23 | React Compiler: автоматическая мемоизация. В превью нужен Babel (`@babel/standalone` 8) — только для вкладки «Скомпилировано» и режима «с компилятором» | спайк |
 | `eslint-plugin-react-hooks` | 7.1.x | 7, 23 | Правила хуков + правила компилятора; в превью — только объяснение, в Vite-проекте — по-настоящему | нет |

@@ -37,6 +37,8 @@ export const PREVIEW_MODULES = {
   'zustand/react/shallow': null,
   immer: null,
   'use-immer': null,
+  jotai: null,
+  'jotai/utils': null,
 };
 
 const IDENT = /^[A-Za-z_$][\w$]*$/;

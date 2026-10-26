@@ -63,6 +63,9 @@ function typesOf(entry: unknown): string | undefined {
   if (typeof entry === 'string') return entry.endsWith('.d.ts') ? entry : undefined;
   if (!entry || typeof entry !== 'object') return undefined;
   const conditions = entry as Record<string, unknown>;
+  // У jotai 3 настоящие типы — под условием `types@>=5.5`, а в `types` — заглушка для старого TypeScript
+  const versioned = Object.keys(conditions).find((key) => key.startsWith('types@'));
+  if (versioned) return typesOf(conditions[versioned]);
   if (typeof conditions.types === 'string' && conditions.types.endsWith('.d.ts')) return conditions.types;
   for (const key of ['import', 'module', 'default', 'browser', 'require']) {
     const found = typesOf(conditions[key]);

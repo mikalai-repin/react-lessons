@@ -9,6 +9,7 @@
     "05-structure",
     "06-effects",
     "07-hooks",
-    "08-context"
+    "08-context",
+    "09-app-state"
   ]
 }

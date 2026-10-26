@@ -15,6 +15,7 @@ export const typeFiles = import.meta.glob(
     '../../node_modules/zustand/**/*.d.ts',
     '../../node_modules/immer/dist/immer.d.ts',
     '../../node_modules/use-immer/dist/index.d.ts',
+    '../../node_modules/jotai/dist/**/*.d.ts',
   ],
   { query: '?raw', import: 'default', eager: true },
 ) as Record<string, string>;
@@ -27,6 +28,7 @@ export const typedPackages = import.meta.glob(
     '../../node_modules/@tanstack/query-core/package.json',
     '../../node_modules/immer/package.json',
     '../../node_modules/use-immer/package.json',
+    '../../node_modules/jotai/package.json',
   ],
   { import: 'default', eager: true },
 ) as Record<string, { exports: Record<string, unknown> }>;

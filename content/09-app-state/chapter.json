@@ -1,0 +1,5 @@
+{
+  "title": "Состояние приложения",
+  "description": "Состояние вне дерева React: свой стор на useSyncExternalStore и селекторы, Zustand (create, useShallow, getState), сохранение persist с partialize и миграцией версий, производное состояние, срезы и devtools, атомы Jotai, как стор подключается к React и карта решений — корзина без провайдера, склад и промокод.",
+  "part": 2
+}

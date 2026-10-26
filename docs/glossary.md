@@ -131,6 +131,8 @@
 | stale / invalidate | устаревший / инвалидировать (пометить устаревшим) | |
 | store / slice / selector | стор (хранилище) / срез / селектор | «стор» — разговорное, допустимо после первого «хранилище (store)» |
 | middleware | промежуточный слой (middleware) | |
+| atom / derived atom / write-only atom | атом / производный атом / атом только для записи | Jotai (глава 9); атом — описание ячейки, значение хранит стор Jotai |
+| persist / partialize / migrate | сохранение (`persist`) / что сохранять (`partialize`) / миграция | Zustand; версия формата — `version` |
 | schema / validation | схема / валидация (проверка) | Zod |
 | design token | дизайн-токен | antd |
 | headless component | headless-компонент (компонент без разметки) | |

@@ -1,0 +1,44 @@
+import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
+import type { CartItem } from '../api/models';
+import { createCartSlice } from './cartSlice';
+import type { CartSlice } from './cartSlice';
+import { createToastSlice } from './toastSlice';
+import type { ToastSlice } from './toastSlice';
+
+/** Весь стор — сумма срезов */
+export type CartState = CartSlice & ToastSlice;
+
+/** Какие middleware обёрнуты вокруг срезов: их видят типы set */
+export type CartMiddlewares = [
+  ['zustand/devtools', never],
+  ['zustand/persist', unknown],
+];
+
+// Стор корзины: срезы собираются в одно состояние.
+// devtools — снаружи: он видит каждый set, и persist тоже
+export const useCartStore = create<CartState>()(
+  devtools(
+    persist(
+      (...api) => ({
+        ...createCartSlice(...api),
+        ...createToastSlice(...api),
+      }),
+      {
+        // Ключ в localStorage
+        name: 'cart',
+        // Сохраняем только позиции: уведомление после перезапуска не нужно
+        partialize: (state) => ({ items: state.items }),
+        // Версия формата сохранённых данных: меняется — нужна миграция
+        version: 1,
+        // Версия 0 сохраняла всё состояние — берём из него только позиции
+        migrate: (persisted) => {
+          const { items } = persisted as { items: CartItem[] };
+          return { items };
+        },
+      },
+    ),
+    // Имя стора в Redux DevTools
+    { name: 'Корзина' },
+  ),
+);
