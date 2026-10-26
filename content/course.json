@@ -10,6 +10,7 @@
     "06-effects",
     "07-hooks",
     "08-context",
-    "09-app-state"
+    "09-app-state",
+    "10-routing"
   ]
 }

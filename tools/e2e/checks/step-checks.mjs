@@ -113,6 +113,13 @@ const MISTAKES = [
     to: 'summarizeCart(items, games, null).total < 0',
     hint: 'промокод остался',
   },
+  {
+    dir: '10-routing/14-practice',
+    file: 'routes.tsx',
+    from: "              crumb: (game: Game | undefined) =>\n                game?.title ?? 'Игра не найдена',",
+    to: '              crumb: (game: Game) => game.title,',
+    hint: 'match.loaderData равен undefined',
+  },
 ].filter((m) => chapters.includes(m.dir.split('/')[0]));
 
 for (const mistake of MISTAKES) {

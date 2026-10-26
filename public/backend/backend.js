@@ -31,6 +31,7 @@ export function createBackend({ originalFetch, report }) {
     );
     db = Object.fromEntries(entries);
     db.orders = [];
+    db.subscribers = [];
   }
 
   function currentUser(request) {
@@ -132,6 +133,21 @@ export function createBackend({ originalFetch, report }) {
       (request) => {
         const [user, denied] = requireUser(request);
         return denied ?? json(200, publicUser(user));
+      },
+    ],
+    [
+      // Подписка на рассылку (React-курс, глава 10): 201, 400 без e-mail, 409 — уже подписан
+      'POST',
+      '/api/subscribe',
+      (_r, _p, _q, body) => {
+        const email = String(body?.email ?? '')
+          .trim()
+          .toLowerCase();
+        if (!/^[^@\s]+@[^@\s]+$/.test(email)) return error(400, 'Нужен e-mail');
+        if (db.subscribers.some((s) => s.email === email)) return error(409, 'Этот адрес уже подписан');
+        const subscriber = { email, topic: body.topic ?? 'new', weekly: Boolean(body.weekly) };
+        db.subscribers.push(subscriber);
+        return json(201, subscriber);
       },
     ],
     [

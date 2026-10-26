@@ -1,0 +1,22 @@
+/* Хлебные крошки: «Главная › Каталог › …» над страницей */
+.crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+
+/* Разделитель между крошками */
+.crumbs li + li::before {
+  content: '›';
+  margin-right: 4px;
+  color: var(--muted);
+}
+
+/* Текущая страница — не ссылка */
+.crumbs [aria-current='page'] {
+  color: var(--muted);
+}

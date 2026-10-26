@@ -65,7 +65,9 @@ function filterAtom<T>(initialValue: T) {
 
 // Каждое поле витрины — свой атом
 export const queryAtom = filterAtom(INITIAL_FILTERS.query);
-export const categoryAtom = filterAtom(INITIAL_FILTERS.category);
+export const categoryAtom = filterAtom(
+  INITIAL_FILTERS.category,
+);
 …
 ```
 
@@ -91,7 +93,8 @@ export function CatalogFilters({ ref }: CatalogFiltersProps) {
   const [query, setQuery] = useAtom(queryAtom);
   const [category, setCategory] = useAtom(categoryAtom);
   const [sort, setSort] = useAtom(sortAtom);
-  const [inStockOnly, setInStockOnly] = useAtom(inStockOnlyAtom);
+  const [inStockOnly, setInStockOnly] =
+    useAtom(inStockOnlyAtom);
   …
           value={query}
           onChange={(e) => setQuery(e.target.value)}

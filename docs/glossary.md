@@ -125,6 +125,12 @@
 |---|---|---|
 | route / nested route / layout route | маршрут / вложенный маршрут / маршрут-макет | |
 | loader / action (router) | загрузчик (`loader`) / действие маршрута (`action`) | |
+| fetcher / resource route | фетчер (`useFetcher`) / ресурсный маршрут | ресурсный — маршрут без компонента, только `loader`/`action` (глава 10) |
+| revalidation | перезагрузка данных (ревалидация) | загрузчики страницы снова после `action` |
+| pathless route / index route | маршрут без `path` / индексный маршрут | без `path` — общая обёртка (граница ошибок, макет) без своего сегмента |
+| breadcrumbs | хлебные крошки | `handle` + `useMatches` |
+| navigation blocking | блокировка ухода | `useBlocker` |
+| code splitting / chunk | разделение кода / чанк | `lazy` маршрута, динамический `import()` |
 | search params | параметры поиска (query-параметры) | |
 | server state / client state | серверное / клиентское состояние | |
 | query / mutation / query key | запрос / мутация / ключ запроса | TanStack Query |
