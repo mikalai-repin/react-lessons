@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#f4b400"/>
+<rect x="198.5" y="133.5" width="65" height="65" transform="rotate(45 231 166)" fill="#000" opacity="0.10"/><circle cx="159" cy="151" r="24" fill="#fff" opacity="0.12"/><rect x="148.5" y="51.5" width="25" height="25" transform="rotate(45 161 64)" fill="#000" opacity="0.10"/><circle cx="62" cy="11" r="41" fill="#fff" opacity="0.12"/><rect x="266.5" y="82.5" width="41" height="41" transform="rotate(45 287 103)" fill="#000" opacity="0.10"/><circle cx="62" cy="187" r="46" fill="#fff" opacity="0.12"/><rect x="97" y="97" width="28" height="28" transform="rotate(45 111 111)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="283" text-anchor="middle">Пчелиный</text><text x="150" y="317" text-anchor="middle">улей</text></g>
+</svg>

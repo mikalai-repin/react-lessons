@@ -120,6 +120,14 @@ const MISTAKES = [
     to: '              crumb: (game: Game) => game.title,',
     hint: 'match.loaderData равен undefined',
   },
+  {
+    // Хиты без size — сервер отдал всю первую страницу
+    dir: '11-server-data/12-practice',
+    file: 'catalog/HomePage.tsx',
+    from: '  size: String(HITS_SHOWN),\n',
+    to: '',
+    hint: 'Нужны 6 лучших по рейтингу',
+  },
 ].filter((m) => chapters.includes(m.dir.split('/')[0]));
 
 for (const mistake of MISTAKES) {

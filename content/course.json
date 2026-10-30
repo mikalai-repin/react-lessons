@@ -11,6 +11,7 @@
     "07-hooks",
     "08-context",
     "09-app-state",
-    "10-routing"
+    "10-routing",
+    "11-server-data"
   ]
 }

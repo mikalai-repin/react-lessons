@@ -34,7 +34,8 @@ React и экосистема сильно изменились в 2022–2026 �
 | Create React App | Vite (или Next / React Router framework) | CRA устарел |
 | React Router `<Switch>`, `useHistory`, `component=` (v5) | v8 API | |
 | Redux: `createStore`, `connect`, ручные `ACTION_TYPES`, `switch`-редьюсеры | Redux Toolkit | |
-| React Query v3/v4: `useQuery(key, fn)`, `isLoading` как «первая загрузка», `cacheTime` | v5: `useQuery({ queryKey, queryFn })`, `isPending`, `gcTime` | |
+| React Query v3/v4: `useQuery(key, fn)`, `isLoading` как «первая загрузка», `cacheTime`, `keepPreviousData: true`, `onSuccess` у `useQuery` | v5: `useQuery({ queryKey, queryFn })`, `isPending`, `gcTime`, `placeholderData: keepPreviousData` | |
+| `queryClient.ensureQueryData`, `fetchQuery`, `prefetchQuery` (5.104: `@deprecated`) | `queryClient.query(…)` (+ `staleTime: 'static'` / `.catch(noop)`) | Глава 11.7, `facts/ecosystem.md` |
 | antd: статические `message.success()`, `Modal.confirm()` без `App`, `visible`, `destroyOnClose`, `moment` | `App.useApp()`, `open`, `destroyOnHidden`, `dayjs` | Проверить список в antd 6 |
 | Строковые `ref`, `findDOMNode`, legacy context (`contextTypes`) | `useRef`, `createContext` | Удалены в React 19 |
 | `act` из `react-dom/test-utils`, `react-test-renderer` | `act` из `react`, Testing Library | Проверить |
@@ -46,7 +47,7 @@ React и экосистема сильно изменились в 2022–2026 �
 ### React 19.0–19.3
 
 - Actions: `useActionState` (из `react`), `useFormStatus` (из `react-dom`), `useOptimistic`, `<form action={fn}>`, `formAction` у кнопок, сброс неуправляемой формы после успешного action.
-- `use(promise)`; промис должен быть кэширован (не создаваться в рендере). ✅ `use(Context)` и вызов в условиях — проверено (глава 8).
+- ✅ `use(promise)` + `<Suspense>`: промис из `loader`, промис в рендере — бесконечные запросы без предупреждения (глава 11, `facts/render.md`). ✅ `use(Context)` и вызов в условиях — проверено (глава 8).
 - ✅ `ref` как проп; колбэк-ref может вернуть функцию очистки; в TS — неявный `return` из колбэк-ref стал ошибкой — проверено (глава 6).
 - ✅ `<Context value>` как провайдер — проверено (глава 8).
 - Метаданные документа: `<title>`, `<meta>`, `<link>` в компоненте поднимаются в `<head>`.
@@ -69,7 +70,7 @@ React и экосистема сильно изменились в 2022–2026 �
 ### Библиотеки (сверить перед главой)
 
 - ✅ **React Router 8** — проверено в главе 10 (`facts/ecosystem.md`). Осталось сверить к главам 14 и 17: `createRoutesStub`/`createMemoryRouter` для тестов, middleware и `context` в data mode.
-- **TanStack Query 5**: `isPending` / `isLoading` / `isFetching`, `placeholderData: keepPreviousData`, `queryOptions()`, `useSuspenseQuery`, `throwOnError`, `useMutationState`, `QueryCache({ onError })`.
+- ✅ **TanStack Query 5.104** — проверено в главе 11 (`facts/ecosystem.md`): умолчания, статусы, `queryOptions`, `keepPreviousData`, `useSuspenseQuery`, `queryClient.query`, мутации, `useInfiniteQuery`, устройство кэша. Осталось к главам 14 и 18: `throwOnError`, `useMutationState`, `QueryCache({ onError })`, `meta`.
 - ✅ **Zustand 5** — проверено в главе 9 (`facts/ecosystem.md`): `create` без `equalityFn`, `useShallow` из `zustand/react/shallow`, `persist` с `version`/`migrate`, `createWithEqualityFn` в `zustand/traditional`.
 - **Redux Toolkit 2**: `createSlice` с `selectors`, `buildCreateSlice`, `combineSlices`, `.withTypes()`, `createListenerMiddleware`.
 - **React Hook Form 7.89**: `useForm` с `resolver`, `values`, `disabled`; `useWatch` против `watch`; `subscribe` (новое?).

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#e07a3f"/>
+<rect x="40" y="91" width="68" height="68" transform="rotate(45 74 125)" fill="#000" opacity="0.10"/><circle cx="4" cy="3" r="36" fill="#fff" opacity="0.12"/><rect x="216.5" y="-12.5" width="33" height="33" transform="rotate(45 233 4)" fill="#000" opacity="0.10"/><circle cx="286" cy="235" r="32" fill="#fff" opacity="0.12"/><rect x="261" y="-2" width="54" height="54" transform="rotate(45 288 25)" fill="#000" opacity="0.10"/><circle cx="65" cy="3" r="68" fill="#fff" opacity="0.12"/><rect x="18" y="-8" width="46" height="46" transform="rotate(45 41 15)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="300" text-anchor="middle">Лисья нора</text></g>
+</svg>

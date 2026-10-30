@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#c0392b"/>
+<rect x="254" y="192" width="54" height="54" transform="rotate(45 281 219)" fill="#000" opacity="0.10"/><circle cx="175" cy="135" r="47" fill="#fff" opacity="0.12"/><rect x="189" y="102" width="26" height="26" transform="rotate(45 202 115)" fill="#000" opacity="0.10"/><circle cx="187" cy="7" r="62" fill="#fff" opacity="0.12"/><rect x="241.5" y="168.5" width="25" height="25" transform="rotate(45 254 181)" fill="#000" opacity="0.10"/><circle cx="229" cy="224" r="37" fill="#fff" opacity="0.12"/><rect x="201.5" y="210.5" width="69" height="69" transform="rotate(45 236 245)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="283" text-anchor="middle">Музыкальная</text><text x="150" y="317" text-anchor="middle">шкатулка</text></g>
+</svg>

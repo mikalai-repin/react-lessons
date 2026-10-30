@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#90caf9"/>
+<rect x="250.5" y="125.5" width="69" height="69" transform="rotate(45 285 160)" fill="#000" opacity="0.10"/><circle cx="78" cy="234" r="56" fill="#fff" opacity="0.12"/><rect x="243.5" y="57.5" width="21" height="21" transform="rotate(45 254 68)" fill="#000" opacity="0.10"/><circle cx="37" cy="31" r="34" fill="#fff" opacity="0.12"/><rect x="119.5" y="199.5" width="67" height="67" transform="rotate(45 153 233)" fill="#000" opacity="0.10"/><circle cx="126" cy="0" r="40" fill="#fff" opacity="0.12"/><rect x="71.5" y="210.5" width="23" height="23" transform="rotate(45 83 222)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="283" text-anchor="middle">Полярная</text><text x="150" y="317" text-anchor="middle">станция</text></g>
+</svg>

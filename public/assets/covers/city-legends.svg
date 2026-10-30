@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#37474f"/>
+<rect x="115" y="42" width="36" height="36" transform="rotate(45 133 60)" fill="#000" opacity="0.10"/><circle cx="127" cy="184" r="27" fill="#fff" opacity="0.12"/><rect x="66.5" y="209.5" width="23" height="23" transform="rotate(45 78 221)" fill="#000" opacity="0.10"/><circle cx="112" cy="19" r="48" fill="#fff" opacity="0.12"/><rect x="42.5" y="196.5" width="21" height="21" transform="rotate(45 53 207)" fill="#000" opacity="0.10"/><circle cx="28" cy="112" r="63" fill="#fff" opacity="0.12"/><rect x="136" y="80" width="46" height="46" transform="rotate(45 159 103)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="283" text-anchor="middle">Городские</text><text x="150" y="317" text-anchor="middle">легенды</text></g>
+</svg>

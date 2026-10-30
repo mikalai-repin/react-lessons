@@ -81,7 +81,9 @@ const typesReady = import('./library-types').then(({ typeFiles, typedPackages })
   }
   for (const [path, pkg] of Object.entries(typedPackages)) {
     const name = relativeToNodeModules(path).replace(/\/package\.json$/, '');
-    for (const [subpath, entry] of Object.entries(pkg.exports)) {
+    // Без `exports` (react-error-boundary) — только корень пакета с типами из `types`
+    const exports = pkg.exports ?? { '.': `./${pkg.types}` };
+    for (const [subpath, entry] of Object.entries(exports)) {
       const types = typesOf(entry);
       if (!types || subpath.includes('*')) continue;
       const stubDir = `${name}${subpath.slice(1)}`;

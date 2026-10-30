@@ -229,5 +229,542 @@
     "description": "Достройте замок до прихода зимы: делите ресурсы и закрывайте бреши в стенах вместе.",
     "tags": ["замки", "кооператив"],
     "color": "#7a5c99"
+  },
+  {
+    "id": 13,
+    "slug": "northern-route",
+    "title": "Северный путь",
+    "cover": "/assets/covers/northern-route.svg",
+    "price": 2790,
+    "category": "strategy",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 90,
+    "age": 12,
+    "rating": 4.3,
+    "inStock": 8,
+    "description": "Ведите драккары вдоль фьордов, торгуйте мехом и солью и стройте поселения раньше соперников.",
+    "tags": ["викинги", "торговля"],
+    "color": "#3b6e8f"
+  },
+  {
+    "id": 14,
+    "slug": "stone-garden",
+    "title": "Сад камней",
+    "cover": "/assets/covers/stone-garden.svg",
+    "price": 1490,
+    "category": "family",
+    "players": {
+      "min": 1,
+      "max": 4
+    },
+    "playTime": 30,
+    "age": 8,
+    "rating": 3.9,
+    "inStock": 15,
+    "description": "Тихая игра про выкладывание узоров из камней: кто красивее и выгоднее разложит сад.",
+    "tags": ["головоломка", "спокойная"],
+    "color": "#7d8c6a"
+  },
+  {
+    "id": 15,
+    "slug": "fox-den",
+    "title": "Лисья нора",
+    "cover": "/assets/covers/fox-den.svg",
+    "price": 890,
+    "category": "kids",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 15,
+    "age": 5,
+    "rating": 4.1,
+    "inStock": 22,
+    "description": "Лисята прячутся в норах, а игроки вспоминают, кто где сидит. Первая игра на память.",
+    "tags": ["животные", "память"],
+    "color": "#e07a3f"
+  },
+  {
+    "id": 16,
+    "slug": "five-to-midnight",
+    "title": "Пять минут до полуночи",
+    "cover": "/assets/covers/five-to-midnight.svg",
+    "price": 1190,
+    "category": "party",
+    "players": {
+      "min": 4,
+      "max": 10
+    },
+    "playTime": 20,
+    "age": 14,
+    "rating": 4,
+    "inStock": 12,
+    "description": "Успейте объяснить как можно больше слов, пока песочные часы не отсчитали полночь.",
+    "tags": ["слова", "скорость"],
+    "color": "#2c2c54",
+    "oldPrice": 1490
+  },
+  {
+    "id": 17,
+    "slug": "star-navigator",
+    "title": "Звёздный штурман",
+    "cover": "/assets/covers/star-navigator.svg",
+    "price": 3990,
+    "category": "strategy",
+    "players": {
+      "min": 1,
+      "max": 4
+    },
+    "playTime": 120,
+    "age": 14,
+    "rating": 4.7,
+    "inStock": 3,
+    "description": "Прокладывайте маршруты между звёздами, открывайте планеты и торгуйтесь за топливо.",
+    "tags": ["космос", "исследование"],
+    "color": "#14213d"
+  },
+  {
+    "id": 18,
+    "slug": "sails-and-wind",
+    "title": "Корабли и ветер",
+    "cover": "/assets/covers/sails-and-wind.svg",
+    "price": 2190,
+    "category": "family",
+    "players": {
+      "min": 2,
+      "max": 5
+    },
+    "playTime": 40,
+    "age": 8,
+    "rating": 3.6,
+    "inStock": 9,
+    "description": "Парусная гонка вокруг архипелага: ветер меняется каждый ход, и курс приходится менять вместе с ним.",
+    "tags": ["море", "гонка"],
+    "color": "#4d9de0"
+  },
+  {
+    "id": 19,
+    "slug": "old-tower",
+    "title": "Тайна старой башни",
+    "cover": "/assets/covers/old-tower.svg",
+    "price": 2590,
+    "category": "cooperative",
+    "players": {
+      "min": 1,
+      "max": 5
+    },
+    "playTime": 60,
+    "age": 10,
+    "rating": 4.4,
+    "inStock": 0,
+    "description": "Вместе разгадайте, что случилось в старой башне, пока не погасла последняя свеча.",
+    "tags": ["детектив", "загадки"],
+    "color": "#5b3758"
+  },
+  {
+    "id": 20,
+    "slug": "merry-farm",
+    "title": "Весёлая ферма",
+    "cover": "/assets/covers/merry-farm.svg",
+    "price": 990,
+    "category": "kids",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 20,
+    "age": 4,
+    "rating": 3.8,
+    "inStock": 30,
+    "description": "Собирайте на ферму коров, овец и кур — и не пустите во двор волка.",
+    "tags": ["животные", "кубик"],
+    "color": "#8bc34a"
+  },
+  {
+    "id": 21,
+    "slug": "river-bridge",
+    "title": "Мост через реку",
+    "cover": "/assets/covers/river-bridge.svg",
+    "price": 1690,
+    "category": "family",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 35,
+    "age": 8,
+    "rating": 4.2,
+    "inStock": 11,
+    "description": "Стройте мосты, чтобы соединить деревни на берегах реки. Чем длиннее мост — тем больше очков.",
+    "tags": ["строительство", "тайлы"],
+    "color": "#2a6f97",
+    "oldPrice": 1990
+  },
+  {
+    "id": 22,
+    "slug": "alchemists-guild",
+    "title": "Гильдия алхимиков",
+    "cover": "/assets/covers/alchemists-guild.svg",
+    "price": 3290,
+    "category": "strategy",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 90,
+    "age": 12,
+    "rating": 4.6,
+    "inStock": 5,
+    "description": "Варите эликсиры, выполняйте заказы гильдии и не взорвите лабораторию.",
+    "tags": ["магия", "ресурсы"],
+    "color": "#6a4c93"
+  },
+  {
+    "id": 23,
+    "slug": "music-box",
+    "title": "Музыкальная шкатулка",
+    "cover": "/assets/covers/music-box.svg",
+    "price": 1290,
+    "category": "party",
+    "players": {
+      "min": 3,
+      "max": 8
+    },
+    "playTime": 25,
+    "age": 8,
+    "rating": 3.4,
+    "inStock": 14,
+    "description": "Напевайте, угадывайте и спорьте: какая мелодия спрятана в шкатулке.",
+    "tags": ["музыка", "ассоциации"],
+    "color": "#c0392b"
+  },
+  {
+    "id": 24,
+    "slug": "beehive",
+    "title": "Пчелиный улей",
+    "cover": "/assets/covers/beehive.svg",
+    "price": 1790,
+    "category": "family",
+    "players": {
+      "min": 1,
+      "max": 4
+    },
+    "playTime": 40,
+    "age": 8,
+    "rating": 4.5,
+    "inStock": 7,
+    "description": "Собирайте шестиугольные соты и выводите самый трудолюбивый рой.",
+    "tags": ["тайлы", "природа"],
+    "color": "#f4b400"
+  },
+  {
+    "id": 25,
+    "slug": "time-maze",
+    "title": "Лабиринт времени",
+    "cover": "/assets/covers/time-maze.svg",
+    "price": 2890,
+    "category": "cooperative",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 60,
+    "age": 12,
+    "rating": 4.6,
+    "inStock": 4,
+    "description": "Команда путешественников ищет выход из лабиринта, где каждая дверь ведёт в другую эпоху.",
+    "tags": ["лабиринт", "путешествия"],
+    "color": "#00695c",
+    "oldPrice": 3490
+  },
+  {
+    "id": 26,
+    "slug": "city-legends",
+    "title": "Городские легенды",
+    "cover": "/assets/covers/city-legends.svg",
+    "price": 1390,
+    "category": "party",
+    "players": {
+      "min": 4,
+      "max": 12
+    },
+    "playTime": 30,
+    "age": 16,
+    "rating": 3.7,
+    "inStock": 10,
+    "description": "Рассказывайте небылицы о родном городе так, чтобы вам поверили.",
+    "tags": ["блеф", "истории"],
+    "color": "#37474f"
+  },
+  {
+    "id": 27,
+    "slug": "volcano-island",
+    "title": "Остров вулканов",
+    "cover": "/assets/covers/volcano-island.svg",
+    "price": 2390,
+    "category": "family",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 45,
+    "age": 10,
+    "rating": 4.1,
+    "inStock": 6,
+    "description": "Стройте деревни на склонах вулканов и успевайте уводить жителей до извержения.",
+    "tags": ["острова", "риск"],
+    "color": "#bf360c"
+  },
+  {
+    "id": 28,
+    "slug": "codebreakers",
+    "title": "Шифровальщики",
+    "cover": "/assets/covers/codebreakers.svg",
+    "price": 1090,
+    "category": "party",
+    "players": {
+      "min": 4,
+      "max": 8
+    },
+    "playTime": 15,
+    "age": 12,
+    "rating": 4.4,
+    "inStock": 25,
+    "description": "Две команды обмениваются шифровками и пытаются перехватить чужие подсказки.",
+    "tags": ["слова", "команды"],
+    "color": "#455a64"
+  },
+  {
+    "id": 29,
+    "slug": "polar-station",
+    "title": "Полярная станция",
+    "cover": "/assets/covers/polar-station.svg",
+    "price": 2690,
+    "category": "cooperative",
+    "players": {
+      "min": 1,
+      "max": 4
+    },
+    "playTime": 75,
+    "age": 12,
+    "rating": 4.3,
+    "inStock": 2,
+    "description": "Вместе продержитесь полярную ночь: топливо кончается, а метель не утихает.",
+    "tags": ["север", "выживание"],
+    "color": "#90caf9"
+  },
+  {
+    "id": 30,
+    "slug": "tea-ceremony",
+    "title": "Чайная церемония",
+    "cover": "/assets/covers/tea-ceremony.svg",
+    "price": 1590,
+    "category": "family",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 30,
+    "age": 10,
+    "rating": 3.5,
+    "inStock": 13,
+    "description": "Собирайте наборы из пиал и чайников и устраивайте церемонии для гостей.",
+    "tags": ["спокойная", "наборы"],
+    "color": "#6d8b74"
+  },
+  {
+    "id": 31,
+    "slug": "clockwork-city",
+    "title": "Механический город",
+    "cover": "/assets/covers/clockwork-city.svg",
+    "price": 4490,
+    "category": "strategy",
+    "players": {
+      "min": 1,
+      "max": 4
+    },
+    "playTime": 150,
+    "age": 14,
+    "rating": 4.8,
+    "inStock": 3,
+    "description": "Стройте город из шестерёнок и паровых машин: каждое здание запускает соседние.",
+    "tags": ["механизмы", "строительство"],
+    "color": "#795548",
+    "oldPrice": 4990
+  },
+  {
+    "id": 32,
+    "slug": "dragon-knight",
+    "title": "Дракон и рыцарь",
+    "cover": "/assets/covers/dragon-knight.svg",
+    "price": 790,
+    "category": "kids",
+    "players": {
+      "min": 2,
+      "max": 2
+    },
+    "playTime": 10,
+    "age": 5,
+    "rating": 3.6,
+    "inStock": 40,
+    "description": "Рыцарь спешит к замку, а дракон пытается его догнать. Короткая игра для двоих.",
+    "tags": ["драконы", "кубик"],
+    "color": "#d84315"
+  },
+  {
+    "id": 33,
+    "slug": "fair",
+    "title": "Ярмарка",
+    "cover": "/assets/covers/fair.svg",
+    "price": 1890,
+    "category": "family",
+    "players": {
+      "min": 2,
+      "max": 5
+    },
+    "playTime": 45,
+    "age": 8,
+    "rating": 4,
+    "inStock": 0,
+    "description": "Покупайте и продавайте товары на шумной ярмарке и разбогатейте раньше всех.",
+    "tags": ["торговля", "наборы"],
+    "color": "#ff7043"
+  },
+  {
+    "id": 34,
+    "slug": "deep-space",
+    "title": "Глубокий космос",
+    "cover": "/assets/covers/deep-space.svg",
+    "price": 3490,
+    "category": "cooperative",
+    "players": {
+      "min": 1,
+      "max": 4
+    },
+    "playTime": 90,
+    "age": 14,
+    "rating": 4.9,
+    "inStock": 4,
+    "description": "Экипаж корабля чинит поломки и уворачивается от метеоритов на пути домой.",
+    "tags": ["космос", "выживание"],
+    "color": "#1a237e"
+  },
+  {
+    "id": 35,
+    "slug": "little-detectives",
+    "title": "Маленькие сыщики",
+    "cover": "/assets/covers/little-detectives.svg",
+    "price": 1190,
+    "category": "kids",
+    "players": {
+      "min": 2,
+      "max": 6
+    },
+    "playTime": 20,
+    "age": 6,
+    "rating": 4.2,
+    "inStock": 18,
+    "description": "Ищите пропавшие игрушки по следам и подсказкам — настоящая работа для сыщиков.",
+    "tags": ["детектив", "память"],
+    "color": "#26a69a"
+  },
+  {
+    "id": 36,
+    "slug": "who-am-i",
+    "title": "Кто я?",
+    "cover": "/assets/covers/who-am-i.svg",
+    "price": 690,
+    "category": "party",
+    "players": {
+      "min": 3,
+      "max": 10
+    },
+    "playTime": 15,
+    "age": 8,
+    "rating": 3.9,
+    "inStock": 35,
+    "description": "Карточка на лбу, вопросы «да» или «нет» — и попробуйте понять, кто вы.",
+    "tags": ["угадайка", "вопросы"],
+    "color": "#ab47bc",
+    "oldPrice": 890
+  },
+  {
+    "id": 37,
+    "slug": "spice-empire",
+    "title": "Империя пряностей",
+    "cover": "/assets/covers/spice-empire.svg",
+    "price": 2990,
+    "category": "strategy",
+    "players": {
+      "min": 2,
+      "max": 5
+    },
+    "playTime": 100,
+    "age": 12,
+    "rating": 4.5,
+    "inStock": 6,
+    "description": "Отправляйте караваны и корабли за перцем и корицей и стройте торговую империю.",
+    "tags": ["торговля", "море"],
+    "color": "#ef6c00"
+  },
+  {
+    "id": 38,
+    "slug": "forest-school",
+    "title": "Лесная школа",
+    "cover": "/assets/covers/forest-school.svg",
+    "price": 990,
+    "category": "kids",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 15,
+    "age": 4,
+    "rating": 3.7,
+    "inStock": 20,
+    "description": "Зверята учатся в лесной школе: собирайте цвета и формы вместе с ними.",
+    "tags": ["животные", "цвета"],
+    "color": "#558b2f"
+  },
+  {
+    "id": 39,
+    "slug": "candle-dungeons",
+    "title": "Подземелья и свечи",
+    "cover": "/assets/covers/candle-dungeons.svg",
+    "price": 3190,
+    "category": "cooperative",
+    "players": {
+      "min": 2,
+      "max": 5
+    },
+    "playTime": 80,
+    "age": 12,
+    "rating": 4.4,
+    "inStock": 5,
+    "description": "Спускайтесь в подземелье с одной свечой на всех и выбирайтесь оттуда с сокровищем.",
+    "tags": ["приключения", "кубик"],
+    "color": "#4e342e"
+  },
+  {
+    "id": 40,
+    "slug": "dominoes",
+    "title": "Домино",
+    "cover": "/assets/covers/dominoes.svg",
+    "price": 590,
+    "category": "family",
+    "players": {
+      "min": 2,
+      "max": 4
+    },
+    "playTime": 20,
+    "age": 6,
+    "rating": 3.8,
+    "inStock": 50,
+    "description": "Классическое домино из 28 костяшек — в деревянной коробке.",
+    "tags": ["классика", "числа"],
+    "color": "#424242"
   }
 ]

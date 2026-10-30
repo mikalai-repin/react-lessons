@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#6d8b74"/>
+<rect x="221.5" y="92.5" width="29" height="29" transform="rotate(45 236 107)" fill="#000" opacity="0.10"/><circle cx="62" cy="250" r="32" fill="#fff" opacity="0.12"/><rect x="177" y="-18" width="70" height="70" transform="rotate(45 212 17)" fill="#000" opacity="0.10"/><circle cx="212" cy="35" r="63" fill="#fff" opacity="0.12"/><rect x="170" y="139" width="32" height="32" transform="rotate(45 186 155)" fill="#000" opacity="0.10"/><circle cx="259" cy="223" r="48" fill="#fff" opacity="0.12"/><rect x="240.5" y="71.5" width="33" height="33" transform="rotate(45 257 88)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="283" text-anchor="middle">Чайная</text><text x="150" y="317" text-anchor="middle">церемония</text></g>
+</svg>

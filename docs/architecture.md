@@ -88,7 +88,7 @@
 
 ## Учебный бэкенд: `public/backend/`
 
-Копия из angular-learn **без изменений** (этап 1) (`backend.js`, `data/*.json`: `games`, `categories`, `reviews`, `users`, `promo`) + обложки `public/assets/covers/` и `scripts/build-covers.mjs`. Перехват `fetch` по `/api/…`, задержка (по умолчанию 300 мс), `failRate`, отмена по `AbortSignal`, токены `token-user`/`token-admin`. Доработки, запланированные в angular-learn (~40 игр, `page`/`size`, `/api/refresh`, `/api/logout`, `tokenTtl`), — делать в обоих курсах одинаково (или вынести в общий пакет — решить, когда понадобится).
+Копия из angular-learn (`backend.js`, `data/*.json`: `games` — 40 игр, `categories`, `reviews`, `users`, `promo`) + обложки `public/assets/covers/` и `scripts/build-covers.mjs`. Перед главой 11 перенесена версия angular-learn целиком (40 игр, фильтры `rating`/`onSale`, сортировки, JWT-вход с `/api/refresh`, `/api/logout`, `tokenTtl`, отзыв без входа — «Гость»); описание игры 1 — без `<b>` (это приём Angular-урока про `innerHTML`). Свои добавки React-курса: `POST /api/subscribe` (глава 10) и настройки шага `slow` (добавочная задержка адреса — гонки) и `fail` (адреса, которые всегда отвечают 500) — глава 11. Перехват `fetch` по `/api/…`, задержка (по умолчанию 300 мс), `failRate`, отмена по `AbortSignal`, вечные токены `token-user`/`token-admin`. Дальнейшие доработки — делать в обоих курсах одинаково.
 
 ## Тесты в превью — план (этап 4, глава 17)
 

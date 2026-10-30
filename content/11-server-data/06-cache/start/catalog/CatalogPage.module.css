@@ -1,0 +1,17 @@
+/* Пустая витрина: ничего не подошло под фильтры */
+.empty {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 16px 0;
+}
+
+.empty p {
+  margin: 0;
+}
+
+/* Сетка, пока вместо новых данных показаны прежние */
+.results[aria-busy='true'] {
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}

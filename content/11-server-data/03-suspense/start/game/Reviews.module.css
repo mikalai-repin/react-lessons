@@ -1,0 +1,45 @@
+/* Отзывы об игре и заглушка загрузки */
+.reviews {
+  margin-top: 24px;
+}
+
+.list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.review {
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.review p {
+  margin: 4px 0 0;
+}
+
+.author {
+  font-weight: 600;
+}
+
+/* Заглушка: серая полоса с «бегущим» бликом */
+.skeleton {
+  height: 72px;
+  background: linear-gradient(
+    90deg,
+    var(--surface) 25%,
+    var(--border) 50%,
+    var(--surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}

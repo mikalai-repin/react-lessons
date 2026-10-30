@@ -183,18 +183,18 @@
 
 | # | Шаг | API / понятия | Результат |
 |---|---|---|---|
-| 11.1 | Учебный бэкенд | API, вкладка «Сеть», задержка, ошибки | |
-| 11.2 | `fetch` в эффекте | Загрузка, ошибка, **гонка** при быстрой смене id, `AbortController` в очистке | Игра по `:id` (и баг гонки) |
-| 11.3 | Suspense и `use(promise)` | Промис как значение, граница `<Suspense>`, кэширование промиса | Скелетон загрузки |
-| 11.4 | Границы ошибок | Классовый `ErrorBoundary` (единственный «живой» класс), `react-error-boundary`, повтор | «Игра не найдена» |
-| 11.5 | TanStack Query | `QueryClient`, `useQuery`, ключи, `staleTime`/`gcTime`, статусы, `isFetching` против `isPending` | Каталог с сервера |
-| 11.6 | Параметры и кэш | Ключ от фильтров, `placeholderData: keepPreviousData`, предзагрузка `prefetchQuery` | Пагинация без мигания |
-| 11.7 | Изменения | `useMutation`, `invalidateQueries`, оптимистичное обновление и откат | Отзыв появляется сразу |
-| 11.8 | Бесконечные списки | `useInfiniteQuery` | «Показать ещё» запросами |
-| 11.9 | Suspense-режим | `useSuspenseQuery`, интеграция с `loader` роутера (`ensureQueryData`) | |
-| **Практикум** | Каталог целиком | Поиск с задержкой + фильтры в URL + страницы + ошибки | |
-| **Под капотом** | Как устроен кэш запросов | `QueryCache`, наблюдатели, structural sharing, повторы | |
-| **Обзор** | SWR, RTK Query, `fetch`-обёртки | Чем отличаются; axios и интерцепторы против `fetch` | |
+| 11.1 | Учебный бэкенд | API, вкладка «Сеть», задержка, ошибки; `apiGet` + `ApiError` (`fetch` не бросает на 404) | Игра 13 — только с сервера; корзина хранит снимок игры |
+| 11.2 | `fetch` в эффекте | Загрузка, ошибка, **гонка** при быстрой смене фильтра (`slow` у адреса), `AbortController` в очистке | Каталог с сервера (и баг гонки) |
+| 11.3 | Suspense и `use(promise)` | Промис из `loader` без `await`, граница `<Suspense>`, водопад, промис в рендере | Отзывы со скелетом |
+| 11.4 | Границы ошибок | Классовая граница (единственный «живой» класс), `react-error-boundary`, `resetKeys`, повтор через `revalidate` | Ошибка отзывов не роняет страницу |
+| 11.5 | TanStack Query | `QueryClient`, `useQuery`, ключи, статусы, `isFetching` против `isPending`, дедупликация, значения по умолчанию | Каталог и шапка на Query |
+| 11.6 | Ключи и кэш | `queryOptions`, фабрика ключей, `staleTime`/`gcTime`, `placeholderData: keepPreviousData` | Смена фильтра без мигания |
+| 11.7 | Query и роутер | `queryClient.query` в `loader` (вместо устаревших `ensureQueryData`/`prefetchQuery`), `useSuspenseQuery`, `useQueryErrorResetBoundary` | Игра и отзывы из кэша |
+| 11.8 | Изменения на сервере | `useMutation`, `invalidateQueries`, `return` из `onSuccess` | Отзыв на сервер |
+| 11.9 | Оптимистичное обновление | `onMutate`/`onError`/`onSettled`, `cancelQueries`, `setQueryData`, тип из ключа | Отзыв появляется сразу |
+| 11.10 | Бесконечный список | `useInfiniteQuery`, `getNextPageParam`, `fetchNextPage` и отмена | «Показать ещё» запросами |
+| **Под капотом** | Как устроен кэш запросов | `QueryCache`, наблюдатели, `hashKey`, structural sharing, отслеживание полей, повторы; обзор SWR, RTK Query, axios против `fetch` | |
+| **Практикум** | Магазин без локального каталога | «Хиты» и «Избранное» с сервера (`useQueries`), `data/games.ts` удалён | |
 
 ### Глава 12. Конкурентный React и Actions
 

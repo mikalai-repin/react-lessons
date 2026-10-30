@@ -36,7 +36,7 @@ readonly: [main.tsx]
 focus: App.tsx
 api: [useState, 'set(fn)']
 url: /catalog?q=шах
-backend: { latency: 800, failRate: 0 }
+backend: { latency: 800, failRate: 0 }   # ещё slow: { '/api/games/2': 2000 }, fail: ['/api/games/2/reviews'], tokenTtl: 30
 preview: app            # app | tests
 compiler: false         # план (глава 16): запускать код через React Compiler
 ---

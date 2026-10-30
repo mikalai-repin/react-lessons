@@ -95,6 +95,11 @@
 |---|---|---|
 | Suspense boundary | граница Suspense | |
 | fallback | заглушка (fallback) | |
+| suspend | приостановить (компонент приостановлен) | `use(promise)`, `useSuspenseQuery` — глава 11 |
+| skeleton | скелет (скелетная заглушка) | серые блоки на месте будущих данных |
+| race condition | гонка (запросов) | ответ на старый запрос пришёл последним — глава 11 |
+| waterfall | водопад (запросов) | второй запрос ждёт первый, хотя мог идти параллельно |
+| unhandled rejection | необработанное отклонение промиса | |
 | error boundary | граница ошибок | |
 | transition | переход | `useTransition` |
 | deferred value | отложенное значение | |
@@ -135,6 +140,13 @@
 | server state / client state | серверное / клиентское состояние | |
 | query / mutation / query key | запрос / мутация / ключ запроса | TanStack Query |
 | stale / invalidate | устаревший / инвалидировать (пометить устаревшим) | |
+| fresh / staleTime / gcTime | свежий / время свежести / время хранения неиспользуемой записи | глава 11 |
+| deduplication | дедупликация (один запрос на ключ) | |
+| query observer | наблюдатель (запроса) | `QueryObserver`: по одному на вызов `useQuery` |
+| structural sharing | структурное разделение (structural sharing) | совпавшие части новых данных берутся из старых |
+| tracked properties | отслеживание полей (результата) | компонент перерисовывается только из-за прочитанных полей |
+| placeholder data | данные-заполнитель (`placeholderData`) | `keepPreviousData` — прежние данные на время загрузки |
+| infinite query / page param | порционный (бесконечный) запрос / параметр страницы | `useInfiniteQuery` |
 | store / slice / selector | стор (хранилище) / срез / селектор | «стор» — разговорное, допустимо после первого «хранилище (store)» |
 | middleware | промежуточный слой (middleware) | |
 | atom / derived atom / write-only atom | атом / производный атом / атом только для записи | Jotai (глава 9); атом — описание ячейки, значение хранит стор Jotai |

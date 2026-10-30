@@ -32,7 +32,7 @@
 | Библиотека | Версия | Глава | Зачем | В превью |
 |---|---|---|---|---|
 | `immer`, `use-immer` | 11.1.21 / 0.11.0 | 5, 19 | Неизменяемые обновления без spread; внутри RTK. В превью с главы 5 (`produce`, `useImmer`, `useImmerReducer`); `use-immer` берёт `immer` из общего чанка vendor | да |
-| `react-error-boundary` | 6.1.x | 11 | Границы ошибок без своего класса, `resetKeys`, `useErrorBoundary` | да |
+| `react-error-boundary` | 6.1.6 | 11 | Границы ошибок без своего класса, `resetKeys`, `useErrorBoundary` | да |
 | `@tanstack/react-virtual` | 3.14.x | 16 | Виртуализация длинных списков | да |
 | `@tanstack/react-table` | 9.2.x | 18 | Headless-таблицы (сравнение с antd `Table`). **v9 — сверить отличия от v8** | да |
 | `motion` (бывший `framer-motion`) | 14.0.x | 16 | Анимации, `AnimatePresence`, layout-анимации. Импорт — `motion/react` (сверить) | да |

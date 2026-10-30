@@ -1,0 +1,103 @@
+import { useEffect, useEffectEvent } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
+import type { Game } from '../api/models';
+import { SALE_ENDS } from '../data/sale';
+import { track } from '../shared/analytics';
+import { Button } from '../shared/Button';
+import { Countdown } from '../shared/Countdown';
+import { formatPrice } from '../shared/format';
+import { Rating } from '../shared/Rating';
+import { quantityInCart } from '../store/cartReducer';
+import { useCartStore } from '../store/cartStore';
+import styles from './GameDetails.module.css';
+
+// Просмотр засчитываем, если покупатель пробыл на странице 3 с
+const VIEW_DELAY = 3000;
+
+type GameDetailsProps = {
+  game: Game;
+  // id следующей игры каталога — для ссылки «Следующая игра»
+  nextId: number;
+};
+
+// Страница игры: обложка, сведения, описание и кнопка «В корзину»
+export function GameDetails({
+  game,
+  nextId,
+}: GameDetailsProps) {
+  const { min, max } = game.players;
+  const players = min === max ? `${min}` : `${min}–${max}`;
+  const quantity = useCartStore((state) =>
+    quantityInCart(state.items, game.id),
+  );
+  const add = useCartStore((state) => state.add);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Событие «просмотр»: читает свежее quantity, но не зависит от него
+  const onView = useEffectEvent((gameId: number) => {
+    track('просмотр', { gameId, inCart: quantity });
+  });
+
+  // Синхронизация с аналитикой: страница игры показана 3 с
+  useEffect(() => {
+    const id = setTimeout(() => onView(game.id), VIEW_DELAY);
+    return () => clearTimeout(id);
+  }, [game.id]);
+
+  // Назад по истории; если страницу открыли прямой ссылкой —
+  // истории внутри магазина нет, ведём на главную
+  function handleBack() {
+    if (location.key === 'default') navigate('/');
+    else navigate(-1);
+  }
+
+  return (
+    <article className={styles.details}>
+      <div className={styles.nav}>
+        <button
+          type="button"
+          className={styles.back}
+          onClick={handleBack}
+        >
+          ← Назад
+        </button>
+        <Link to={`/games/${nextId}`} className={styles.back}>
+          Следующая игра →
+        </Link>
+      </div>
+      <div className={styles.body}>
+        <img
+          className={styles.cover}
+          src={game.cover}
+          alt={game.title}
+        />
+        <div>
+          <h2 className={styles.title}>{game.title}</h2>
+          <p className={`muted ${styles.info}`}>
+            Игроки: {players} · {game.playTime} мин · {game.age}
+            +
+          </p>
+          <Rating value={game.rating} />
+          <p className={styles.price}>
+            {formatPrice(game.price)}
+          </p>
+          {game.oldPrice !== undefined && (
+            <Countdown deadline={SALE_ENDS} />
+          )}
+          {game.inStock === 0 ? (
+            <Button disabled>Нет в наличии</Button>
+          ) : (
+            <Button onClick={() => add(game)}>В корзину</Button>
+          )}
+          {quantity > 0 && (
+            <p className={styles.inCart}>
+              В корзине: {quantity} шт.
+            </p>
+          )}
+        </div>
+      </div>
+      <p className={styles.description}>{game.description}</p>
+    </article>
+  );
+}

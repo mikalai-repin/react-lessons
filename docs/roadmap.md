@@ -17,11 +17,11 @@
 
 - ✅ Глава 9. Состояние приложения (9 шагов, 2026-10-26) — `docs/chapters/09-app-state.md`
 - ✅ Глава 10. Роутинг (14 шагов, 2026-10-26) — `docs/chapters/10-routing.md`
-- ⬜ Учебный бэкенд: ~40 игр, `page`/`size` (общая задача с angular-learn)
-- ⬜ Глава 11. Данные с сервера (Suspense, TanStack Query)
+- ✅ Учебный бэкенд: 40 игр, `page`/`size` (перенос из angular-learn, 2026-10-30) + настройки шага `slow`/`fail`
+- ✅ Глава 11. Данные с сервера (12 шагов, 2026-10-30) — `docs/chapters/11-server-data.md`
 - ⬜ Глава 12. Конкурентный React и Actions
 - ⬜ Глава 13. Формы (React Hook Form + Zod)
-- ⬜ Учебный бэкенд: `tokenTtl`, `/api/refresh`, `/api/logout` (общая задача с angular-learn)
+- 🟨 Учебный бэкенд: `tokenTtl`, `/api/refresh`, `/api/logout` — уже перенесены из angular-learn вместе с 40 играми; проверить перед главой 14
 - ⬜ Глава 14. Авторизация
 - ⬜ Vendor: `antd` + `@ant-design/icons` + `dayjs` в превью (проверить размер и cssinjs)
 - ⬜ Глава 15. Стили и Ant Design
@@ -61,10 +61,9 @@
 
 ## Следующий шаг
 
-**Этап 4: учебный бэкенд (~40 игр, `page`/`size`), затем глава 11 «Данные с сервера» (Suspense, TanStack Query)** по `docs/course-plan.md` и `docs/authoring-process.md`.
+**Этап 4: глава 12 «Конкурентный React и Actions»** по `docs/course-plan.md` и `docs/authoring-process.md`.
 
-1. Прочитать журнал главы 10 `docs/chapters/10-routing.md` (особенно «Опоры для главы 11») и ловушки в `docs/authoring-process.md` (адресная строка превью и роутер, минифицированный vendor после сборки, `tools/e2e/lesson-code.mjs`), шаги 10.6 и 10.9 — им глава 11 отвечает.
-2. Бэкенд до главы: `public/backend/data/games.json` — сейчас 12 игр (локальный каталог курса — 6, `data/games.ts`; шесть совпадают с бэкендом полностью, кроме служебного `color`). Расширить до ~40 (обложки — `scripts/build-covers.mjs`), `page`/`size` уже есть в `listGames` (`PAGE_SIZE = 12`). Решить, как фильтры адреса (`cheap`/`expensive`/`rating`, `inStock=1`) переводятся в параметры бэкенда (`price`/`-price`/`rating`/`title`, `inStock=true`). После правки — `checks/preview.mjs`, `checks/platform.mjs` и проверки глав 1 и 10 (демо 1.1 и `gameLoader` читают бэкенд).
-3. `@tanstack/react-query` 5.104.1 уже в vendor и типах Monaco (демо 1.1: `useQuery` + `signal`). Сверить по `node_modules` до текста: `isPending`/`isLoading`/`isFetching`, `staleTime`/`gcTime` по умолчанию, `retry` (3 по умолчанию — в превью долго), `queryOptions`, `useSuspenseQuery`, `placeholderData: keepPreviousData`, `useInfiniteQuery`, `ensureQueryData` в `loader`. `react-error-boundary` — в vendor (план 11), `PREVIEW_MODULES` + типы + `checks/preview.mjs`.
-4. 11.1 — честный `useEffect` + `fetch` для каталога с гонкой (задержка бэкенда и быстрая смена фильтров), затем TanStack Query; фильтры адреса — в ключ запроса.
-5. `npm run chapter new 11-server-data -- --title "Данные с сервера" --description "…"` — база: `10-routing/14-practice`. Новые файлы шагов — заготовками в коммите `start`. В конце — квиз, `check.ts` практикума, `run-chapter`, `checks/ch11-….mjs`, `step-checks`, `lesson-code.mjs`, `npx prettier --check .`; написать журнал `docs/chapters/11-server-data.md`, обновить этот файл и `CLAUDE.md`.
+1. Прочитать журнал главы 11 `docs/chapters/11-server-data.md` (особенно «Опоры для главы 12» и технический долг), новые ловушки в `docs/authoring-process.md` (настройки шага `slow`/`fail`, скрипт правок и коммит не в одной цепочке, «Ошибки страницы» в `run-chapter`), факты Query и Suspense в `docs/facts/ecosystem.md` и `docs/facts/render.md`.
+2. Сверить по `node_modules` и запуском до текста: `useTransition` (в т. ч. async-переходы и `isPending`), `startTransition`, `useDeferredValue` (второй аргумент — начальное значение), переходы и уже показанный `Suspense` (опыт 11.3 «старый экран при переходе»), `useActionState` (сигнатура `(prevState, formData)`, `permalink`), `useFormStatus` из `react-dom`, `useOptimistic` (откат после завершения перехода), `<form action>` и сброс неуправляемой формы, `requestFormReset`, `<Activity mode>`, `<ViewTransition>` + `addTransitionType` (стабильные в 19.3 — `facts/tooling.md`). Как React Router 8 взаимодействует с `startTransition` и `viewTransition`.
+3. Магазин к началу главы: каталог на `useInfiniteQuery` с поиском через `useDebouncedValue` (12.1–12.3: тяжёлый список, переход, отложенное значение — решить, остаётся ли `useDebouncedValue`), отзыв — `useMutation` с оптимистичной записью в кэш (12.4–12.7: тот же отзыв на Actions — показать, когда что лучше, не ломая Query), избранное — контекст + `localStorage` («В избранное» мгновенно через `useOptimistic`).
+4. `npm run chapter new 12-concurrent -- --title "Конкурентный React и Actions" --description "…"` — база: `11-server-data/12-practice`. Новые файлы шагов — заготовками в коммите `start`. В конце — квиз, `check.ts` практикума, `run-chapter`, `checks/ch12-….mjs`, `step-checks`, `lesson-code.mjs`, `npx prettier --check .`; журнал `docs/chapters/12-….md`, этот файл и `CLAUDE.md`.

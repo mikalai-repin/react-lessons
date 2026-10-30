@@ -12,6 +12,7 @@ export const typeFiles = import.meta.glob(
     '../../node_modules/react-router/dist/production/**/*.d.ts',
     '../../node_modules/@tanstack/react-query/build/modern/**/*.d.ts',
     '../../node_modules/@tanstack/query-core/build/modern/**/*.d.ts',
+    '../../node_modules/react-error-boundary/dist/react-error-boundary.d.ts',
     '../../node_modules/zustand/**/*.d.ts',
     '../../node_modules/immer/dist/immer.d.ts',
     '../../node_modules/use-immer/dist/index.d.ts',
@@ -20,7 +21,7 @@ export const typeFiles = import.meta.glob(
   { query: '?raw', import: 'default', eager: true },
 ) as Record<string, string>;
 
-/** package.json пакетов, у которых типы точек входа указаны только в `exports` */
+/** package.json пакетов, у которых типы точек входа указаны только в `exports` (или в `types` вне корня пакета) */
 export const typedPackages = import.meta.glob(
   [
     '../../node_modules/react-router/package.json',
@@ -29,6 +30,7 @@ export const typedPackages = import.meta.glob(
     '../../node_modules/immer/package.json',
     '../../node_modules/use-immer/package.json',
     '../../node_modules/jotai/package.json',
+    '../../node_modules/react-error-boundary/package.json',
   ],
   { import: 'default', eager: true },
-) as Record<string, { exports: Record<string, unknown> }>;
+) as Record<string, { exports?: Record<string, unknown>; types?: string }>;

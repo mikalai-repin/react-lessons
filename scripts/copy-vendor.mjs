@@ -32,6 +32,7 @@ export const PREVIEW_MODULES = {
   'react-router': null,
   'react-router/dom': null,
   '@tanstack/react-query': null,
+  'react-error-boundary': null,
   zustand: null,
   'zustand/middleware': null,
   'zustand/react/shallow': null,

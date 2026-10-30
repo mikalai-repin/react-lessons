@@ -29,8 +29,8 @@ expect(compiled.errors.length === 0, `сборка без ошибок ${JSON.st
 // Задержка 400 мс: поиск по буквам должен отменять устаревшие запросы
 const { page, logs, network } = await openPreview(browser, compiled, { backend: { latency: 400 }, waitMs: 1500 });
 expect(
-  (await pageText(page)).includes('Найдено игр: 12'),
-  'каталог загружен: 12 игр (TanStack Query + учебный бэкенд)',
+  (await pageText(page)).includes('Найдено игр: 40'),
+  'каталог загружен: 40 игр (TanStack Query + учебный бэкенд)',
 );
 expect((await page.title()) === 'Каталог — Ход конём', `<title> из компонента попал в <head>: ${await page.title()}`);
 const header = await page.$eval('header', (e) => `${e.className} ${getComputedStyle(e).display}`);
@@ -194,6 +194,66 @@ expect(jotaiOut === '3:6|Борис', `Jotai: атом, производный �
 const jotaiSaved = await jotaiApp.page.evaluate(() => localStorage.getItem('jotai-check'));
 expect(jotaiSaved === '"Борис"', `Jotai: atomWithStorage пишет в localStorage (${jotaiSaved})`);
 expect(!jotaiApp.logs.some((l) => /error|warn/.test(l)), `Jotai: консоль без ошибок ${JSON.stringify(jotaiApp.logs)}`);
+
+// react-error-boundary 6: граница-класс библиотеки ловит ошибку рендера, resetKeys и resetErrorBoundary сбрасывают её
+const boundaryApp = await openPreview(
+  browser,
+  compileMap({
+    'main.tsx': `import { useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary';
+
+function Boom({ id }: { id: number }) {
+  if (id === 1) throw new Error('Бум ' + id);
+  return <p id="ok">ok {id}</p>;
+}
+
+function Later() {
+  const { showBoundary } = useErrorBoundary();
+  return <button id="later" onClick={() => setTimeout(() => showBoundary(new Error('Позже')))}>позже</button>;
+}
+
+function App() {
+  const [id, setId] = useState(1);
+  return (
+    <main>
+      <button id="next" onClick={() => setId((n) => n + 1)}>+</button>
+      <ErrorBoundary
+        resetKeys={[id]}
+        fallbackRender={({ error, resetErrorBoundary }) => (
+          <p id="fallback">{error instanceof Error ? error.message : '?'}<button id="reset" onClick={resetErrorBoundary}>ещё</button></p>
+        )}
+      >
+        <Boom id={id} />
+        <Later />
+      </ErrorBoundary>
+    </main>
+  );
+}
+createRoot(document.getElementById('root')!).render(<App />);
+`,
+  }),
+  { waitMs: 600 },
+);
+const boundaryText = async () => boundaryApp.page.$eval('main', (e) => e.textContent);
+const caught = await boundaryText();
+await boundaryApp.page.click('#next');
+await wait(80);
+const afterKeys = await boundaryText();
+await boundaryApp.page.click('#later');
+await wait(120);
+const shown = await boundaryText();
+await boundaryApp.page.click('#reset');
+await wait(80);
+const afterReset = await boundaryText();
+expect(
+  caught.includes('Бум 1') && afterKeys.includes('ok 2') && shown.includes('Позже') && afterReset.includes('ok 2'),
+  `react-error-boundary: fallbackRender, resetKeys, showBoundary, resetErrorBoundary (${[caught, afterKeys, shown, afterReset].join(' | ')})`,
+);
+expect(
+  !boundaryApp.logs.some((l) => /Invalid hook call|more than one copy/.test(l)),
+  'react-error-boundary: один экземпляр React',
+);
 
 await browser.close();
 console.log(failures.length ? `\nПровалено: ${failures.length}` : '\nВсё прошло');

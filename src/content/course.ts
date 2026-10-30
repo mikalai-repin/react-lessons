@@ -33,6 +33,12 @@ export interface BackendConfig {
   latency?: number;
   /** Доля запросов, которые отвечают 500 (0..1) */
   failRate?: number;
+  /** Срок жизни access-токена, с (глава 14) */
+  tokenTtl?: number;
+  /** Добавочная задержка отдельных адресов, мс: { '/api/games/2': 2000 } (глава 11, гонка запросов) */
+  slow?: Record<string, number>;
+  /** Адреса, которые всегда отвечают 500: ['/api/games/2/reviews'] (глава 11, границы ошибок) */
+  fail?: string[];
 }
 
 export interface Step {

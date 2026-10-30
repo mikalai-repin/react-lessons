@@ -69,7 +69,7 @@ const APP_START_TIMEOUT = 5000;
 // Пауза после первого рендера: эффекты, таймеры с нулевой задержкой, первые запросы
 const APP_SETTLE_MS = 250;
 
-const DEFAULT_BACKEND: Required<BackendConfig> = { latency: 300, failRate: 0 };
+const DEFAULT_BACKEND: Required<BackendConfig> = { latency: 300, failRate: 0, tokenTtl: 3600, slow: {}, fail: [] };
 const LATENCIES = [0, 300, 1000, 3000];
 
 let nextEntryId = 1;

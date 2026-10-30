@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<rect width="300" height="400" fill="#2a6f97"/>
+<rect x="62.5" y="49.5" width="33" height="33" transform="rotate(45 79 66)" fill="#000" opacity="0.10"/><circle cx="207" cy="102" r="44" fill="#fff" opacity="0.12"/><rect x="271" y="203" width="28" height="28" transform="rotate(45 285 217)" fill="#000" opacity="0.10"/><circle cx="136" cy="259" r="55" fill="#fff" opacity="0.12"/><rect x="164.5" y="54.5" width="45" height="45" transform="rotate(45 187 77)" fill="#000" opacity="0.10"/><circle cx="263" cy="39" r="70" fill="#fff" opacity="0.12"/><rect x="163" y="227" width="50" height="50" transform="rotate(45 188 252)" fill="#000" opacity="0.10"/>
+<g transform="translate(150 140)" fill="#fff" opacity="0.92"><path d="M-34 60h70v-14c0-18-7-32-15-45l9-8 9 9 12-12-6-20c-7-20-20-26-35-26h-9l-3 12-13 9-20 21 8 12 15-8 10 2-18 29c-5 8-6 20-6 28z"/></g>
+<rect y="250" width="300" height="150" fill="#000" opacity="0.28"/>
+<g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="28" font-weight="700" fill="#fff"><text x="150" y="283" text-anchor="middle">Мост через</text><text x="150" y="317" text-anchor="middle">реку</text></g>
+</svg>

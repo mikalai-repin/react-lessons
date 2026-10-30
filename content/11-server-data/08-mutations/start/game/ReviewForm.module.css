@@ -1,0 +1,36 @@
+/* Форма отзыва */
+.review {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.review textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+
+/* Счётчик символов и кнопка — в одну строку */
+.reviewFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.thanks {
+  margin: 8px 0 0;
+  font-weight: 600;
+}
+
+/* Оценка и счётчик символов — слева, кнопка — справа */
+.meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.error {
+  margin: 8px 0 0;
+  color: var(--brand);
+}
