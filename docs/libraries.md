@@ -15,7 +15,7 @@
 |---|---|---|---|---|---|
 | `react`, `react-dom` | 19.3.0 | Глубоко | 1–8, 12, 16, 21 | Основа | да |
 | `typescript` | 6.0.x (не 7!) | Рабочий | везде | Типизация props, хуков, контекста, обобщённые компоненты. TS 7 (7.0.2, Go) — без JS API, для воркера и Monaco не подходит | да (компиляция) |
-| `react-router` | 8.4.0 | Глубоко | 10, 14, 18 | Самый распространённый роутер; data mode (`loader`/`action`), framework mode = бывший Remix. Сверено в главе 10 (`modern-react.md`, «Проверено»); документация — в пакете (`node_modules/react-router/docs`). Требует `react >=19.2.7`, Node 22+ (для CLI/framework mode) | да |
+| `react-router` | 8.4.0 | Глубоко | 10, 14, 18 | Самый распространённый роутер; data mode (`loader`/`action`), framework mode = бывший Remix. Сверено в главе 10 (`docs/facts/ecosystem.md`); документация — в пакете (`node_modules/react-router/docs`). Требует `react >=19.2.7`, Node 22+ (для CLI/framework mode) | да |
 | `@tanstack/react-query` | 5.104.x | Глубоко | 11, 14, 18 | Стандарт серверного состояния: кэш, инвалидация, оптимистичные обновления, бесконечные списки, Suspense | да |
 | `zustand` | 5.0.15 | Рабочий | 9 | Самое популярное лёгкое клиентское хранилище; селекторы, `persist`, `devtools`, `useShallow`, срезы. В превью `zustand`, `zustand/middleware`, `zustand/react/shallow` (без `zustand/vanilla` и `zustand/middleware/immer`) | да |
 | `@reduxjs/toolkit`, `react-redux` | 2.13 / 9.3 | Глубоко | 19 | Огромный пласт существующих проектов; `createSlice`, `createSelector`, RTK Query, listener middleware | да |
