@@ -1,8 +1,28 @@
 # Архитектура платформы
 
+> **Когда читать:** при работе над платформой (`src/`, `public/`, `shared/`, `scripts/`) — нужный раздел по оглавлению (`grep -n '^## '`). Для текста уроков не нужен.
+
 > **Состояние: этап 1 готов (2026-10-06).** Всё, что ниже не помечено «план», реализовано и проверено `tools/e2e/checks/preview.mjs` и `platform.mjs` (в dev-режиме и на продакшен-сборке). Технические решения сначала проверены спайком `spikes/esm-preview/`. После каждого этапа — переписать соответствующий раздел из «план» в «как сделано и проверено», как в `../angular-learn/docs/architecture.md`.
 
 Статический сайт без бэкенда. Весь код ученика компилируется и выполняется в браузере. Основа — платформа `../angular-learn` (Vite 8 + React 19 + Monaco 0.57 + markdown-it + Shiki + Prettier), ~7,5 тыс. строк. Она уже написана на React, поэтому интерфейс, навигация, прогресс, рендер уроков, превью-протокол, учебный бэкенд и e2e-инструменты переносятся почти без изменений.
+
+## Структура репозитория
+
+```
+docs/                 — документация: facts/ (проверенные факты), chapters/ (журналы глав), archive/ (история)
+content/              — уроки курса (lesson-format.md); у главы — quiz.yaml, у практикума — check.ts
+src/                  — платформа (Vite + React + TS), из ../angular-learn/src
+  compiler/ editor/ preview/ lesson/ app/ content/ progress/ quiz/ check/
+shared/step-chain.js  — полный код шага из изменений
+shared/compile-core.js — компиляция шага: TSX → JS, CSS и CSS Modules → модули (браузер, e2e, валидатор)
+public/preview-runtime.js — среда выполнения кода ученика в iframe
+public/backend/       — учебный бэкенд; public/assets/ — обложки
+scripts/              — chapter (глава = ветка git → content/), todo-markers, copy-vendor (PREVIEW_MODULES),
+                        validate-content, step-files, build-covers
+tools/e2e/            — проверки в headless Chrome
+authoring/<глава>/    — рабочие папки глав: git worktree веток chapter/<глава> (в .gitignore)
+spikes/esm-preview/   — прототип этапа 0 (README — результаты и решения)
+```
 
 ## Интерфейс
 
